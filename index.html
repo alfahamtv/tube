@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alfaham Tube</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: url('https://c.top4top.io/p_36090k7by0.png') center / cover no-repeat fixed;
+  color: white;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* الحاوية العامة */
+.wrapper {
+  width: 100%;
+  max-width: 1400px;
+  padding: 15px;
+  margin: auto;
+}
+
+/* Responsive Design للحاوية */
+@media (max-width: 1200px) {
+  .wrapper {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 6px;
+  }
+}
+
+/* الشبكة الموحدة */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+  justify-items: center;
+  padding: 10px;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.92);
+  border-radius: 10px;
+  width: 100%;
+  max-width: 200px;
+  padding: 6px 6px 8px 6px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+
+.card-title {
+  margin: 6px 0 0 0;
+  font-size: 15px;
+  color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 6px;
+    padding: 8px;
+  }
+  .card {
+    max-width: 180px;
+    padding: 5px 5px 7px 5px;
+  }
+  .card-title {
+    font-size: 14px;
+    margin: 5px 0 0 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 5px;
+    padding: 6px;
+  }
+  .card {
+    max-width: 160px;
+    padding: 4px 4px 6px 4px;
+  }
+  .card-title {
+    font-size: 13px;
+    margin: 4px 0 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+    padding: 5px;
+  }
+  .card {
+    max-width: 100%;
+    padding: 3px 3px 5px 3px;
+  }
+  .card-title {
+    font-size: 12px;
+    margin: 3px 0 0 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 3px;
+    padding: 4px;
+  }
+  .card {
+    max-width: 100%;
+    padding: 2px 2px 4px 2px;
+  }
+  .card-title {
+    font-size: 11px;
+    margin: 2px 0 0 0;
+  }
+}
+
+/* الأقسام */
+#home { display: block; }
+#movies { display: none; }
+#series { display: none; }
+#episodes { display: none; }
+#playerPage { display: none; }
+
+.logo-img {
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.logo-img:hover {
+  transform: scale(1.1);
+}
+
+.header-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #202020;
+  z-index: 10001;
+}
+
+.header-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Responsive Design للهيدر */
+@media (max-width: 768px) {
+  .header-bar {
+    padding: 8px 15px;
+  }
+  .header-section {
+    gap: 8px;
+  }
+  .logo-img {
+    height: 35px;
+  }
+  .search-container {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-bar {
+    padding: 6px 10px;
+  }
+  .header-section {
+    gap: 6px;
+  }
+  .logo-img {
+    height: 30px;
+  }
+  .search-container {
+    width: 150px;
+  }
+  .search-input {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  .search-execute-btn {
+    width: 50px;
+  }
+  .search-toggle-button {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+/* تصميم البحث على طريقة يوتيوب */
+.search-container {
+  display: none;
+  align-items: center;
+  background: #121212;
+  border: 1px solid #333;
+  border-radius: 40px;
+  overflow: visible;
+  margin-left: 10px;
+  width: 250px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+}
+
+.search-execute-btn {
+  background: #222;
+  border: none;
+  border-right: 1px solid #333;
+  color: white;
+  height: 36px;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.search-execute-btn:hover {
+  background: #333;
+}
+
+.search-execute-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+}
+
+.search-toggle-button {
+  background: transparent;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-toggle-button svg {
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+}
+
+.search-toggle-button:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 10002;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  min-width: 250px;
+}
+
+.search-suggestions.active {
+  display: block;
+}
+
+.search-suggestion-item {
+  padding: 12px 15px;
+  border-bottom: 1px solid #222;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-suggestion-item:hover {
+  background: #222;
+}
+
+.search-suggestion-item img {
+  width: 50px;
+  height: 28px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.search-suggestion-item-info {
+  flex: 1;
+  text-align: right;
+}
+
+.search-suggestion-item-title {
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.search-suggestion-item-type {
+  color: #999;
+  font-size: 11px;
+}
+
+/* Responsive Design للمقترحات */
+@media (max-width: 768px) {
+  .search-suggestions {
+    min-width: 200px;
+    max-height: 300px;
+  }
+  .search-suggestion-item {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .search-suggestion-item img {
+    width: 40px;
+    height: 22px;
+  }
+  .search-suggestion-item-title {
+    font-size: 12px;
+  }
+  .search-suggestion-item-type {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-suggestions {
+    min-width: 150px;
+    max-height: 250px;
+  }
+  .search-suggestion-item {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+  .search-suggestion-item img {
+    width: 35px;
+    height: 20px;
+  }
+  .search-suggestion-item-title {
+    font-size: 11px;
+  }
+  .search-suggestion-item-type {
+    font-size: 9px;
+  }
+}
+
+.header-bar {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.site-title span {
+  color: #ff0000;
+}
+
+.body-with-header {
+  padding-top: 70px;
+}
+
+/* Responsive Design للجسم */
+@media (max-width: 768px) {
+  .body-with-header {
+    padding-top: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .body-with-header {
+    padding-top: 50px;
+  }
+}
+
+.section-title {
+  text-align: center;
+  color: white;
+  font-size: 22px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+/* Responsive Design للعناوين */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+}
+
+/* مشغل الأفلام */
+#playerPage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  background: transparent;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+#youtubeFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+/* مشغل المسلسلات */
+#episodes {
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #000;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.series-title {
+  font-weight: 900;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 12px 0;
+  background: #111;
+}
+
+.series-video-player {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #000;
+  position: relative;
+}
+
+.series-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: black;
+}
+
+.series-channel-list {
+  flex: 1;
+  background-color: #000;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.series-channel-card {
+  background-color: #2c2c2c;
+  margin-bottom: 8px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  overflow: hidden;
+  gap: 10px;
+}
+
+.series-channel-card:hover {
+  background-color: #444;
+  color: white;
+}
+
+.series-episode-name {
+  flex: 1;
+  text-align: right;
+  min-width: 0;
+}
+
+.series-episode-thumb {
+  width: 60px;
+  height: 34px;
+  margin-left: 10px;
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  #episodes {
+    flex-direction: column;
+  }
+  .series-video-player {
+    flex: none;
+    height: auto;
+    aspect-ratio: 16/9;
+  }
+  .series-channel-container {
+    flex: 1;
+  }
+  .series-title {
+    font-size: 13px;
+    padding: 6px 0;
+  }
+  .series-channel-list {
+    padding: 6px;
+  }
+  .series-channel-card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+  .series-episode-name {
+    margin-bottom: 0;
+    text-align: right;
+  }
+  .series-episode-thumb {
+    width: 100%;
+    height: auto;
+    margin-left: 0;
+    border-radius: 6px;
+  }
+}
+
+/* الأزرار */
+
+.admin-button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(220, 20, 60, 0.8);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10000;
+  font-weight: bold;
+  font-family: 'Cairo', sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.admin-button:hover {
+  background: rgba(220, 20, 60, 1);
+}
+
+/* Responsive Design للأزرار */
+@media (max-width: 768px) {
+  .admin-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-button {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}
+
+/* التمرير */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+</style>
+<!-- Firebase SDK (Compat Version) -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+<script>
+  // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyA91unS_HwY1Byu_mePVf7LYg0TeZSEVjM",
+    authDomain: "iraqna-tv-3d268.firebaseapp.com",
+    databaseURL: "https://iraqna-tv-3d268-default-rtdb.firebaseio.com",
+    projectId: "iraqna-tv-3d268",
+    storageBucket: "iraqna-tv-3d268.firebasestorage.app",
+    messagingSenderId: "131227919663",
+    appId: "1:131227919663:web:a3692e189b9a9d30b5edda",
+    measurementId: "G-VG07FDTPZ0"
+  };
+  
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+</script>
+</head>
+
+<body class="body-with-header">
+
+<div class="header-bar">
+  <div class="header-section header-left">
+    <img src="https://b.top4top.io/p_3778y5jzp1.png" alt="شعار الموقع" class="logo-img" onclick="location.reload()">
+  </div>
+  <div class="header-section header-right">
+    <div class="search-container" id="searchContainer">
+      <input type="text" id="searchInput" class="search-input" placeholder="بحث">
+      <button class="search-execute-btn" onclick="toggleSearch()">
+        <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" style="pointer-events: none; display: block; width: 20px; height: 20px; fill: white;"><g><path d="M20.87,20.17l-5.59-5.59C16.35,13.35,17,11.77,17,10c0-3.87-3.13-7-7-7s-7,3.13-7,7s3.13,7,7,7c1.77,0,3.35-0.65,4.58-1.71 l5.59,5.59L20.87,20.17z M10,16c-3.31,0-6-2.69-6-6s2.69-6,6-6s6,2.69,6,6S13.31,16,10,16z"></path></g></svg>
+      </button>
+      <div class="search-suggestions" id="searchSuggestions"></div>
+    </div>
+    <button class="search-toggle-button" id="searchToggleButton" aria-label="بحث" onclick="toggleSearch()">
+      <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" style="pointer-events: none; display: block; width: 24px; height: 24px; fill: white;"><g><path d="M20.87,20.17l-5.59-5.59C16.35,13.35,17,11.77,17,10c0-3.87-3.13-7-7-7s-7,3.13-7,7s3.13,7,7,7c1.77,0,3.35-0.65,4.58-1.71 l5.59,5.59L20.87,20.17z M10,16c-3.31,0-6-2.69-6-6s2.69-6,6-6s6,2.69,6,6S13.31,16,10,16z"></path></g></svg>
+    </button>
+  </div>
+</div>
+
+<!-- الواجهة الرئيسية: الأقسام -->
+<div id="home">
+  <div class="wrapper">
+    <div class="grid" id="sectionsGrid"></div>
+  </div>
+</div>
+
+<!-- الأقسام الفرعية -->
+<div id="subsectionsPage" style="display: none;">
+  <div class="wrapper">
+    <div class="section-title" id="subsectionsTitle">الأقسام الفرعية</div>
+    <div class="grid" id="subsectionsGrid"></div>
+  </div>
+</div>
+
+<!-- قائمة المحتوى (أفلام/مسلسلات) -->
+<div id="contentPage" style="display: none;">
+  <div class="wrapper">
+    <div class="section-title" id="contentTitle">المحتوى</div>
+    <div class="grid" id="contentGrid"></div>
+  </div>
+</div>
+
+<!-- مشغل الحلقات (للمسلسلات) -->
+<div id="episodes">
+  <div class="series-title" id="episodeTitle"></div>
+  <div class="series-video-player">
+    <iframe id="seriesVideoPlayer" class="series-iframe" src="" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="series-channel-list" id="seriesEpisodeList"></div>
+</div>
+
+<!-- مشغل الأفلام -->
+<div id="playerPage">
+  <div class="video-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: 1;">
+    <iframe id="youtubeFrame" style="width: 100%; height: 100%;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+// متغيرات الحالة
+let allSections = {};
+let allMovies = {};
+let allSeries = {};
+let currentPath = { page: 'home', section: null, item: null };
+let isNavigatingHistory = false;
+
+// وظائف الملاحة المتقدمة
+function navigateTo(page, sectionKey = null, itemKey = null, pushState = true) {
+  const previousPath = { ...currentPath };
+
+  if (page === 'playerPage') {
+    const movie = itemKey ? allMovies[itemKey] : null;
+    if (!movie) {
+      if (sectionKey) {
+        page = 'contentPage';
+        itemKey = null;
+      } else {
+        page = 'home';
+        sectionKey = null;
+        itemKey = null;
+      }
+    }
+  }
+
+  currentPath.page = page;
+  currentPath.section = sectionKey;
+  currentPath.item = itemKey;
+
+  // التحكم في ظهور الهيدر (يظهر فقط في الصفحة الرئيسية)
+  const header = document.querySelector('.header-bar');
+  if (header) {
+    header.style.display = (page === 'home') ? 'flex' : 'none';
+  }
+  
+  // تعديل تباعد الجسم بناءً على وجود الهيدر
+  if (page === 'home') {
+    document.body.classList.add('body-with-header');
+  } else {
+    document.body.classList.remove('body-with-header');
+  }
+
+  // إخفاء جميع الصفحات
+  const pages = ['home', 'contentPage', 'episodes', 'playerPage'];
+  pages.forEach(p => {
+    const el = document.getElementById(p);
+    if (el) el.style.display = 'none';
+  });
+
+  // إغلاق مشغل الأفلام نهائيًا عند الخروج
+  const youtubeFrame = document.getElementById('youtubeFrame');
+  const playerPageEl = document.getElementById('playerPage');
+  if (page !== 'playerPage') {
+    if (playerPageEl) {
+      playerPageEl.style.display = 'none';
+    }
+    if (youtubeFrame) {
+      youtubeFrame.src = '';
+      youtubeFrame.removeAttribute('src');
+      youtubeFrame.style.display = 'none';
+    }
+  } else {
+    if (youtubeFrame) {
+      youtubeFrame.style.display = 'block';
+    }
+    if (playerPageEl) {
+      playerPageEl.style.display = 'block';
+    }
+  }
+
+  // إظهار الصفحة المطلوبة
+  const target = document.getElementById(page);
+  if (target) {
+    target.style.display = (page === 'episodes') ? 'flex' : 'block';
+  }
+
+  // تعديل موضع مشغل المسلسلات إلى أعلى الشاشة دائماً
+  const episodesPage = document.getElementById('episodes');
+  if (episodesPage) {
+    episodesPage.style.top = '0';
+  }
+
+  // إيقاف المشغلات وتفريغها عند مغادرتها
+  if (page !== 'playerPage') {
+    const movieFrame = document.getElementById('youtubeFrame');
+    if (movieFrame) {
+      movieFrame.src = '';
+      movieFrame.removeAttribute('src');
+    }
+  }
+  if (page !== 'episodes') {
+    const seriesFrame = document.getElementById('seriesVideoPlayer');
+    if (seriesFrame) {
+      seriesFrame.src = '';
+      seriesFrame.removeAttribute('src');
+    }
+  }
+
+  // تحديث المحتوى بناءً على الصفحة
+  if (page === 'home') {
+    renderSections();
+  } else if (page === 'contentPage') {
+    if (sectionKey) {
+      renderContent(sectionKey);
+    } else {
+      renderSections();
+    }
+  } else if (page === 'episodes' && itemKey) {
+    const series = allSeries[itemKey];
+    if (series) renderEpisodes(series);
+  } else if (page === 'playerPage' && itemKey) {
+    const movie = allMovies[itemKey];
+    if (movie) renderMoviePlayer(movie.url);
+  }
+
+  // إدارة تاريخ المتصفح والروابط
+  let hash = `#${page}`;
+  if (page === 'playerPage') {
+    if (itemKey) {
+      hash += `/${itemKey}`;
+    }
+  } else {
+    if (sectionKey) hash += `/${sectionKey}`;
+    if (itemKey) hash += `/${itemKey}`;
+  }
+
+  if (pushState) {
+    const isEpisodeReplace = page === 'episodes' && previousPath.page === 'episodes';
+    if (isEpisodeReplace) {
+      history.replaceState({ page, section: sectionKey, item: itemKey }, '', hash);
+    } else {
+      history.pushState({ page, section: sectionKey, item: itemKey }, '', hash);
+    }
+  } else {
+    history.replaceState({ page, section: sectionKey, item: itemKey }, '', hash);
+  }
+}
+
+// التعامل مع تغيير الهاتش (زر الرجوع وتحديث الصفحة)
+window.onhashchange = null;
+
+window.addEventListener('popstate', function(event) {
+  isNavigatingHistory = true;
+
+  if (event.state) {
+    if (event.state.page === 'episodes') {
+      navigateTo('contentPage', event.state.section, null, false);
+    } else if (event.state.page === 'contentPage') {
+      if (!event.state.section || !allSections[event.state.section]) {
+        navigateTo('home', null, null, false);
+      } else {
+        navigateTo('contentPage', event.state.section, null, false);
+      }
+    } else if (event.state.page === 'playerPage') {
+      if (event.state.item) {
+        navigateTo('playerPage', null, event.state.item, false);
+      } else {
+        navigateTo('home', null, null, false);
+      }
+    } else {
+      navigateTo(event.state.page, event.state.section, event.state.item, false);
+    }
+  } else {
+    parseHashAndNavigate();
+  }
+
+  setTimeout(() => {
+    isNavigatingHistory = false;
+  }, 0);
+});
+
+function parseHashAndNavigate() {
+  const hash = location.hash.replace('#', '');
+  if (!hash) {
+    navigateTo('home', null, null, false);
+    return;
+  }
+
+  const parts = hash.split('/');
+  let page = parts[0];
+  let sectionKey = parts[1] || null;
+  let itemKey = parts[2] || null;
+
+  if (page === 'playerPage' && !itemKey) {
+    itemKey = sectionKey;
+    sectionKey = null;
+  }
+
+  if (page === 'playerPage' && !itemKey) {
+    page = 'home';
+  }
+
+  if (page === 'contentPage') {
+    if (!sectionKey || !allSections[sectionKey]) {
+      page = 'home';
+      sectionKey = null;
+    }
+  }
+
+  navigateTo(page, sectionKey, itemKey, false);
+}
+
+function showHome() {
+  navigateTo('home');
+}
+
+function renderContent(sectionKey) {
+  const grid = document.getElementById('contentGrid');
+  grid.innerHTML = '';
+  
+  const sectionName = allSections[sectionKey] ? allSections[sectionKey].name : 'المحتوى';
+  document.getElementById('contentTitle').textContent = sectionName;
+
+  // تصفية الأفلام
+  Object.keys(allMovies).forEach(movieKey => {
+    const movie = allMovies[movieKey];
+    if (movie.category === sectionKey) {
+      const img = movie.image || getVideoThumbnail(movie.url, 'https://via.placeholder.com/300x169?text=Movie');
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<img src="${img}"><div class="card-title">${movie.title}</div>`;
+      card.onclick = () => navigateTo('playerPage', sectionKey, movieKey);
+      grid.appendChild(card);
+    }
+  });
+
+  // تصفية المسلسلات
+  Object.keys(allSeries).forEach(seriesKey => {
+    const series = allSeries[seriesKey];
+    if (series.category === sectionKey) {
+      const episodes = series.episodes ? (Array.isArray(series.episodes) ? series.episodes : Object.values(series.episodes)) : [];
+      let seriesImg = series.image;
+      if (episodes.length > 0 && episodes[0]) {
+        const firstEpisodeId = getYouTubeId(episodes[0]);
+        if (firstEpisodeId) {
+          seriesImg = `https://img.youtube.com/vi/${firstEpisodeId}/hqdefault.jpg`;
+        }
+      }
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<img src="${seriesImg}"><div class="card-title">${series.title}</div>`;
+      card.onclick = () => navigateTo('episodes', sectionKey, seriesKey);
+      grid.appendChild(card);
+    }
+  });
+}
+
+function renderEpisodes(series) {
+  if (!series) return;
+  
+  document.getElementById('episodeTitle').innerHTML = `${series.title}`;
+  const videoPlayer = document.getElementById('seriesVideoPlayer');
+  const episodeList = document.getElementById('seriesEpisodeList');
+  episodeList.innerHTML = '';
+
+  const episodes = series.episodes ? (Array.isArray(series.episodes) ? series.episodes : Object.values(series.episodes)) : [];
+
+  episodes.forEach((url, index) => {
+    const id = getYouTubeId(url);
+    if (!id) return;
+
+    const card = document.createElement('div');
+    card.className = 'series-channel-card';
+    const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1`;
+
+    const name = document.createElement('div');
+    name.className = 'series-episode-name';
+    name.textContent = `الحلـقة رقـم ${index + 1}`;
+
+    card.appendChild(name);
+    card.onclick = () => {
+      videoPlayer.src = embedUrl;
+    };
+    episodeList.appendChild(card);
+  });
+
+  // تشغيل الحلقة الأولى تلقائياً إذا كان المشغل فارغاً
+  if (episodes.length > 0) {
+    const currentSrc = videoPlayer.getAttribute('src') || '';
+    if (!currentSrc || !currentSrc.includes('youtube.com')) {
+      const firstId = getYouTubeId(episodes[0]);
+      videoPlayer.src = `https://www.youtube.com/embed/${firstId}?rel=0&modestbranding=1&iv_load_policy=3&playsinline=1`;
+    }
+  }
+}
+
+function renderMoviePlayer(url) {
+  const ytId = getYouTubeId(url);
+  const youtubeFrame = document.getElementById('youtubeFrame');
+
+  if (ytId && youtubeFrame) {
+    youtubeFrame.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1`;
+  }
+}
+
+function getYouTubeId(url) {
+  let id = '';
+  if (!url) return '';
+  
+  if (url.includes('youtu.be/')) {
+    id = url.split('youtu.be/')[1];
+  } else if (url.includes('watch?v=')) {
+    id = url.split('v=')[1];
+  } else if (url.includes('live/')) {
+    id = url.split('live/')[1];
+  } else if (url.includes('embed/')) {
+    id = url.split('embed/')[1];
+  } else {
+    id = url;
+  }
+  
+  if (id.includes('?')) id = id.split('?')[0];
+  if (id.includes('&')) id = id.split('&')[0];
+  return id.trim();
+}
+
+function getVideoThumbnail(url, fallback = 'https://via.placeholder.com/300x169?text=Video') {
+  const ytId = getYouTubeId(url);
+  return ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : fallback;
+}
+
+// جلب البيانات من Firebase
+function loadData() {
+  database.ref('sections').on('value', snapshot => {
+    allSections = snapshot.val() || {};
+    if (currentPath.page === 'home') renderSections();
+    if (currentPath.page === 'contentPage') renderContent(currentPath.section);
+  });
+  
+  database.ref('movies').on('value', snapshot => {
+    allMovies = snapshot.val() || {};
+    if (currentPath.page === 'contentPage') renderContent(currentPath.section);
+    if (currentPath.page === 'playerPage') renderMoviePlayer(allMovies[currentPath.item]?.url);
+  });
+  
+  database.ref('series').on('value', snapshot => {
+    allSeries = snapshot.val() || {};
+    if (currentPath.page === 'contentPage') renderContent(currentPath.section);
+    if (currentPath.page === 'episodes') renderEpisodes(allSeries[currentPath.item]);
+  });
+}
+
+function renderSections() {
+  const grid = document.getElementById('sectionsGrid');
+  grid.innerHTML = '';
+  
+  Object.keys(allSections).forEach(key => {
+    const section = allSections[key];
+    const card = document.createElement('div');
+    card.className = 'card';
+    const img = section.image || `https://via.placeholder.com/300x169?text=${section.name}`;
+    card.innerHTML = `
+      <img src="${img}" alt="${section.name}">
+      <div class="card-title">${section.name}</div>
+    `;
+    card.onclick = () => navigateTo('contentPage', key);
+    grid.appendChild(card);
+  });
+}
+
+// وظيفة البحث
+function toggleSearch() {
+  const container = document.getElementById('searchContainer');
+  const toggleBtn = document.getElementById('searchToggleButton');
+  const searchInput = document.getElementById('searchInput');
+  const suggestions = document.getElementById('searchSuggestions');
+
+  if (container.style.display === 'none' || !container.style.display) {
+    container.style.display = 'flex';
+    toggleBtn.style.display = 'none';
+    searchInput.focus();
+  } else {
+    container.style.display = 'none';
+    toggleBtn.style.display = 'flex';
+    searchInput.value = '';
+    suggestions.classList.remove('active');
+    showHome();
+  }
+}
+
+function displaySuggestions(suggestions) {
+  const container = document.getElementById('searchSuggestions');
+  
+  if (suggestions.length === 0) {
+    container.classList.remove('active');
+    return;
+  }
+  
+  container.innerHTML = '';
+  suggestions.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'search-suggestion-item';
+    
+    const img = document.createElement('img');
+    img.src = item.image;
+    img.onerror = () => img.style.display = 'none';
+    
+    const info = document.createElement('div');
+    info.className = 'search-suggestion-item-info';
+    
+    const title = document.createElement('div');
+    title.className = 'search-suggestion-item-title';
+    title.textContent = item.title;
+    
+    const type = document.createElement('div');
+    type.className = 'search-suggestion-item-type';
+    type.textContent = item.type === 'movie' ? '🎬 فيلم' : '📺 مسلسل';
+    
+    info.appendChild(title);
+    info.appendChild(type);
+    
+    div.appendChild(img);
+    div.appendChild(info);
+    
+    div.onclick = () => {
+      container.classList.remove('active');
+      document.getElementById('searchInput').value = '';
+      if (item.type === 'movie') {
+        navigateTo('playerPage', null, item.key);
+      } else {
+        navigateTo('episodes', null, item.key);
+      }
+    };
+    
+    container.appendChild(div);
+  });
+  
+  container.classList.add('active');
+}
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  const query = this.value.toLowerCase().trim();
+  
+  if (!query) {
+    document.getElementById('searchSuggestions').classList.remove('active');
+    showHome();
+    return;
+  }
+  
+  const suggestions = [];
+
+  // البحث في الأفلام
+  Object.keys(allMovies).forEach(key => {
+    const movie = allMovies[key];
+    if (movie.title.toLowerCase().includes(query)) {
+      const image = movie.image || getVideoThumbnail(movie.url, 'https://via.placeholder.com/50x28?text=Movie');
+      suggestions.push({
+        key: key,
+        title: movie.title,
+        image: image,
+        type: 'movie'
+      });
+    }
+  });
+  
+  // البحث في المسلسلات
+  Object.keys(allSeries).forEach(key => {
+    const series = allSeries[key];
+    if (series.title.toLowerCase().includes(query)) {
+      const episodes = series.episodes ? (Array.isArray(series.episodes) ? series.episodes : Object.values(series.episodes)) : [];
+      let image = series.image;
+      if (episodes.length > 0 && episodes[0]) {
+        const firstEpisodeId = getYouTubeId(episodes[0]);
+        if (firstEpisodeId) {
+          image = `https://img.youtube.com/vi/${firstEpisodeId}/hqdefault.jpg`;
+        }
+      }
+      suggestions.push({
+        key: key,
+        title: series.title,
+        image: image,
+        type: 'series'
+      });
+    }
+  });
+
+  displaySuggestions(suggestions.slice(0, 8)); // عرض أول 8 نتائج
+});
+
+// إغلاق المقترحات عند النقر خارجها
+document.addEventListener('click', function(e) {
+  const searchContainer = document.getElementById('searchContainer');
+  const searchInput = document.getElementById('searchInput');
+  const suggestions = document.getElementById('searchSuggestions');
+  
+  if (!searchContainer.contains(e.target) && searchContainer.style.display === 'flex') {
+    suggestions.classList.remove('active');
+  }
+});
+
+// تحميل البيانات عند البدء
+window.addEventListener('load', () => {
+  loadData();
+  // قراءة الرابط الحالي عند التحميل
+  parseHashAndNavigate();
+  history.replaceState(currentPath, '', location.hash || '#home');
+});
+</script>
+
+</body>
+</html>
