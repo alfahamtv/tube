@@ -23,7 +23,7 @@ body {
   background: url('https://c.top4top.io/p_36090k7by0.png') center / cover no-repeat fixed;
   color: white;
   margin: 0;
-  padding: 0;
+  padding: 0 0 90px 0;
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -497,6 +497,24 @@ body {
   background: transparent;
 }
 
+#externalPage {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 70px;
+  background: #000;
+  z-index: 9998;
+  overflow: hidden;
+}
+
+#externalFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
 /* مشغل المسلسلات */
 #episodes {
   display: none;
@@ -639,18 +657,49 @@ body {
   background: rgba(220, 20, 60, 1);
 }
 
-/* Responsive Design للأزرار */
-@media (max-width: 768px) {
-  .admin-button {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
+.bottom-nav {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+}
+
+.bottom-nav button {
+  flex: 1;
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 14px 0;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: 'Cairo', sans-serif;
+  font-size: 15px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.bottom-nav button:hover,
+.bottom-nav button.active,
+.bottom-nav button:active,
+.bottom-nav button:focus {
+  background: rgba(255,255,255,0.08);
+  color: #ffeb3b;
 }
 
 @media (max-width: 480px) {
-  .admin-button {
-    padding: 6px 10px;
-    font-size: 11px;
+  .bottom-nav {
+    flex-direction: column;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+  }
+  .bottom-nav button {
+    width: 100%;
+    padding: 12px 0;
+  }
+  .bottom-nav button:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
   }
 }
 
@@ -753,6 +802,16 @@ body {
   </div>
 </div>
 
+<div id="externalPage">
+  <iframe id="externalFrame" src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen"></iframe>
+</div>
+
+<div class="bottom-nav">
+  <button id="bottomHomeButton" type="button">Alfaham Tube</button>
+  <button id="bottomLiveButton" type="button">Alfaham Live</button>
+  <button id="bottomDramaButton" type="button">Alfaham Drama</button>
+</div>
+
 <script>
 // متغيرات الحالة
 let allSections = {};
@@ -797,7 +856,7 @@ function navigateTo(page, sectionKey = null, itemKey = null, pushState = true) {
   }
 
   // إخفاء جميع الصفحات
-  const pages = ['home', 'contentPage', 'episodes', 'playerPage'];
+  const pages = ['home', 'contentPage', 'episodes', 'playerPage', 'externalPage'];
   pages.forEach(p => {
     const el = document.getElementById(p);
     if (el) el.style.display = 'none';
@@ -821,6 +880,30 @@ function navigateTo(page, sectionKey = null, itemKey = null, pushState = true) {
     }
     if (playerPageEl) {
       playerPageEl.style.display = 'block';
+    }
+  }
+
+  if (page !== 'externalPage') {
+    const externalPage = document.getElementById('externalPage');
+    if (externalPage) {
+      externalPage.style.display = 'none';
+      const externalFrame = document.getElementById('externalFrame');
+      if (externalFrame) {
+        externalFrame.src = '';
+      }
+    }
+  }
+
+  if (page === 'externalPage') {
+    const externalPage = document.getElementById('externalPage');
+    if (externalPage) externalPage.style.display = 'block';
+    const externalFrame = document.getElementById('externalFrame');
+    if (externalFrame) {
+      if (sectionKey === 'live') {
+        externalFrame.src = 'https://alfahamtv.github.io/live/';
+      } else if (sectionKey === 'drama') {
+        externalFrame.src = 'https://alfahamtv.github.io/drama';
+      }
     }
   }
 
@@ -867,6 +950,10 @@ function navigateTo(page, sectionKey = null, itemKey = null, pushState = true) {
   } else if (page === 'playerPage' && itemKey) {
     const movie = allMovies[itemKey];
     if (movie) renderMoviePlayer(movie.url);
+  } else if (page === 'externalPage') {
+    if (sectionKey === 'live' || sectionKey === 'drama') {
+      // externalFrame src is handled by showExternalPage or hash navigation
+    }
   }
 
   // إدارة تاريخ المتصفح والروابط
@@ -889,6 +976,10 @@ function navigateTo(page, sectionKey = null, itemKey = null, pushState = true) {
     }
   } else {
     history.replaceState({ page, section: sectionKey, item: itemKey }, '', hash);
+  }
+
+  if (typeof syncBottomNavActive === 'function') {
+    syncBottomNavActive();
   }
 }
 
@@ -953,11 +1044,46 @@ function parseHashAndNavigate() {
     }
   }
 
+  if (page === 'externalPage') {
+    if (sectionKey !== 'live' && sectionKey !== 'drama') {
+      page = 'home';
+      sectionKey = null;
+    }
+  }
+
   navigateTo(page, sectionKey, itemKey, false);
 }
 
+function hideExternalPage() {
+  const externalPage = document.getElementById('externalPage');
+  const externalFrame = document.getElementById('externalFrame');
+  if (externalPage) externalPage.style.display = 'none';
+  if (externalFrame) externalFrame.src = '';
+}
+
 function showHome() {
+  hideExternalPage();
   navigateTo('home');
+}
+
+function syncBottomNavActive() {
+  const homeButton = document.getElementById('bottomHomeButton');
+  const liveButton = document.getElementById('bottomLiveButton');
+  const dramaButton = document.getElementById('bottomDramaButton');
+  [homeButton, liveButton, dramaButton].forEach(button => {
+    if (button) button.classList.remove('active');
+  });
+
+  if (currentPath.page === 'externalPage') {
+    if (currentPath.section === 'live' && liveButton) {
+      liveButton.classList.add('active');
+    }
+    if (currentPath.section === 'drama' && dramaButton) {
+      dramaButton.classList.add('active');
+    }
+  } else if (currentPath.page === 'home' && homeButton) {
+    homeButton.classList.add('active');
+  }
 }
 
 function renderContent(sectionKey) {
@@ -985,8 +1111,8 @@ function renderContent(sectionKey) {
     const series = allSeries[seriesKey];
     if (series.category === sectionKey) {
       const episodes = series.episodes ? (Array.isArray(series.episodes) ? series.episodes : Object.values(series.episodes)) : [];
-      let seriesImg = series.image;
-      if (episodes.length > 0 && episodes[0]) {
+      let seriesImg = series.image || '';
+      if (!seriesImg && episodes.length > 0 && episodes[0]) {
         const firstEpisodeId = getYouTubeId(episodes[0]);
         if (firstEpisodeId) {
           seriesImg = `https://img.youtube.com/vi/${firstEpisodeId}/hqdefault.jpg`;
@@ -994,7 +1120,7 @@ function renderContent(sectionKey) {
       }
       const card = document.createElement('div');
       card.className = 'card';
-      card.innerHTML = `<img src="${seriesImg}"><div class="card-title">${series.title}</div>`;
+      card.innerHTML = `<img src="${seriesImg || 'https://via.placeholder.com/300x169?text=Series'}"><div class="card-title">${series.title}</div>`;
       card.onclick = () => navigateTo('episodes', sectionKey, seriesKey);
       grid.appendChild(card);
     }
@@ -1244,9 +1370,53 @@ document.addEventListener('click', function(e) {
   }
 });
 
+function setupBottomNav() {
+  const homeButton = document.getElementById('bottomHomeButton');
+  const liveButton = document.getElementById('bottomLiveButton');
+  const dramaButton = document.getElementById('bottomDramaButton');
+
+  function setActiveBottomButton(activeButton) {
+    [homeButton, liveButton, dramaButton].forEach(button => {
+      button.classList.toggle('active', button === activeButton);
+    });
+  }
+
+  homeButton.addEventListener('click', () => {
+    hideExternalPage();
+    showHome();
+    setActiveBottomButton(homeButton);
+    const searchContainer = document.getElementById('searchContainer');
+    if (searchContainer) {
+      searchContainer.style.display = 'none';
+      document.getElementById('searchToggleButton').style.display = 'flex';
+      document.getElementById('searchInput').value = '';
+      document.getElementById('searchSuggestions').classList.remove('active');
+    }
+  });
+
+  function showExternalPage(url, sectionName) {
+    const externalFrame = document.getElementById('externalFrame');
+    if (externalFrame) externalFrame.src = url;
+    navigateTo('externalPage', sectionName, null);
+    const header = document.querySelector('.header-bar');
+    if (header) header.style.display = 'none';
+  }
+
+  liveButton.addEventListener('click', () => {
+    setActiveBottomButton(liveButton);
+    showExternalPage('https://alfahamtv.github.io/live/', 'live');
+  });
+
+  dramaButton.addEventListener('click', () => {
+    setActiveBottomButton(dramaButton);
+    showExternalPage('https://alfahamtv.github.io/drama', 'drama');
+  });
+}
+
 // تحميل البيانات عند البدء
 window.addEventListener('load', () => {
   loadData();
+  setupBottomNav();
   // قراءة الرابط الحالي عند التحميل
   parseHashAndNavigate();
   history.replaceState(currentPath, '', location.hash || '#home');
