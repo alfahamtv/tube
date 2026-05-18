@@ -663,10 +663,15 @@ body {
   left: 10px;
   right: 10px;
   display: flex;
+  background: rgba(32, 32, 32, 0.96);
+  border: 1px solid rgba(255,255,255,0.12);
+  overflow: hidden;
+  z-index: 10000;
 }
 
 .bottom-nav button {
   flex: 1;
+  min-width: 0;
   background: transparent;
   color: white;
   border: none;
@@ -675,6 +680,7 @@ body {
   font-weight: bold;
   font-family: 'Cairo', sans-serif;
   font-size: 15px;
+  white-space: nowrap;
   transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -688,24 +694,16 @@ body {
 
 @media (max-width: 480px) {
   .bottom-nav {
-    flex-direction: column;
     bottom: 8px;
     left: 8px;
     right: 8px;
   }
   .bottom-nav button {
-    width: 100%;
-    padding: 12px 0;
+    padding: 11px 0;
+    font-size: 14px;
   }
   .bottom-nav button:not(:last-child) {
-    border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-  }
-}
-
-/* التمرير */
-::-webkit-scrollbar {
-  width: 8px;
+    border-right: 1px solid rgba(255,255,255,0.12);
 }
 
 ::-webkit-scrollbar-track {
