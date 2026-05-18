@@ -991,7 +991,7 @@ window.addEventListener('popstate', function(event) {
     if (event.state.page === 'episodes') {
       navigateTo('contentPage', event.state.section, null, false);
     } else if (event.state.page === 'contentPage') {
-      if (!event.state.section || !allSections[event.state.section]) {
+      if (!event.state.section) {
         navigateTo('home', null, null, false);
       } else {
         navigateTo('contentPage', event.state.section, null, false);
@@ -1036,7 +1036,7 @@ function parseHashAndNavigate() {
   }
 
   if (page === 'contentPage') {
-    if (!sectionKey || !allSections[sectionKey]) {
+    if (!sectionKey) {
       page = 'home';
       sectionKey = null;
     }
