@@ -20,7 +20,7 @@
     <style>
         * { font-family: 'Cairo', 'Roboto', 'Noto Sans Arabic', 'Arial', sans-serif; box-sizing: border-box; }
         html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
-        body { margin: 0; background: #000000; }
+        body { margin: 0; background: #000000; padding-bottom: 104px; }
         .header { background: #000000; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; gap: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.12); border-bottom: 1px solid rgba(255,255,255,0.08); }
         .header-logo { height: 45px; }
         .header-logo-link { display: flex; align-items: center; }
@@ -36,7 +36,7 @@
         .search-area.open { display: flex; gap: 8px; }
         .search-area input { flex: 1; min-width: 0; padding: 10px 12px; border: 0; border-radius: 8px; font-family: inherit; }
         .search-area button { padding: 9px 14px; border: 0; border-radius: 8px; cursor: pointer; color: #123456; font-weight: bold; }
-        .categories-bar { position: sticky; top: 0; z-index: 1000; background: #0c0c0c; padding: 14px 20px 10px; display: flex; flex-wrap: wrap; gap: 12px; overflow: visible; white-space: normal; border-bottom: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 8px rgba(0,0,0,0.26); }
+        .categories-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #000000; padding: 10px 20px 12px; display: flex; flex-wrap: wrap; gap: 12px; overflow: visible; white-space: normal; border-top: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -2px 8px rgba(0,0,0,0.26); backdrop-filter: blur(6px); }
         .category-item { position: relative; z-index: 1001; display: inline-flex; align-items: stretch; }
         .category-item.open { z-index: 2000; }
         .category-link { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 112px; min-height: 90px; color: #f5f5f5; text-decoration: none; font-size: 12px; font-weight: 700; transition: all 0.3s; padding: 8px 6px; border-radius: 16px; background: transparent; border: none; box-shadow: none; }
@@ -50,6 +50,12 @@
         .main-story img { width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover; display: block; }
         .main-story .featured-video { width: 100%; height: min(56vw, 520px); min-height: 280px; display: block; border: 0; border-radius: 0; background: #000; }
         .main-story h2 { background-color: #111111; color: #f5f5f5; margin: 0; padding: 16px; font-size: 24px; line-height: 1.5; }
+        .featured-reel { margin: 0 20px 22px; }
+        .featured-reel-track { display: flex; gap: 16px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; padding: 4px 2px 10px; scrollbar-width: none; }
+        .featured-reel-track::-webkit-scrollbar { display: none; }
+        .featured-slide { position: relative; min-width: 220px; width: 220px; height: 150px; border-radius: 14px; overflow: hidden; flex: 0 0 220px; background: #111; scroll-snap-align: start; box-shadow: 0 8px 18px rgba(0,0,0,0.22); }
+        .featured-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .featured-slide .featured-caption { position: absolute; inset: auto 0 0 0; padding: 12px 12px 10px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.9) 100%); color: #fff; font-weight: 700; font-size: 14px; line-height: 1.4; text-align: right; }
         .category-item { position: relative; z-index: 1001; display: inline-flex; align-items: center; }
         .category-item.open { z-index: 2000; }
         .category-toggle { flex: 0 0 28px; width: 28px; height: 28px; margin-right: 2px; border: 0; background: transparent; color: #123456; cursor: pointer; padding: 0; font: inherit; font-size: 25px; font-weight: 900; line-height: 22px; text-align: center; transition: transform 0.2s, color 0.2s; }
@@ -70,7 +76,7 @@
         .latest-ticker-window { flex: 1; overflow: hidden; direction: ltr; }
         .latest-ticker-track { display: inline-flex; gap: 42px; min-width: max-content; direction: rtl; animation: latestTickerMove 90s linear infinite; }
         .latest-ticker:hover .latest-ticker-track, .latest-ticker:focus-within .latest-ticker-track { animation-play-state: paused; }
-        .latest-ticker-link { color: white; text-decoration: none; font-size: 14px; font-weight: 700; white-space: nowrap; }
+        .latest-ticker-link { color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 700; white-space: nowrap; }
         .latest-ticker-link::before { content: '•'; color: #ff9900; margin-left: 8px; }
         @keyframes latestTickerMove { from { transform: translateX(-50%); } to { transform: translateX(0); } }
         @media (prefers-reduced-motion: reduce) { .latest-ticker-track { animation: none; } }
@@ -80,24 +86,20 @@
         .subcategory-card:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.18); }
         .grid-container { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding: 0 20px 30px 20px; max-width: 1200px; margin: 20px auto 0; }
         .empty-state { grid-column: 1 / -1; margin: 20px 0; padding: 28px 20px; background: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: #d4d4d4; text-align: center; font-weight: 700; }
-        .article-card { position: relative; height: 200px; min-width: 0; background-color: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; text-decoration: none; display: flex; flex-direction: row; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.16); }
+        .article-card { position: relative; min-width: 0; background-color: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; text-decoration: none; display: flex; flex-direction: column; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.16); }
         .article-card:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
-        .article-card .article-media { position: relative; flex: 0 0 40%; width: 40%; min-width: 180px; height: 100%; overflow: hidden; }
-        .article-card .article-media img { width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
-        .article-card .article-overlay { position: absolute; inset: auto 0 0 0; padding: 18px 14px 12px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 28%, rgba(0,0,0,0.8) 100%); z-index: 1; }
-        .article-card .article-overlay h3 { width: 100%; margin: 0; font-size: 18px; font-weight: 700; color: #ffffff; text-align: right; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; line-height: 1.5; }
-        .article-info { min-width: 0; margin: 0; padding: 16px; display: flex; flex: 1 1 auto; flex-direction: column; justify-content: center; align-items: flex-start; overflow: hidden; }
-        .article-info p { width: 100%; max-height: 1.6em; margin: 0; font-size: 14px; color: #b7b7b7; text-align: right; line-height: 1.6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .article-card .article-media { position: relative; width: 100%; min-width: 0; height: auto; overflow: hidden; }
+        .article-card .article-media img { width: 100%; min-width: 0; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+        .article-card .article-overlay { position: absolute; inset: auto 0 0 0; padding: 18px 14px 12px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.68) 35%, rgba(0,0,0,0.92) 100%); z-index: 1; }
+        .article-card .article-overlay h3 { width: 100%; margin: 0; font-size: 18px; font-weight: 700; color: #ffffff; text-align: right; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; line-height: 1.5; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+        .article-info { display: none; }
         .category-page .grid-container { grid-template-columns: 1fr; }
         .category-page .grid-container { padding-top: 20px; }
-        .home-page .article-card { height: auto; flex-direction: column; }
-        .home-page .article-card .article-media { flex: 0 0 auto; width: 100%; min-width: 0; height: auto; }
-        .home-page .article-card .article-media img { width: 100%; min-width: 0; height: auto; aspect-ratio: 16 / 9; }
-        .home-page .article-info { flex: 0 0 auto; width: 100%; padding: 12px 12px 14px; }
+        .home-page .article-card { height: auto; }
         .pagination { display: flex; gap: 10px; margin: 20px auto; padding: 0 20px; max-width: 1200px; justify-content: center; align-items: center; }
-        .pagination a { background-color: #f4f4f4; color: #333; border: 1px solid #e0e0e0; border-radius: 10px; padding: 10px 20px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.3s; }
-        .pagination a:hover { background-color: #123456; color: white; border-color: #123456; }
-        .pagination a.active { background-color: #123456; color: white; border-color: #123456; }
+        .pagination a { background-color: #111111; color: #eeeeee; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 10px 20px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.3s; }
+        .pagination a:hover { background-color: #d71920; color: #ffffff; border-color: #d71920; }
+        .pagination a.active { background-color: #d71920; color: #ffffff; border-color: #d71920; }
         .dark-mode body { background-color: #000000; color: #e8edf2; }
         .dark-mode .categories-bar, .dark-mode .article-card, .dark-mode .subcategory-card, .dark-mode .empty-state, .dark-mode .main-story, .dark-mode .main-story h2, .dark-mode .footer { background-color: #1c2733; color: #e8edf2; border-color: #344454; }
         .dark-mode .category-link, .dark-mode .article-info h3, .dark-mode .subcategory-card { color: #e8edf2; }
@@ -131,7 +133,7 @@
             .main-story { width: calc(100% - 24px); max-width: 100%; margin: 18px 12px 16px; }
             .main-story .featured-video { min-height: 210px; height: 56vw; }
             .main-story h2 { font-size: 20px; padding: 13px 12px; }
-            .grid-container { width: 100%; max-width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 12px 24px; margin-top: 14px; }
+            .grid-container { width: 100%; max-width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 0 12px 24px; margin-top: 14px; }
             .article-card { width: 100%; min-width: 0; height: 170px; }
             .article-card img { width: 35%; min-width: 120px; height: 100%; }
             .article-info { padding: 12px; }
@@ -152,7 +154,7 @@
             .categories-bar::-webkit-scrollbar-thumb { background: #b7c1cc; border-radius: 10px; }
             .category-item { flex: 0 0 auto; }
             .category-link { font-size: 13px; padding: 6px 7px; }
-            .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+            .grid-container { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
             .article-card img { width: 34%; min-width: 105px; height: 100%; }
             .article-card { width: 100%; min-width: 0; height: 140px; }
             .article-info { padding: 10px; }
@@ -168,13 +170,10 @@
             <img class="header-logo" src="https://b.top4top.io/p_3778y5jzp1.png" alt="شعار الموقع">
         </a>
         <form class="search-area" id="search-area">
-            <input id="search-input" type="search" placeholder="ابحث في المواضيع" aria-label="البحث">
+            <input id="search-input" type="search" placeholder="ابحث" aria-label="البحث">
             <button type="submit">بحث</button>
         </form>
         <div class="header-actions">
-        <button class="theme-btn" id="theme-btn" type="button" title="الوضع الداكن" aria-label="تفعيل الوضع الداكن">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z"></path></svg>
-        </button>
         <button class="search-btn" title="بحث">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -189,6 +188,7 @@
         <div class="latest-ticker-window"><div class="latest-ticker-track" id="latest-ticker-track"></div></div>
     </div>
     <div class="main-story" id="main-story" style="display: none;"></div>
+    <div class="featured-reel" id="featured-reel" aria-label="آخر المواضيع"></div>
     <div class="subcategory-cards" id="subcategory-cards"></div>
     <div class="grid-container" id="articles-grid"></div>
     <div class="pagination" id="pagination"></div>
@@ -333,7 +333,77 @@
                 ticker.hidden = false;
             });
         }
+        function shuffleArray(items) {
+            const cloned = [...items];
+            for (let index = cloned.length - 1; index > 0; index--) {
+                const randomIndex = Math.floor(Math.random() * (index + 1));
+                [cloned[index], cloned[randomIndex]] = [cloned[randomIndex], cloned[index]];
+            }
+            return cloned;
+        }
 
+        function renderFeaturedReel(articles) {
+            const reel = document.getElementById('featured-reel');
+            if (!reel) return;
+            const deck = shuffleArray((articles || []).slice(0, 10));
+            if (!deck.length) {
+                reel.innerHTML = '';
+                return;
+            }
+            const repeatedDeck = [...deck, ...deck];
+            reel.innerHTML = `
+                <div class="featured-reel-track" id="featured-reel-track" dir="rtl">
+                    ${repeatedDeck.map((article) => `
+                        <a href="${escapeHtml(getArticleHref(article))}" class="featured-slide" aria-label="${escapeHtml(article.title || 'فيديو')}">
+                            <img src="${escapeHtml(getArticleImage(article))}" alt="${escapeHtml(article.title || 'فيديو')}" onerror="this.onerror=null;this.src='${fallbackImage}';">
+                            <div class="featured-caption">${escapeHtml(article.title || 'فيديو')}</div>
+                        </a>
+                    `).join('')}
+                </div>
+            `;
+
+            const track = document.getElementById('featured-reel-track');
+            if (!track) return;
+
+            const step = () => {
+                if (!track.scrollWidth || !track.clientWidth) return;
+                const maxScroll = track.scrollWidth - track.clientWidth;
+                if (track.scrollLeft >= maxScroll - 4) {
+                    track.scrollTo({ left: 0, behavior: 'auto' });
+                }
+                const itemWidth = track.querySelector('.featured-slide')?.getBoundingClientRect().width || 220;
+                track.scrollBy({ left: itemWidth + 16, behavior: 'smooth' });
+            };
+
+            track.scrollLeft = 0;
+            let intervalId = setInterval(step, 3200);
+            let isDragging = false;
+            let startX = 0;
+            let startScrollLeft = 0;
+
+            track.addEventListener('pointerdown', (event) => {
+                isDragging = true;
+                startX = event.clientX;
+                startScrollLeft = track.scrollLeft;
+                track.setPointerCapture(event.pointerId);
+                clearInterval(intervalId);
+            });
+
+            track.addEventListener('pointermove', (event) => {
+                if (!isDragging) return;
+                const delta = event.clientX - startX;
+                track.scrollLeft = startScrollLeft - delta;
+            });
+
+            const stopDragging = () => {
+                isDragging = false;
+                intervalId = setInterval(step, 3200);
+            };
+
+            track.addEventListener('pointerup', stopDragging);
+            track.addEventListener('pointerleave', stopDragging);
+            track.addEventListener('pointercancel', stopDragging);
+        }
         function getArticleVideoUrls(article) {
             return Array.isArray(article.videoUrls) && article.videoUrls.length
                 ? article.videoUrls.filter(Boolean)
@@ -593,6 +663,7 @@
                     featuredVideo = featuredSnapshot.exists() ? featuredSnapshot.val() || null : null;
                     allArticles = normalizeArticles(snapshot);
                     renderLatestTicker(allArticles);
+                    renderFeaturedReel(allArticles);
                     const filtered = allArticles.filter((article) => {
                         const searchableText = `${article.title || ''} ${article.content || ''}`.toLowerCase();
                         const matchesCategory = selectedCategory === 'home'
@@ -714,7 +785,6 @@
 
             cards.forEach((article) => {
                 const title = article.title || 'عنوان غير متاح';
-                const contentPreview = getArticlePreview(article.content);
                 const imageHtml = getArticleImageHtml(article, title);
                 const articleHref = getArticleHref(article);
 
@@ -725,9 +795,6 @@
                             <div class="article-overlay">
                                 <h3>${escapeHtml(title)}</h3>
                             </div>
-                        </div>
-                        <div class="article-info">
-                            <p>${escapeHtml(contentPreview)}</p>
                         </div>
                     </a>`;
             });
