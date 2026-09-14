@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم</title>
+    <meta name="theme-color" content="#123456">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script>if (localStorage.getItem('site-theme') === 'dark') document.documentElement.classList.add('dark-mode');</script>
+    <style>
+        * { font-family: 'Cairo', sans-serif; box-sizing: border-box; }
+        html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+        body { background-color: #f4f4f4; margin: 0; padding: 20px; }
+        .header { background-color: #123456; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { margin: 0; font-size: 20px; }
+        .theme-btn { background: transparent; color: white; border: 0; width: 42px; height: 42px; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+        .theme-btn svg { width: 25px; height: 25px; }
+        .container { max-width: 900px; margin: 30px auto; }
+        .form-box { background-color: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 30px; }
+        .form-box h2 { margin-top: 0; }
+        .field { margin-bottom: 15px; }
+        .field label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .field input, .field textarea, .field select { width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px; }
+        .field small { display: block; color: #777; margin-top: 5px; }
+        .image-list { display: grid; gap: 10px; }
+        .image-row { display: flex; gap: 8px; align-items: center; }
+        .image-row input { flex: 1; }
+        .video-list { display: grid; gap: 10px; }
+        .video-row { display: flex; gap: 8px; align-items: center; }
+        .video-row input { flex: 1; }
+        .secondary-btn, .remove-image-btn { border: none; border-radius: 5px; padding: 10px 14px; cursor: pointer; font-weight: bold; }
+        .secondary-btn { background-color: #e8eef5; color: #123456; }
+        .remove-image-btn { background-color: #fbe2e2; color: #a40000; }
+        .editor-toolbar { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; background: #f4f4f4; border: 1px solid #e0e0e0; border-bottom: 0; border-radius: 5px 5px 0 0; }
+        .editor-toolbar button { border: 1px solid #d4d4d4; background: white; border-radius: 4px; padding: 6px 10px; cursor: pointer; }
+        .link-panel { display: none; flex: 1 1 100%; gap: 6px; align-items: center; padding-top: 6px; }
+        .link-panel.open { display: flex; }
+        .link-panel input, .link-panel select { flex: 1; min-width: 180px; padding: 7px 9px; border: 1px solid #d4d4d4; border-radius: 4px; background: white; }
+        .link-panel button { padding: 7px 10px; }
+        .editor { min-height: 220px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 0 0 5px 5px; line-height: 1.8; outline: none; }
+        .editor img.editor-image-selected { outline: 3px solid #ff9900; outline-offset: 3px; }
+        .editor:focus { border-color: #123456; }
+        .editor:empty::before { content: attr(data-placeholder); color: #999; }
+        .add-btn { background-color: #123456; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; font-size: 18px; }
+        .add-btn:hover { background-color: #ff9900; color: #333; }
+        .list-box { background-color: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-top: 30px; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #e0e0e0; }
+        .item:last-child { border-bottom: none; }
+        .item-actions { display: flex; gap: 8px; flex-shrink: 0; }
+        .edit-btn { background-color: #e8eef5; color: #123456; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .delete-btn { background-color: #cc0000; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .msg-box { background-color: #ff9900; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-weight: bold; display: none; }
+        .success { background-color: #00cc00 !important; }
+        .error { background-color: #cc0000 !important; }
+        .warning { background-color: #ff9900 !important; }
+        .dark-mode body { background-color: #121820; color: #e8edf2; }
+        .dark-mode .form-box, .dark-mode .list-box { background-color: #1c2733; border-color: #344454; }
+        .dark-mode .form-box h2, .dark-mode .list-box h2, .dark-mode .field label, .dark-mode .item { color: #e8edf2; }
+        .dark-mode .field small { color: #b9c4cf; }
+        .dark-mode .field input, .dark-mode .field textarea, .dark-mode .field select, .dark-mode .link-panel input, .dark-mode .link-panel select { background-color: #263746; color: #fff; border-color: #496072; }
+        .dark-mode .field input::placeholder, .dark-mode .field textarea::placeholder, .dark-mode .link-panel input::placeholder { color: #b9c4cf; }
+        .dark-mode .secondary-btn, .dark-mode .edit-btn { background-color: #344b5d; color: #e8edf2; }
+        .dark-mode .editor-toolbar { background-color: #263746; border-color: #496072; }
+        .dark-mode .editor-toolbar button, .dark-mode .editor { background-color: #1c2733; color: #e8edf2; border-color: #496072; }
+        .dark-mode .editor * { color: #e8edf2 !important; }
+        .dark-mode .item { border-color: #344454; }
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .container { width: 100%; max-width: 100%; margin: 16px auto; }
+            .form-box { padding: 18px; }
+            .list-box { padding: 14px; margin-top: 18px; }
+            .item { align-items: flex-start; gap: 10px; }
+            .item-actions { flex-wrap: wrap; justify-content: flex-end; }
+            .image-row, .video-row { align-items: stretch; }
+            .image-row button, .video-row button { flex: 0 0 auto; }
+        }
+        @media (max-width: 480px) {
+            .header h1 { font-size: 18px; }
+            .form-box { padding: 14px; }
+            .form-box h2, .list-box h2 { font-size: 19px; }
+            .item { flex-direction: column; }
+            .item-actions { width: 100%; justify-content: flex-start; }
+            .image-row, .video-row { flex-direction: column; }
+            .image-row button, .video-row button { width: 100%; }
+            .editor { min-height: 180px; }
+            .link-panel { flex-wrap: wrap; }
+            .link-panel input, .link-panel select, .link-panel button { min-width: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>لوحة التحكم</h1>
+        <button class="theme-btn" id="theme-btn" type="button" title="التحويل إلى الوضع الداكن" aria-label="التحويل إلى الوضع الداكن">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z"></path></svg>
+        </button>
+    </div>
+    <div class="container">
+        <div id="msg-box" class="msg-box"></div>
+
+        <!-- إضافة قسم -->
+        <div class="form-box">
+            <h2>إضافة قسم</h2>
+            <div class="field">
+                <input type="text" id="new-category" placeholder="اسم القسم (مثل: رياضة)">
+            </div>
+            <div class="field">
+                <select id="new-category-parent">
+                    <option value="">قسم رئيسي</option>
+                </select>
+            </div>
+            <div class="field">
+                <input type="url" id="new-category-link" placeholder="رابط القسم (اختياري)">
+            </div>
+            <button class="add-btn" onclick="addCategory()">إضافة قسم</button>
+        </div>
+
+        <div class="list-box">
+            <h2>إدارة الأقسام</h2>
+            <div id="categories-list"></div>
+        </div>
+
+        <!-- تثبيت فيديو مستقل -->
+        <div class="form-box" style="margin-top: 30px;">
+            <h2>تثبيت فيديو في الواجهة الرئيسية</h2>
+            <div class="field">
+                <input type="url" id="featured-video-url" placeholder="YouTube أو m3u8 أو mpd أو flv أو ts">
+            </div>
+            <div class="field">
+                <label><input type="checkbox" id="featured-video-enabled"> تثبيت الفيديو في الواجهة الرئيسية</label>
+            </div>
+            <button class="add-btn" id="featured-video-save-btn" type="button">حفظ الفيديو المثبت</button>
+        </div>
+
+        <!-- إضافة موضوع -->
+        <div class="form-box" style="margin-top: 30px;">
+            <h2 id="article-form-title">إضافة موضوع</h2>
+            <div class="field">
+                <input type="text" id="article-title" placeholder="عنوان الموضوع">
+            </div>
+            <div class="field">
+                <select id="article-category">
+                    <option value="">اختر القسم</option>
+                </select>
+            </div>
+            <div class="field">
+                <input type="url" id="article-image" placeholder="رابط الصورة الرئيسية (اختياري)">
+                <small>يمكنك نشر الموضوع بدون صورة رئيسية.</small>
+            </div>
+            <div class="field">
+                <input type="url" id="article-link" placeholder="رابط الموضوع (اختياري)">
+                <small>عند إدخال الرابط، يؤدي النقر على بطاقة الموضوع إلى فتحه في نفس الصفحة.</small>
+            </div>
+            <div class="field">
+                <label><input type="checkbox" id="article-pinned"> تثبيت الموضوع في الصفحة الرئيسية</label>
+                <small>الموضوع المثبت يظهر أولًا في الكرت الرئيسي للصفحة الرئيسية.</small>
+            </div>
+            <div class="field">
+                <label>روابط الفيديو</label>
+                <div id="video-list" class="video-list">
+                    <div class="video-row">
+                        <input type="url" class="article-video" placeholder="YouTube أو m3u8 أو mpd أو flv أو ts (اختياري)">
+                        <button type="button" class="remove-image-btn remove-video-btn" title="حذف الفيديو">حذف</button>
+                    </div>
+                </div>
+                <button type="button" class="secondary-btn" id="add-video-btn" style="margin-top: 10px;">+ إضافة فيديو آخر</button>
+                <label style="display: block; margin-top: 10px;"><input type="checkbox" id="article-video-pinned"> تثبيت الفيديو في الواجهة الرئيسية</label>
+                <small>سيظهر أول رابط فيديو كمشغل مباشر في الكرت الرئيسي.</small>
+            </div>
+            <div class="field">
+                <label>نص المقالة</label>
+                <div class="editor-toolbar">
+                    <button type="button" data-command="bold"><strong>عريض</strong></button>
+                    <button type="button" data-command="italic"><em>مائل</em></button>
+                    <button type="button" data-command="underline"><u>تحته خط</u></button>
+                    <button type="button" data-command="insertUnorderedList">قائمة</button>
+                    <button type="button" data-command="justifyRight">محاذاة يمين</button>
+                    <button type="button" data-command="justifyCenter">توسيط</button>
+                    <button type="button" id="article-link-btn">إضافة رابط</button>
+                    <button type="button" id="article-image-btn">إضافة صورة</button>
+                    <div class="link-panel" id="link-panel">
+                        <input type="text" id="article-link-text" placeholder="النص الذي سيظهر للرابط" aria-label="اسم الرابط">
+                        <input type="url" id="article-link-url" placeholder="https://example.com" aria-label="رابط النص">
+                        <button type="button" class="secondary-btn" id="apply-link-btn">إدراج الرابط</button>
+                        <button type="button" class="remove-image-btn" id="cancel-link-btn">إلغاء</button>
+                    </div>
+                    <div class="link-panel" id="image-panel">
+                        <input type="url" id="article-image-url" placeholder="https://example.com/image.jpg" aria-label="رابط الصورة">
+                        <input type="url" id="article-image-link-url" placeholder="رابط يفتح عند النقر (اختياري)" aria-label="رابط الصورة القابل للنقر">
+                        <select id="article-image-size" aria-label="حجم الصورة">
+                            <option value="small">تصغير الصورة</option>
+                            <option value="medium" selected>حجم متوسط</option>
+                            <option value="large">تكبير الصورة</option>
+                        </select>
+                        <button type="button" class="secondary-btn" id="apply-image-btn">إدراج الصورة</button>
+                        <button type="button" class="remove-image-btn" id="cancel-image-btn">إلغاء</button>
+                    </div>
+                </div>
+                <div id="article-editor" class="editor" contenteditable="true" data-placeholder="اكتب نص الموضوع هنا..."></div>
+                <textarea id="article-content" hidden></textarea>
+            </div>
+            <button class="add-btn" id="article-submit-btn" onclick="addArticle()">إضافة موضوع</button>
+            <button class="secondary-btn" id="cancel-edit-btn" type="button" style="display: none; width: 100%; margin-top: 10px;">إلغاء التعديل</button>
+        </div>
+
+        <!-- قائمة المواضيع -->
+        <div class="list-box">
+            <h2>قائمة المواضيع</h2>
+            <div id="articles-list"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, push, onValue, remove, update, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMxtNOaCVEKQzUA1bigwvQGzGp18PV184",
+            authDomain: "alfaham-tube-web.firebaseapp.com",
+            databaseURL: "https://alfaham-tube-web-default-rtdb.firebaseio.com",
+            projectId: "alfaham-tube-web",
+            storageBucket: "alfaham-tube-web.firebasestorage.app",
+            messagingSenderId: "999387437014",
+            appId: "1:999387437014:web:5d5cc66098e267aab07677",
+            measurementId: "G-9BEMHM5MPE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        let editingArticleId = null;
+
+        function showMessage(message, type) {
+            const msgBox = document.getElementById('msg-box');
+            msgBox.innerHTML = message;
+            msgBox.style.display = 'block';
+            msgBox.classList.remove('success', 'error', 'warning');
+            if (type === 'success') { msgBox.classList.add('success'); }
+            else if (type === 'error') { msgBox.classList.add('error'); }
+            else if (type === 'warning') { msgBox.classList.add('warning'); }
+            setTimeout(function() { msgBox.style.display = 'none'; }, 5000);
+        }
+
+        function setupThemeToggle() {
+            const button = document.getElementById('theme-btn');
+            if (!button) return;
+            const updateThemeButton = () => {
+                const dark = document.documentElement.classList.contains('dark-mode');
+                button.title = dark ? 'التحويل إلى الوضع الفاتح' : 'التحويل إلى الوضع الداكن';
+                button.setAttribute('aria-label', dark ? 'التحويل إلى الوضع الفاتح' : 'التحويل إلى الوضع الداكن');
+                button.innerHTML = dark
+                    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg>'
+                    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z"></path></svg>';
+            };
+            button.addEventListener('click', () => {
+                const dark = document.documentElement.classList.toggle('dark-mode');
+                localStorage.setItem('site-theme', dark ? 'dark' : 'light');
+                updateThemeButton();
+            });
+            updateThemeButton();
+        }
+
+        function saveFeaturedVideo() {
+            const url = document.getElementById('featured-video-url').value.trim();
+            const enabled = document.getElementById('featured-video-enabled').checked;
+            if (enabled && !url) {
+                showMessage('⚠️ أدخل رابط الفيديو قبل التثبيت.', 'warning');
+                return;
+            }
+            update(ref(db, 'featuredVideo'), { url, enabled })
+                .then(() => showMessage(enabled ? '✅ تم تثبيت الفيديو في الواجهة الرئيسية.' : '✅ تم حفظ الفيديو وإلغاء تثبيته.', 'success'))
+                .catch((error) => showMessage('❌ تعذر حفظ الفيديو: ' + error.message, 'error'));
+        }
+
+        function loadFeaturedVideo() {
+            onValue(ref(db, 'featuredVideo'), (snapshot) => {
+                const video = snapshot.exists() ? snapshot.val() || {} : {};
+                document.getElementById('featured-video-url').value = video.url || '';
+                document.getElementById('featured-video-enabled').checked = video.enabled === true || video.enabled === 'true';
+            }, { onlyOnce: true });
+        }
+
+        // إضافة قسم
+        function addCategory() {
+            const name = document.getElementById('new-category').value.trim();
+            const parentId = document.getElementById('new-category-parent').value || null;
+            const categoryUrl = document.getElementById('new-category-link').value.trim();
+            if (!name) {
+                showMessage('⚠️ تحذير: أدخل اسم القسم أولاً', 'warning');
+                return;
+            }
+            if (categoryUrl && !/^https?:\/\//i.test(categoryUrl)) {
+                showMessage('⚠️ رابط القسم يجب أن يبدأ بـ http:// أو https://', 'warning');
+                return;
+            }
+            push(ref(db, 'categories'), { name: name, parentId: parentId, url: categoryUrl || '' })
+                .then(() => {
+                    showMessage('✅ تم إضافة القسم بنجاح!', 'success');
+                    document.getElementById('new-category').value = '';
+                    document.getElementById('new-category-parent').selectedIndex = 0;
+                    document.getElementById('new-category-link').value = '';
+                })
+                .catch((error) => {
+                    showMessage('❌ خطأ: ' + error.message, 'error');
+                });
+        }
+
+        // تحميل الأقسام (باستخدام onValue حتى تظهر فوراً)
+        function loadCategories() {
+            onValue(ref(db, 'categories'), (snapshot) => {
+                const select = document.getElementById('article-category');
+                const parentSelect = document.getElementById('new-category-parent');
+                const list = document.getElementById('categories-list');
+                const items = [];
+
+                snapshot.forEach((child) => {
+                    const cat = child.val() || {};
+                    items.push({ id: child.key, name: cat.name || cat.nam || cat.title || cat.label || 'قسم', parentId: cat.parentId || null, url: cat.url || '' });
+                });
+
+                const allCategories = items;
+
+                select.innerHTML = '<option value="">اختر القسم</option>';
+                parentSelect.innerHTML = '<option value="">قسم رئيسي</option>';
+                list.innerHTML = '';
+
+                allCategories.forEach((cat) => {
+                    const prefix = cat.parentId ? '↳ ' : '';
+                    select.innerHTML += `<option value="${cat.id}">${prefix}${cat.name}</option>`;
+                    parentSelect.innerHTML += `<option value="${cat.id}">${prefix}${cat.name}</option>`;
+                });
+
+                const categoryIds = new Set(items.map((item) => item.id));
+                const rootCategories = items.filter(item => !item.parentId || !categoryIds.has(item.parentId));
+                const renderCategoryTree = (category, depth = 0) => {
+                    const children = items.filter(item => item.parentId === category.id);
+                    let childHtml = '';
+                    if (children.length) {
+                        childHtml = children.map(child => `
+                            <div class="item" data-category-id="${child.id}" style="margin-right: ${depth + 1}0px;">
+                                <div><strong class="category-name">${child.name}</strong>${child.url ? `<div style="font-size:12px;color:#666;margin-top:4px;">رابط: ${child.url}</div>` : ''}</div>
+                                <div class="item-actions">
+                                    <button class="edit-btn" onclick="editCategory('${child.id}')">تعديل</button>
+                                    <button class="delete-btn" onclick="deleteCategory('${child.id}')">حذف</button>
+                                </div>
+                            </div>
+                            ${renderCategoryTree(child, depth + 1)}
+                        `).join('');
+                    }
+                    return `
+                        <div class="item" data-category-id="${category.id}" style="margin-right: ${depth * 10}px;">
+                            <div><strong class="category-name">${category.name}</strong>${category.url ? `<div style="font-size:12px;color:#666;margin-top:4px;">رابط: ${category.url}</div>` : ''}</div>
+                            <div class="item-actions">
+                                <button class="edit-btn" onclick="editCategory('${category.id}')">تعديل</button>
+                                <button class="delete-btn" onclick="deleteCategory('${category.id}')">حذف</button>
+                            </div>
+                        </div>
+                        ${childHtml}`;
+                };
+
+                rootCategories.forEach((cat) => {
+                    list.innerHTML += renderCategoryTree(cat);
+                });
+
+                if (!items.length) {
+                    list.innerHTML = '<p>لا توجد أقسام حاليًا.</p>';
+                }
+
+                if (!snapshot.exists()) {
+                    list.innerHTML = '<p>لا توجد أقسام حاليًا.</p>';
+                }
+            });
+        }
+
+        // إضافة موضوع
+        function addArticle() {
+            const title = document.getElementById('article-title').value.trim();
+            const categoryId = document.getElementById('article-category').value;
+            const image = document.getElementById('article-image').value.trim();
+            const articleLink = document.getElementById('article-link').value.trim();
+            const pinned = document.getElementById('article-pinned').checked;
+            const videos = Array.from(document.querySelectorAll('.article-video'))
+                .map((input) => input.value.trim())
+                .filter(Boolean);
+            const videoPinned = document.getElementById('article-video-pinned').checked && videos.length > 0;
+            const editor = document.getElementById('article-editor');
+            const content = editor.innerHTML.trim();
+            const hasText = editor.textContent.trim().length > 0;
+            const hasEditorImage = /<img\b/i.test(content);
+            const hasMedia = Boolean(image) || videos.length > 0 || hasEditorImage;
+
+            if (!title || !categoryId || (!hasText && !hasMedia)) {
+                showMessage('⚠️ تحذير: أدخل العنوان والقسم، وأضف نصًا أو صورة أو فيديو', 'warning');
+                return;
+            }
+
+            const articleData = {
+                title: title,
+                categoryId: categoryId,
+                imageUrl: image,
+                url: articleLink,
+                pinned: pinned,
+                videoPinned: videoPinned,
+                videoUrl: videos[0] || '',
+                videoUrls: videos,
+                content: content,
+                createdAt: Date.now()
+            };
+            const saveOperation = editingArticleId
+                ? update(ref(db, 'articles/' + editingArticleId), articleData)
+                : push(ref(db, 'articles'), articleData);
+
+            saveOperation
+                .then(() => {
+                    showMessage(editingArticleId ? '✅ تم تعديل الموضوع بنجاح!' : '✅ تم إضافة الموضوع بنجاح!', 'success');
+                    resetArticleForm();
+                })
+                .catch((error) => {
+                    showMessage('❌ خطأ: ' + error.message, 'error');
+                });
+        }
+
+        function resetArticleForm() {
+            editingArticleId = null;
+            document.getElementById('article-form-title').textContent = 'إضافة موضوع';
+            document.getElementById('article-submit-btn').textContent = 'إضافة موضوع';
+            document.getElementById('cancel-edit-btn').style.display = 'none';
+            document.getElementById('article-title').value = '';
+            document.getElementById('article-image').value = '';
+            document.getElementById('article-link').value = '';
+            document.getElementById('article-pinned').checked = false;
+            document.getElementById('article-video-pinned').checked = false;
+            document.getElementById('video-list').innerHTML = createVideoRow();
+            document.getElementById('article-editor').innerHTML = '';
+            document.getElementById('article-category').selectedIndex = 0;
+        }
+
+        function editCategory(id) {
+            get(ref(db, 'categories/' + id))
+                .then((snapshot) => {
+                    if (!snapshot.exists()) {
+                        showMessage('❌ القسم غير موجود.', 'error');
+                        return;
+                    }
+                    const category = snapshot.val() || {};
+                    const currentName = category.name || category.nam || category.title || category.label || '';
+                    const currentUrl = category.url || '';
+                    const row = document.querySelector(`[data-category-id="${id}"]`);
+                    if (!row) return;
+                    row.innerHTML = `
+                        <div style="display:flex; flex-direction:column; gap:6px; min-width:220px;">
+                            <input class="category-edit-input" value="${currentName.replace(/&/g, '&').replace(/"/g, '"')}" type="text" placeholder="اسم القسم">
+                            <input class="category-edit-url" value="${currentUrl.replace(/&/g, '&').replace(/"/g, '"')}" type="url" placeholder="رابط القسم (اختياري)">
+                        </div>
+                        <div class="item-actions">
+                            <button class="edit-btn" onclick="saveCategory('${id}')">حفظ</button>
+                            <button class="delete-btn" onclick="cancelCategoryEdit('${id}', '${currentName.replace(/'/g, "\\'")}', '${currentUrl.replace(/'/g, "\\'")}')">إلغاء</button>
+                        </div>
+                    `;
+                    row.querySelector('.category-edit-input').focus();
+                })
+                .catch((error) => showMessage('❌ تعذر تعديل القسم: ' + error.message, 'error'));
+        }
+
+        function saveCategory(id) {
+            const row = document.querySelector(`[data-category-id="${id}"]`);
+            const input = row ? row.querySelector('.category-edit-input') : null;
+            const urlInput = row ? row.querySelector('.category-edit-url') : null;
+            const name = input ? input.value.trim() : '';
+            const url = urlInput ? urlInput.value.trim() : '';
+            if (!name) {
+                showMessage('⚠️ أدخل اسم القسم أولاً.', 'warning');
+                return;
+            }
+            if (url && !/^https?:\/\//i.test(url)) {
+                showMessage('⚠️ رابط القسم يجب أن يبدأ بـ http:// أو https://', 'warning');
+                return;
+            }
+            update(ref(db, 'categories/' + id), { name: name, url: url || '' })
+                .then(() => showMessage('✅ تم تعديل القسم بنجاح!', 'success'))
+                .catch((error) => showMessage('❌ تعذر تعديل القسم: ' + error.message, 'error'));
+        }
+
+        function cancelCategoryEdit(id, currentName, currentUrl) {
+            const row = document.querySelector(`[data-category-id="${id}"]`);
+            if (!row) return;
+            row.innerHTML = `
+                <div>
+                    <strong class="category-name">${currentName}</strong>
+                    ${currentUrl ? `<div style="font-size:12px;color:#666; margin-top:4px;">رابط: ${currentUrl}</div>` : ''}
+                </div>
+                <div class="item-actions">
+                    <button class="edit-btn" onclick="editCategory('${id}')">تعديل</button>
+                    <button class="delete-btn" onclick="deleteCategory('${id}')">حذف</button>
+                </div>
+            `;
+        }
+
+        function deleteCategory(id) {
+            if (!confirm('هل تريد حذف هذا القسم؟ سيتم حذف القسم فقط، بينما تبقى المقالات المرتبطة دون حذف.')) return;
+            remove(ref(db, 'categories/' + id))
+                .then(() => showMessage('✅ تم حذف القسم بنجاح!', 'success'))
+                .catch((error) => showMessage('❌ خطأ: ' + error.message, 'error'));
+        }
+
+        function createVideoRow(value = '') {
+            return `<div class="video-row">
+                <input type="url" class="article-video" value="${value.replace(/&/g, '&').replace(/"/g, '"')}" placeholder="YouTube أو m3u8 أو mpd أو flv أو ts (اختياري)">
+                <button type="button" class="remove-image-btn remove-video-btn" title="حذف الفيديو">حذف</button>
+            </div>`;
+        }
+
+        document.getElementById('add-video-btn').addEventListener('click', () => {
+            document.getElementById('video-list').insertAdjacentHTML('beforeend', createVideoRow());
+        });
+
+        document.getElementById('video-list').addEventListener('click', (event) => {
+            if (!event.target.classList.contains('remove-video-btn')) return;
+            const rows = document.querySelectorAll('.video-row');
+            if (rows.length === 1) {
+                rows[0].querySelector('input').value = '';
+                return;
+            }
+            event.target.closest('.video-row').remove();
+        });
+
+        const articleEditor = document.getElementById('article-editor');
+        const linkPanel = document.getElementById('link-panel');
+        const linkTextInput = document.getElementById('article-link-text');
+        const linkUrlInput = document.getElementById('article-link-url');
+        const imagePanel = document.getElementById('image-panel');
+        const imageUrlInput = document.getElementById('article-image-url');
+        const imageLinkUrlInput = document.getElementById('article-image-link-url');
+        const imageSizeInput = document.getElementById('article-image-size');
+        let savedEditorRange = null;
+        let selectedEditorImage = null;
+
+        function saveEditorSelection() {
+            const selection = window.getSelection();
+            if (!selection.rangeCount || !articleEditor.contains(selection.anchorNode)) return;
+            savedEditorRange = selection.getRangeAt(0).cloneRange();
+        }
+
+        function getEditorInsertionRange() {
+            if (savedEditorRange && articleEditor.contains(savedEditorRange.commonAncestorContainer)) {
+                return savedEditorRange.cloneRange();
+            }
+            const range = document.createRange();
+            range.selectNodeContents(articleEditor);
+            range.collapse(false);
+            return range;
+        }
+
+        function closeLinkPanel() {
+            linkPanel.classList.remove('open');
+            linkTextInput.value = '';
+            linkUrlInput.value = '';
+        }
+
+        function closeImagePanel() {
+            imagePanel.classList.remove('open');
+            imageUrlInput.value = '';
+            imageLinkUrlInput.value = '';
+            imageSizeInput.value = 'medium';
+        }
+
+        articleEditor.addEventListener('mouseup', saveEditorSelection);
+        articleEditor.addEventListener('keyup', saveEditorSelection);
+        articleEditor.addEventListener('click', (event) => {
+            if (event.target.tagName !== 'IMG') return;
+            if (selectedEditorImage) selectedEditorImage.classList.remove('editor-image-selected');
+            selectedEditorImage = event.target;
+            selectedEditorImage.classList.add('editor-image-selected');
+            imageUrlInput.value = selectedEditorImage.getAttribute('src') || '';
+            imageLinkUrlInput.value = selectedEditorImage.parentElement?.tagName === 'A'
+                ? selectedEditorImage.parentElement.getAttribute('href') || ''
+                : '';
+            const imageWidth = selectedEditorImage.style.width;
+            imageSizeInput.value = imageWidth === '50%' ? 'small' : imageWidth === '100%' ? 'large' : 'medium';
+            saveEditorSelection();
+        });
+        document.getElementById('article-link-btn').addEventListener('mousedown', (event) => {
+            event.preventDefault();
+            saveEditorSelection();
+        });
+        document.getElementById('article-link-btn').addEventListener('click', () => {
+            linkPanel.classList.toggle('open');
+            imagePanel.classList.remove('open');
+            if (linkPanel.classList.contains('open')) linkUrlInput.focus();
+        });
+        document.getElementById('cancel-link-btn').addEventListener('click', closeLinkPanel);
+        document.getElementById('apply-link-btn').addEventListener('click', () => {
+            const url = linkUrlInput.value.trim();
+            const label = linkTextInput.value.trim();
+            if (!/^https?:\/\//i.test(url)) {
+                showMessage('⚠️ أدخل رابطًا يبدأ بـ http:// أو https://', 'warning');
+                return;
+            }
+            const range = getEditorInsertionRange();
+            const selectedText = range.toString().trim();
+            const linkText = label || selectedText;
+            if (!linkText) {
+                showMessage('⚠️ اكتب اسم الرابط أولًا.', 'warning');
+                return;
+            }
+            const link = document.createElement('a');
+            link.href = url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = linkText;
+            range.deleteContents();
+            range.insertNode(link);
+            range.setStartAfter(link);
+            range.collapse(true);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            closeLinkPanel();
+        });
+
+        document.getElementById('article-image-btn').addEventListener('mousedown', saveEditorSelection);
+        document.getElementById('article-image-btn').addEventListener('click', () => {
+            imagePanel.classList.toggle('open');
+            linkPanel.classList.remove('open');
+            if (imagePanel.classList.contains('open')) imageUrlInput.focus();
+        });
+        document.getElementById('cancel-image-btn').addEventListener('click', closeImagePanel);
+        document.getElementById('apply-image-btn').addEventListener('click', () => {
+            const url = imageUrlInput.value.trim();
+            const linkUrl = imageLinkUrlInput.value.trim();
+            const width = { small: '50%', medium: '75%', large: '100%' }[imageSizeInput.value] || '75%';
+            if (!url) {
+                showMessage('⚠️ أدخل رابط الصورة أولًا.', 'warning');
+                return;
+            }
+            if (linkUrl && !/^https?:\/\//i.test(linkUrl)) {
+                showMessage('⚠️ أدخل رابط فتح الصورة بصيغة صحيحة.', 'warning');
+                return;
+            }
+            if (selectedEditorImage && articleEditor.contains(selectedEditorImage)) {
+                selectedEditorImage.src = url;
+                selectedEditorImage.style.width = width;
+                selectedEditorImage.style.height = 'auto';
+                const currentLink = selectedEditorImage.parentElement?.tagName === 'A' ? selectedEditorImage.parentElement : null;
+                if (linkUrl) {
+                    const imageLink = currentLink || document.createElement('a');
+                    imageLink.href = linkUrl;
+                    imageLink.target = '_blank';
+                    imageLink.rel = 'noopener noreferrer';
+                    if (!currentLink) {
+                        selectedEditorImage.replaceWith(imageLink);
+                        imageLink.appendChild(selectedEditorImage);
+                    }
+                } else if (currentLink) {
+                    currentLink.replaceWith(selectedEditorImage);
+                }
+                selectedEditorImage.classList.remove('editor-image-selected');
+                selectedEditorImage = null;
+                closeImagePanel();
+                return;
+            }
+            articleEditor.focus();
+            const image = document.createElement('img');
+            image.src = url;
+            image.alt = 'صورة المقال';
+            image.style.maxWidth = '100%';
+            image.style.width = width;
+            image.style.height = 'auto';
+            image.style.borderRadius = '8px';
+            image.style.display = 'block';
+            image.style.margin = '12px auto';
+            const content = linkUrl ? (() => {
+                const anchor = document.createElement('a');
+                anchor.href = linkUrl;
+                anchor.target = '_blank';
+                anchor.rel = 'noopener noreferrer';
+                anchor.appendChild(image);
+                return anchor.outerHTML;
+            })() : image.outerHTML;
+            image.onerror = function () {
+                this.remove();
+                showMessage('⚠️ تعذر تحميل الصورة من الرابط المُدخل.', 'warning');
+            };
+            if (savedEditorRange && articleEditor.contains(savedEditorRange.commonAncestorContainer)) {
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(savedEditorRange);
+            }
+            document.execCommand('insertHTML', false, content);
+            closeImagePanel();
+            saveEditorSelection();
+        });
+
+        document.querySelectorAll('.editor-toolbar button[data-command]').forEach((button) => {
+            button.addEventListener('click', () => {
+                articleEditor.focus();
+                document.execCommand(button.dataset.command, false, null);
+            });
+        });
+
+        // تحميل المواضيع (باستخدام onValue حتى تظهر فوراً)
+        function loadArticles() {
+            onValue(ref(db, 'articles'), (snapshot) => {
+                const list = document.getElementById('articles-list');
+                list.innerHTML = '';
+                const articles = [];
+                snapshot.forEach((child) => {
+                    articles.push({ id: child.key, article: child.val() || {} });
+                });
+                articles.sort((first, second) => Number(second.article.createdAt || 0) - Number(first.article.createdAt || 0));
+                articles.forEach(({ id, article }) => {
+                    const preview = document.createElement('div');
+                    preview.innerHTML = article.content || '';
+                    list.innerHTML += `
+                        <div class="item">
+                            <div>
+                                <strong>${article.title}</strong><br>
+                                <small>${preview.textContent.substring(0, 50)}...</small>
+                            </div>
+                            <div class="item-actions">
+                                <button class="edit-btn" onclick="editArticle('${id}')">تعديل</button>
+                                <button class="delete-btn" onclick="deleteArticle('${id}')">حذف</button>
+                            </div>
+                        </div>`;
+                });
+                if (!snapshot.exists()) list.innerHTML = '<p>لا توجد مواضيع حاليًا.</p>';
+            });
+        }
+
+        function editArticle(id) {
+            onValue(ref(db, 'articles/' + id), (snapshot, error) => {
+                if (error || !snapshot.exists()) {
+                    showMessage('❌ تعذر تحميل الموضوع للتعديل.', 'error');
+                    return;
+                }
+                const article = snapshot.val();
+                editingArticleId = id;
+                document.getElementById('article-form-title').textContent = 'تعديل الموضوع';
+                document.getElementById('article-submit-btn').textContent = 'حفظ التعديلات';
+                document.getElementById('cancel-edit-btn').style.display = 'block';
+                document.getElementById('article-title').value = article.title || '';
+                document.getElementById('article-category').value = article.categoryId || '';
+                document.getElementById('article-image').value = article.imageUrl || '';
+                document.getElementById('article-link').value = article.url || article.link || '';
+                document.getElementById('article-pinned').checked = article.pinned === true || article.pinned === 'true';
+                const videos = Array.isArray(article.videoUrls) && article.videoUrls.length
+                    ? article.videoUrls
+                    : (article.videoUrl ? [article.videoUrl] : []);
+                document.getElementById('video-list').innerHTML = videos.length
+                    ? videos.map((video) => createVideoRow(video)).join('')
+                    : createVideoRow();
+                document.getElementById('article-video-pinned').checked = article.videoPinned === true || article.videoPinned === 'true';
+                document.getElementById('article-editor').innerHTML = article.content || '';
+                const articleForm = document.getElementById('article-form-title')?.closest('.form-box');
+                if (articleForm) {
+                    articleForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, { onlyOnce: true });
+        }
+
+        // حذف موضوع (تم تصحيح المسار)
+        function deleteArticle(id) {
+            if (!confirm('هل تريد حذف هذا الموضوع؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
+            remove(ref(db, 'articles/' + id))
+                .then(() => {
+                    showMessage('✅ تم حذف الموضوع بنجاح!', 'success');
+                })
+                .catch((error) => {
+                    showMessage('❌ خطأ: ' + error.message, 'error');
+                });
+        }
+
+        loadCategories();
+        loadArticles();
+        loadFeaturedVideo();
+        setupThemeToggle();
+        document.getElementById('featured-video-save-btn').addEventListener('click', saveFeaturedVideo);
+        document.getElementById('cancel-edit-btn').addEventListener('click', resetArticleForm);
+
+        // ربط الدوال بنطاق النافذة العامة لتعمل مع أحداث onclick في HTML
+        window.addCategory = addCategory;
+        window.addArticle = addArticle;
+        window.deleteArticle = deleteArticle;
+        window.editArticle = editArticle;
+        window.editCategory = editCategory;
+        window.saveCategory = saveCategory;
+        window.cancelCategoryEdit = cancelCategoryEdit;
+        window.deleteCategory = deleteCategory;
+        window.saveFeaturedVideo = saveFeaturedVideo;
+    </script>
+</body>
+</html>
