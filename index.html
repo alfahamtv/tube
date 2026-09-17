@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfaham Tube</title>
+    <meta name="theme-color" content="#0f0f0f">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&family=Noto+Sans+Arabic:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        if (window.location.pathname.endsWith('/index.html')) {
+            window.history.replaceState({}, document.title, window.location.pathname.slice(0, -'index.html'.length) + window.location.search + window.location.hash);
+        }
+    </script>
+    <style>
+        * { font-family: 'Cairo', 'Roboto', 'Noto Sans Arabic', 'Arial', sans-serif; box-sizing: border-box; }
+        html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+        body { margin: 0; background: #000000; padding-bottom: 104px; }
+        .header { background: #000000; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; gap: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.12); border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .header-logo { display: block; width: 150px; max-width: 100%; height: 45px; object-fit: contain; }
+        .header-logo-link { display: flex; align-items: center; }
+        .search-btn { background: transparent; border: 0; padding: 0; width: 42px; height: 42px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: white; }
+        .search-btn svg { width: 30px; height: 30px; }
+        .header-actions { display: flex; align-items: center; gap: 4px; margin-right: auto; }
+        .header-actions .search-btn { margin-right: 0; }
+        .install-btn { display: none; background: #ff9900; color: #123456; border: 0; border-radius: 8px; padding: 8px 12px; font: inherit; font-weight: 700; cursor: pointer; }
+        .install-btn.visible { display: block; }
+        .search-area { display: none; flex: 1; max-width: 420px; }
+        .search-area.open { display: flex; gap: 8px; }
+        .search-area input { flex: 1; min-width: 0; padding: 10px 12px; border: 0; border-radius: 8px; font-family: inherit; }
+        .search-area button { padding: 9px 14px; border: 0; border-radius: 8px; cursor: pointer; color: #123456; font-weight: bold; }
+        .categories-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #000000; padding: 10px 20px 12px; display: flex; align-items: center; justify-content: center; gap: 12px; overflow-x: auto; overflow-y: hidden; white-space: nowrap; border-top: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -2px 8px rgba(0,0,0,0.26); backdrop-filter: blur(6px); -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .categories-bar::-webkit-scrollbar { display: none; }
+        .category-item { position: relative; z-index: 1001; display: inline-flex; align-items: stretch; }
+        .category-item.open { z-index: 2000; }
+        .category-link { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 112px; min-height: 90px; color: #f5f5f5; text-decoration: none; font-size: 12px; font-weight: 700; transition: all 0.3s; padding: 8px 6px; border-radius: 16px; background: transparent; border: none; box-shadow: none; }
+        .category-link img { display: block; visibility: visible; opacity: 1; width: 42px; height: 42px; object-fit: contain; border-radius: 14px; margin-bottom: 6px; background: rgba(255,255,255,0.04); filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12)); flex-shrink: 0; }
+        .category-link span { line-height: 1.3; text-align: center; color: inherit; }
+        .category-link:hover { color: #ff4d4d; background: rgba(255,255,255,0.03); border-color: transparent; transform: translateY(-1px); }
+        .main-story { margin: 28px 20px 20px; text-align: center; cursor: pointer; background: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+        .main-story img { width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover; display: block; }
+        .main-story .featured-video { width: 100%; height: min(56vw, 520px); min-height: 280px; display: block; border: 0; border-radius: 0; background: #000; }
+        .main-story h2 { background-color: #111111; color: #f5f5f5; margin: 0; padding: 16px; font-size: 24px; line-height: 1.5; }
+        .featured-reel { margin: 8px 0 18px; position: relative; }
+        .featured-reel-window { position: relative; overflow: hidden; width: 100%; }
+        .featured-reel-track { display: flex; transition: transform 0.7s ease; will-change: transform; }
+        .featured-slide { position: relative; flex: 0 0 100%; width: 100%; height: clamp(220px, 42vw, 430px); background: #111; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.18); text-decoration: none; }
+        .featured-slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity 0.3s ease; background: #000; }
+        .featured-slide img.loaded { opacity: 1; }
+        .featured-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.85) 100%); }
+        .featured-slide .featured-caption { position: absolute; inset: auto 0 0 0; padding: 18px 18px 16px; color: #fff; font-weight: 800; font-size: clamp(17px, 2vw, 28px); line-height: 1.5; text-align: right; z-index: 1; }
+        .featured-reel-controls { display: flex; justify-content: center; align-items: center; gap: 10px; padding: 10px 12px 0; }
+        .featured-reel-nav { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; background: rgba(17,17,17,0.8); color: #fff; cursor: pointer; font-size: 18px; }
+        .featured-reel-dots { display: flex; justify-content: center; gap: 7px; margin-top: 6px; }
+        .featured-reel-dot { width: 10px; height: 10px; background: rgba(255,255,255,0.38); border-radius: 50%; display: inline-block; }
+        .featured-reel-dot.active { background: #ff3b3b; }
+        .category-item { position: relative; z-index: 1001; display: inline-flex; align-items: center; }
+        .category-item.open { z-index: 2000; }
+        .latest-ticker { position: sticky; top: 59px; z-index: 999; display: flex; align-items: center; gap: 8px; overflow: hidden; background: #d71920; color: white; min-height: 30px; padding: 0 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .latest-ticker-label { display: none; }
+        .latest-ticker-window { flex: 1; overflow: hidden; direction: ltr; }
+        .latest-ticker-track { display: inline-flex; gap: 28px; min-width: max-content; direction: rtl; animation: latestTickerMove 90s linear infinite; }
+        .latest-ticker:hover .latest-ticker-track, .latest-ticker:focus-within .latest-ticker-track { animation-play-state: paused; }
+        .latest-ticker-link { color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 700; white-space: nowrap; }
+        .latest-ticker-link::before { content: '•'; color: #ff9900; margin-left: 8px; }
+        @keyframes latestTickerMove { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+        @media (prefers-reduced-motion: reduce) { .latest-ticker-track { animation: none; } }
+        .subcategory-cards { display: none; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1200px; margin: 24px auto; padding: 0 20px; }
+        .subcategory-cards.visible { display: grid; }
+        .subcategory-card { display: flex; align-items: center; gap: 14px; min-height: 120px; padding: 22px 20px; background: #111111; color: #f5f5f5; border: 1px solid rgba(255,255,255,0.08); border-right: 5px solid #ff4d4d; border-radius: 10px; text-decoration: none; font-size: 18px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.2s, box-shadow 0.2s, background 0.2s; }
+        .subcategory-card img { width: 64px; height: 64px; flex: 0 0 64px; object-fit: contain; border-radius: 12px; background: rgba(255,255,255,0.04); display: block; }
+        .subcategory-card span { min-width: 0; overflow-wrap: anywhere; }
+        .subcategory-card:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.18); }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; padding: 0 20px 30px 20px; max-width: 1200px; margin: 20px auto 0; }
+        .empty-state { grid-column: 1 / -1; margin: 20px 0; padding: 28px 20px; background: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: #d4d4d4; text-align: center; font-weight: 700; }
+        .article-card { position: relative; display: block; width: 100%; min-width: 0; height: auto; min-height: 0; max-width: 100%; background-color: #000000; border: 0; border-radius: 16px; overflow: hidden; text-decoration: none; transition: transform 0.2s; box-shadow: none; margin: 0; padding: 0; aspect-ratio: 16 / 9; }
+        .article-card:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
+        .article-card .article-media { position: relative; width: 100%; min-width: 0; height: 100%; overflow: hidden; background: #000; z-index: 0; }
+        .article-card .article-media img { position: absolute; inset: 0; width: 100%; min-width: 0; height: 100%; object-fit: cover; object-position: center; display: block; margin: 0; padding: 0; border: 0; background: #000; z-index: 0; }
+        .article-card .article-overlay { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; max-width: 100%; padding: 0 14px 10px; background: linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.22) 28%, rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.92) 100%); z-index: 2; display: block; min-height: 84px; box-sizing: border-box; margin: 0; }
+        .article-card .article-overlay h3 { position: absolute; left: 14px; right: 14px; bottom: 10px; width: auto; max-width: calc(100% - 28px); min-height: 52px; margin: 0; font-size: 18px; font-weight: 700; color: #ffffff; text-align: right; display: block; overflow: hidden; line-height: 1.5; text-shadow: 0 2px 8px rgba(0,0,0,0.8); z-index: 3; box-sizing: border-box; word-break: break-word; overflow-wrap: anywhere; background: transparent; padding: 0; border-radius: 0; box-shadow: none; }
+        .section-articles .article-card,
+        .section-articles .article-card .article-media,
+        .section-articles .article-card .article-media img {
+            background: #000 !important;
+            border-radius: 12px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+        .section-articles .article-card {
+            height: 180px;
+            box-shadow: none;
+        }
+        .section-articles .article-card .article-media {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .section-articles .article-card .article-media img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #000;
+        }
+        .section-articles .article-card .article-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 100%;
+            padding: 0 10px 8px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.22) 28%, rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.92) 100%);
+            z-index: 2;
+            display: block;
+            min-height: 72px;
+            box-sizing: border-box;
+        }
+        .section-articles .article-card .article-overlay h3 {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 8px;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            z-index: 3;
+            display: block;
+            width: auto;
+            max-width: calc(100% - 20px);
+            box-shadow: none;
+        }
+        .article-info { display: none; }
+        .category-page .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .category-page .grid-container { padding-top: 20px; }
+        .category-page .article-card {
+            width: 100%;
+            max-width: 100%;
+            height: 220px;
+            min-height: 220px;
+            display: block;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-shadow: none;
+            aspect-ratio: 16 / 10;
+        }
+        .category-page .article-card .article-media {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: #000;
+        }
+        .category-page .article-card .article-media img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #000;
+        }
+        .category-page .article-card .article-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 100%;
+            padding: 0 12px 10px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.22) 28%, rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.92) 100%);
+            z-index: 2;
+            display: block;
+            min-height: 80px;
+            box-sizing: border-box;
+        }
+        .category-page .article-card .article-overlay h3 {
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 10px;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            z-index: 3;
+            display: block;
+            width: auto;
+            max-width: calc(100% - 24px);
+            box-shadow: none;
+        }
+        .category-page .article-card .article-overlay h3 {
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.5;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+        .home-page .article-card { height: auto; }
+        .pagination { display: flex; gap: 10px; margin: 20px auto; padding: 0 20px; max-width: 1200px; justify-content: center; align-items: center; }
+        .pagination a { background-color: #111111; color: #eeeeee; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 10px 20px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.3s; }
+        .pagination a:hover { background-color: #d71920; color: #ffffff; border-color: #d71920; }
+        .pagination a.active { background-color: #d71920; color: #ffffff; border-color: #d71920; }
+        .home-category-sections { display: flex; flex-direction: column; gap: 18px; padding: 0 20px 30px; max-width: 1200px; margin: 0 auto; }
+        .home-category-section { background: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; box-shadow: 0 8px 18px rgba(0,0,0,0.18); width: 100%; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+        .section-title { color: #f5f5f5; font-size: 18px; font-weight: 800; margin: 0; text-align: right; order: 1; }
+        .section-view-all { color: #ff3b3b; font-weight: 800; text-decoration: none; font-size: 13px; order: 2; }
+        .section-view-all:hover { color: #ff7a7a; }
+        .section-articles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 240px); gap: 12px; overflow-x: auto; overflow-y: hidden; padding-bottom: 6px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent; justify-content: start; -webkit-overflow-scrolling: touch; touch-action: pan-x; user-select: none; cursor: grab; }
+        .section-articles:active { cursor: grabbing; }
+        .section-articles::-webkit-scrollbar { height: 6px; }
+        .section-articles::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 999px; }
+        .section-articles .article-card { min-height: 0; scroll-snap-align: start; width: 220px; max-width: 220px; min-width: 220px; height: 180px; border-radius: 12px; aspect-ratio: 11 / 9; flex: 0 0 220px; }
+        .section-articles .article-card .article-media { position: relative; width: 100%; height: 100%; }
+        .section-articles .article-card .article-media img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
+        .section-articles .article-card .article-overlay { padding: 12px 10px 10px; }
+        .section-articles .article-card .article-overlay h3 { font-size: 14px; }
+        .home-page .article-card,
+        .home-page .article-card .article-media,
+        .home-page .article-card .article-media img {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: #000;
+            box-shadow: none;
+        }
+        .home-page .article-card {
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            height: auto;
+            min-height: 0;
+            aspect-ratio: 16 / 9;
+        }
+        .home-page .article-card .article-media {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .home-page .article-card .article-media img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #000;
+        }
+        .home-page .article-card .article-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 100%;
+            padding: 0 12px 10px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.22) 28%, rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.92) 100%);
+            z-index: 2;
+            display: block;
+            min-height: 80px;
+            box-sizing: border-box;
+        }
+        .home-page .article-card .article-overlay h3 {
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 10px;
+            display: block;
+            width: auto;
+            max-width: calc(100% - 24px);
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            line-height: 1.5;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: right;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            overflow: hidden;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            z-index: 3;
+        }
+        @media (max-width: 768px) {
+            .header-logo { width: 132px; height: 38px; }
+            .section-articles { grid-auto-columns: minmax(170px, 190px); }
+            .section-articles .article-card { width: 190px; max-width: 190px; min-width: 190px; flex-basis: 190px; }
+            .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .article-card { height: 200px; min-height: 200px; }
+            .category-page .article-card { height: 200px; min-height: 200px; }
+            .category-link img { width: 28px; height: 28px; }
+        }
+        @media (max-width: 480px) {
+            .section-articles { grid-auto-columns: minmax(150px, 170px); }
+            .section-articles .article-card { width: 170px; max-width: 170px; min-width: 170px; flex-basis: 170px; }
+            .article-card { height: 180px; min-height: 180px; }
+            .category-page .article-card { height: 180px; min-height: 180px; }
+            .grid-container { grid-template-columns: 1fr; }
+            .category-page .grid-container { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 1024px) {
+            .home-category-sections { padding: 0 20px 30px; }
+        }
+        @media (max-width: 768px) {
+            .home-category-sections { padding: 0 12px 24px; }
+            .section-header { align-items: flex-start; }
+            .section-title { font-size: 16px; }
+        }
+        @media (max-width: 480px) {
+            .home-category-section { padding: 12px; }
+        }
+        @media (max-width: 768px) {
+            body { padding-bottom: 92px; }
+            .header { width: 100%; max-width: 100%; flex-wrap: wrap; padding: 12px 16px; }
+            .header > * { min-width: 0; }
+            .header-logo { width: 132px; height: 40px; }
+            .search-btn { margin-right: auto; }
+            .search-area.open { order: 3; flex-basis: 100%; max-width: none; }
+            .categories-bar { position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: 68px; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); gap: 4px; align-items: center; justify-content: flex-start; flex-wrap: nowrap; white-space: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; z-index: 1100; background: rgba(0,0,0,0.96); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -2px 12px rgba(0,0,0,0.25); }
+            .categories-bar::-webkit-scrollbar { display: none; }
+            .category-item { flex: 0 0 auto; z-index: 1200; }
+            .category-link { width: auto; min-width: 62px; min-height: 48px; font-size: 11px; padding: 5px 6px 4px; white-space: nowrap; border-radius: 10px; }
+            .category-link img { width: 24px; height: 24px; margin-bottom: 3px; }
+            .category-link span { font-size: 10px; line-height: 1.1; }
+            .category-toggle { width: 16px; height: 16px; font-size: 16px; }
+            .sub-menu { position: fixed; top: var(--category-menu-top, 48px); right: 10px; left: 10px; min-width: 0; max-height: 60vh; overflow-y: auto; z-index: 5000; }
+            .latest-ticker { width: 100%; max-width: 100%; padding: 0 12px; gap: 8px; min-height: 26px; }
+            .latest-ticker-label { padding: 5px 8px; font-size: 12px; }
+            .latest-ticker-link { font-size: 12px; }
+            .main-story { width: calc(100% - 24px); max-width: 100%; margin: 18px 12px 16px; }
+            .main-story .featured-video { min-height: 210px; height: 56vw; }
+            .main-story h2 { font-size: 20px; padding: 13px 12px; }
+            .grid-container { width: 100%; max-width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 0 12px 24px; margin-top: 14px; }
+            .article-card { width: 100%; min-width: 0; height: 170px; }
+            .article-card img { width: 35%; min-width: 120px; height: 100%; }
+            .article-info { padding: 12px; }
+            .article-info h3 { font-size: 16px; }
+            .article-info p { font-size: 13px; }
+            .subcategory-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 14px auto; padding: 0 12px; }
+            .subcategory-card { min-height: 88px; padding: 16px 12px; font-size: 14px; gap: 10px; }
+            .subcategory-card img { width: 44px; height: 44px; flex-basis: 44px; border-radius: 9px; }
+            .pagination { gap: 6px; padding: 0 12px; }
+            .pagination a { padding: 8px 13px; font-size: 14px; }
+        }
+        @media (max-width: 480px) {
+            .header { gap: 8px; }
+            .header-logo { max-width: 150px; height: auto; }
+            .search-btn { width: 38px; height: 38px; }
+            .search-btn svg { width: 27px; height: 27px; }
+            .categories-bar { min-height: 42px; }
+            .categories-bar::-webkit-scrollbar { height: 5px; }
+            .categories-bar::-webkit-scrollbar-thumb { background: #b7c1cc; border-radius: 10px; }
+            .category-item { flex: 0 0 auto; }
+            .category-link { font-size: 13px; padding: 6px 7px; }
+            .grid-container { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+            .article-card img { width: 34%; min-width: 105px; height: 100%; }
+            .article-card { width: 100%; min-width: 0; height: 140px; }
+            .article-info { padding: 10px; }
+            .article-info h3 { font-size: 15px; line-height: 1.45; }
+            .article-info p { display: none; }
+            .subcategory-cards { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a class="header-logo-link" href="./index.html" aria-label="الرئيسية">
+            <img class="header-logo" src="https://b.top4top.io/p_3778y5jzp1.png" alt="شعار الموقع" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';">
+        </a>
+        <form class="search-area" id="search-area">
+            <input id="search-input" type="search" placeholder="ابحث" aria-label="البحث">
+            <button type="submit">بحث</button>
+        </form>
+        <div class="header-actions">
+        <button class="search-btn" title="بحث">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </button>
+        </div>
+        <button class="install-btn" id="install-btn" type="button">تثبيت التطبيق</button>
+    </div>
+    <div class="categories-bar" id="categories-bar"></div>
+    <div class="latest-ticker" id="latest-ticker" aria-label="آخر المواضيع" hidden>
+        <div class="latest-ticker-window"><div class="latest-ticker-track" id="latest-ticker-track"></div></div>
+    </div>
+    <div class="main-story" id="main-story" style="display: none;"></div>
+    <div class="featured-reel" id="featured-reel" aria-label="آخر المواضيع"></div>
+    <div class="subcategory-cards" id="subcategory-cards"></div>
+    <div class="home-category-sections" id="home-category-sections"></div>
+    <div class="grid-container" id="articles-grid"></div>
+    <div class="pagination" id="pagination"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMxtNOaCVEKQzUA1bigwvQGzGp18PV184",
+            authDomain: "alfaham-tube-web.firebaseapp.com",
+            databaseURL: "https://alfaham-tube-web-default-rtdb.firebaseio.com",
+            projectId: "alfaham-tube-web",
+            storageBucket: "alfaham-tube-web.firebasestorage.app",
+            messagingSenderId: "999387437014",
+            appId: "1:999387437014:web:5d5cc66098e267aab07677",
+            measurementId: "G-9BEMHM5MPE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const fallbackImage = 'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';
+        let allArticles = [];
+        let allCategories = [];
+        let featuredVideo = null;
+        let deferredInstallPrompt = null;
+
+        function setupInstallPrompt() {
+            const installButton = document.getElementById('install-btn');
+            if (!installButton) return;
+            window.addEventListener('beforeinstallprompt', (event) => {
+                event.preventDefault();
+                deferredInstallPrompt = event;
+                installButton.classList.add('visible');
+            });
+            installButton.addEventListener('click', async () => {
+                if (!deferredInstallPrompt) return;
+                deferredInstallPrompt.prompt();
+                await deferredInstallPrompt.userChoice;
+                deferredInstallPrompt = null;
+                installButton.classList.remove('visible');
+            });
+            window.addEventListener('appinstalled', () => installButton.classList.remove('visible'));
+        }
+
+        function normalizeArticles(snapshot) {
+            if (!snapshot || !snapshot.exists()) return [];
+            const data = snapshot.val() || {};
+            return Object.entries(data)
+                .map(([id, value]) => ({ id, ...(value || {}) }))
+                .sort(sortByNewest);
+        }
+
+        function sortByNewest(first, second) {
+            return Number(second.createdAt || 0) - Number(first.createdAt || 0);
+        }
+
+        function isPinned(article) {
+            return article.pinned === true || article.pinned === 'true' || article.pinned === 1;
+        }
+
+        function isPinnedVideo(article) {
+            return article.videoPinned === true || article.videoPinned === 'true' || article.videoPinned === 1;
+        }
+
+        function getYoutubeVideoId(url) {
+            if (!url) return '';
+            try {
+                const parsedUrl = new URL(String(url).trim());
+                const hostname = parsedUrl.hostname.toLowerCase();
+                if (hostname === 'youtu.be') return parsedUrl.pathname.slice(1).split('/')[0];
+                if (!hostname.includes('youtube.com')) return '';
+                if (parsedUrl.pathname === '/watch') return parsedUrl.searchParams.get('v') || '';
+                const pathParts = parsedUrl.pathname.split('/').filter(Boolean);
+                if (['shorts', 'live', 'embed'].includes(pathParts[0])) return pathParts[1] || '';
+            } catch (error) {
+                return '';
+            }
+            return '';
+        }
+
+        function getArticleImage(article) {
+            const directImage = String(article.imageUrl || '').trim();
+            if (directImage) return directImage;
+
+            const videoUrls = Array.isArray(article.videoUrls) && article.videoUrls.length
+                ? article.videoUrls
+                : (article.videoUrl ? [article.videoUrl] : []);
+            const youtubeId = videoUrls.map(getYoutubeVideoId).find(Boolean);
+            if (youtubeId) return `https://img.youtube.com/vi/${encodeURIComponent(youtubeId)}/hqdefault.jpg`;
+
+            return fallbackImage;
+        }
+
+        function getArticleImageHtml(article, title) {
+            const image = getArticleImage(article);
+            return `<img src="${image}" alt="${title}" onerror="this.onerror=null;this.src='${fallbackImage}';">`;
+        }
+
+        function escapeHtml(value) {
+            return String(value || '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
+        }
+
+        function getArticlePreview(content, maxLength = 110) {
+            const previewElement = document.createElement('div');
+            previewElement.innerHTML = String(content || '');
+            const text = (previewElement.textContent || previewElement.innerText || '')
+                .replace(/\s+/g, ' ')
+                .trim();
+            return text.length > maxLength ? `${text.slice(0, maxLength).trim()}...` : text;
+        }
+
+        function renderLatestTicker(articles) {
+            const latest = articles.slice(0, 10);
+            const links = latest.length
+                ? latest.map((article) => `<a class="latest-ticker-link" href="${escapeHtml(getArticleHref(article))}">${escapeHtml(article.title || 'موضوع جديد')}</a>`).join('')
+                : '<span class="latest-ticker-link">لا توجد مواضيع منشورة حاليًا</span>';
+            document.querySelectorAll('.latest-ticker').forEach((ticker) => {
+                const track = ticker.querySelector('.latest-ticker-track');
+                if (!track) return;
+                track.innerHTML = links + links;
+                ticker.hidden = false;
+            });
+        }
+        function shuffleArray(items) {
+            const cloned = [...items];
+            for (let index = cloned.length - 1; index > 0; index--) {
+                const randomIndex = Math.floor(Math.random() * (index + 1));
+                [cloned[index], cloned[randomIndex]] = [cloned[randomIndex], cloned[index]];
+            }
+            return cloned;
+        }
+
+        function renderFeaturedReel(articles) {
+            if (selectedCategory !== 'home') {
+                const reel = document.getElementById('featured-reel');
+                if (reel) reel.remove();
+                return;
+            }
+
+            const reel = document.getElementById('featured-reel');
+            if (!reel) return;
+
+            const maxPerCategory = 2;
+            const maxTotal = 10;
+            const categoryPool = shuffleArray(allCategories.filter((category) => {
+                const ids = getCategoryFilters(category.id) || new Set([category.id]);
+                return articles.some((article) => ids.has(article.categoryId));
+            }));
+
+            let deck = [];
+            for (const category of categoryPool) {
+                const ids = getCategoryFilters(category.id) || new Set([category.id]);
+                const categoryArticles = shuffleArray(articles.filter((article) => ids.has(article.categoryId)));
+                if (!categoryArticles.length) continue;
+                deck.push(...categoryArticles.slice(0, maxPerCategory));
+                if (deck.length >= maxTotal) break;
+            }
+
+            if (!deck.length) {
+                deck = shuffleArray((articles || []).slice(0, maxTotal));
+            }
+
+            const finalDeck = shuffleArray(deck).slice(0, maxTotal);
+            if (!finalDeck.length) {
+                reel.innerHTML = '';
+                return;
+            }
+
+            reel.innerHTML = `
+                <div class="featured-reel-window">
+                    <div class="featured-reel-track" id="featured-reel-track" dir="rtl">
+                        ${finalDeck.map((article) => `
+                            <a href="${escapeHtml(getArticleHref(article))}" class="featured-slide" aria-label="${escapeHtml(article.title || 'موضوع مميز')}">
+                                <img class="featured-slide-image" src="${escapeHtml(getArticleImage(article))}" alt="${escapeHtml(article.title || 'موضوع مميز')}" loading="eager" decoding="async" onerror="this.onerror=null;this.src='${fallbackImage}';this.classList.add('loaded');">
+                                <div class="featured-caption">${escapeHtml(article.title || 'موضوع مميز')}</div>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="featured-reel-controls">
+                    <button class="featured-reel-nav" type="button" data-dir="prev" aria-label="السابق">‹</button>
+                    <div class="featured-reel-dots">
+                        ${finalDeck.map((_, index) => `<span class="featured-reel-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></span>`).join('')}
+                    </div>
+                    <button class="featured-reel-nav" type="button" data-dir="next" aria-label="التالي">›</button>
+                </div>
+            `;
+
+            const track = document.getElementById('featured-reel-track');
+            const dots = Array.from(document.querySelectorAll('.featured-reel-dot'));
+            const navButtons = Array.from(document.querySelectorAll('.featured-reel-nav'));
+            if (!track || !dots.length) return;
+
+            const slideImages = Array.from(track.querySelectorAll('.featured-slide-image'));
+            slideImages.forEach((image) => {
+                const activate = () => { image.classList.add('loaded'); };
+                if (image.complete) {
+                    activate();
+                } else {
+                    image.addEventListener('load', activate, { once: true });
+                }
+            });
+
+            let activeIndex = 0;
+            let autoTimer = null;
+            let startX = null;
+            let startY = null;
+
+            function updateSlide(index) {
+                activeIndex = (index + finalDeck.length) % finalDeck.length;
+                const slideWidth = track.querySelector('.featured-slide')?.getBoundingClientRect().width || track.clientWidth || 1;
+                track.style.transform = `translateX(${activeIndex * slideWidth}px)`;
+                dots.forEach((dot, dotIndex) => {
+                    dot.classList.toggle('active', dotIndex === activeIndex);
+                });
+            }
+
+            function restartAuto() {
+                clearInterval(autoTimer);
+                autoTimer = setInterval(() => updateSlide(activeIndex + 1), 5000);
+            }
+
+            navButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    updateSlide(button.dataset.dir === 'next' ? activeIndex + 1 : activeIndex - 1);
+                    restartAuto();
+                });
+            });
+
+            dots.forEach((dot) => {
+                dot.addEventListener('click', () => {
+                    updateSlide(Number(dot.dataset.index));
+                    restartAuto();
+                });
+            });
+
+            track.addEventListener('pointerdown', (event) => {
+                startX = event.clientX;
+                startY = event.clientY;
+                clearInterval(autoTimer);
+            });
+
+            track.addEventListener('pointerup', (event) => {
+                if (startX === null) return;
+                const deltaX = event.clientX - startX;
+                const deltaY = event.clientY - startY;
+                if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                    updateSlide(deltaX < 0 ? activeIndex + 1 : activeIndex - 1);
+                }
+                startX = null;
+                startY = null;
+                restartAuto();
+            });
+
+            track.addEventListener('pointercancel', () => {
+                startX = null;
+                startY = null;
+                restartAuto();
+            });
+
+            updateSlide(0);
+            restartAuto();
+        }
+        function getArticleVideoUrls(article) {
+            return Array.isArray(article.videoUrls) && article.videoUrls.length
+                ? article.videoUrls.filter(Boolean)
+                : (article.videoUrl ? [article.videoUrl] : []);
+        }
+
+        function getYoutubeEmbedUrl(url) {
+            const videoId = getYoutubeVideoId(url);
+            return videoId ? `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?rel=0&playsinline=1` : '';
+        }
+
+        function isHlsUrl(url) {
+            return /\.m3u8(?:$|[?#])/i.test(url || '')
+                || /(?:format|type|protocol|stream)=?(?:hls|m3u8|application\/x-mpegurl)/i.test(url || '')
+                || /(?:\/|\b)(?:hls|playlist|manifest|live\.m3u8)(?:\/|\b)/i.test(url || '');
+        }
+
+        function isDashUrl(url) {
+            return /\.mpd(?:$|[?#])/i.test(url || '')
+                || /(?:format|type|protocol|stream)=?(?:dash|mpd|application\/dash\+xml)/i.test(url || '');
+        }
+
+        function isFlvUrl(url) {
+            return /\.(?:flv|ts)(?:$|[?#])/i.test(url || '')
+                || /(?:format|type)=?(?:flv|mpegts|video\/mp2t)/i.test(url || '');
+        }
+
+        function loadExternalPlayer(src, globalName) {
+            if (window[globalName]) return Promise.resolve(window[globalName]);
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => resolve(window[globalName]);
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        function loadMpegtsLibrary() {
+            return loadExternalPlayer('https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js', 'mpegts');
+        }
+
+        function setupFeaturedStream(video, url) {
+            if (!video) return;
+            if (isHlsUrl(url)) {
+                if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = url;
+                    return;
+                }
+                loadExternalPlayer('https://cdn.jsdelivr.net/npm/hls.js@1.5.20/dist/hls.min.js', 'Hls')
+                    .then((Hls) => {
+                        if (!Hls || !Hls.isSupported()) throw new Error('HLS غير مدعوم');
+                        const player = new Hls();
+                        player.loadSource(url);
+                        player.attachMedia(video);
+                    })
+                    .catch(() => { video.poster = fallbackImage; });
+            } else if (isDashUrl(url)) {
+                loadExternalPlayer('https://cdn.dashjs.org/latest/dash.all.min.js', 'dashjs')
+                    .then((dashjs) => {
+                        if (!dashjs || !dashjs.MediaPlayer) throw new Error('DASH غير مدعوم');
+                        dashjs.MediaPlayer().create().initialize(video, url, false);
+                    })
+                    .catch(() => { video.poster = fallbackImage; });
+            } else if (isFlvUrl(url)) {
+                loadMpegtsLibrary()
+                    .then((mpegts) => {
+                        if (!mpegts || !mpegts.isSupported()) throw new Error('FLV غير مدعوم');
+                        const player = mpegts.createPlayer({ type: 'flv', url });
+                        player.attachMediaElement(video);
+                        player.load();
+                        player.play().catch(() => {});
+                    })
+                    .catch(() => { video.poster = fallbackImage; });
+            } else {
+                video.src = url;
+                video.addEventListener('error', () => {
+                    if (video.dataset.streamFallback) return;
+                    video.dataset.streamFallback = 'true';
+                    loadExternalPlayer('https://cdn.jsdelivr.net/npm/hls.js@1.5.20/dist/hls.min.js', 'Hls')
+                        .then((Hls) => {
+                            if (!Hls || !Hls.isSupported()) throw new Error('البث غير مدعوم');
+                            const player = new Hls();
+                            player.loadSource(url);
+                            player.attachMedia(video);
+                        })
+                        .catch(() => { video.poster = fallbackImage; });
+                }, { once: true });
+            }
+        }
+
+        function getFeaturedVideoHtml(article) {
+            const videoUrl = getArticleVideoUrls(article)[0];
+            if (!videoUrl) return '';
+            const youtubeUrl = getYoutubeEmbedUrl(videoUrl);
+            if (youtubeUrl) {
+                return `<iframe class="featured-video" src="${youtubeUrl}&autoplay=1&mute=1" title="الفيديو المثبت" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="origin" allowfullscreen></iframe>`;
+            }
+            return `<video id="featured-video-player" class="featured-video" controls autoplay muted playsinline></video>`;
+        }
+
+        function getFeaturedVideoData() {
+            if (!featuredVideo || featuredVideo.enabled !== true && featuredVideo.enabled !== 'true') return null;
+            const url = String(featuredVideo.url || '').trim();
+            if (!url) return null;
+            return { title: 'الفيديو المثبت', videoUrl: url };
+        }
+
+        function getArticleHref(article) {
+            const customUrl = String(article.url || article.link || '').trim();
+            return customUrl || `article.html?id=${encodeURIComponent(article.id)}`;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedCategory = urlParams.get('category') || 'home';
+        const searchTerm = urlParams.get('q') || '';
+        const currentPage = Math.max(1, Number.parseInt(urlParams.get('page') || '1', 10) || 1);
+        const articlesPerPage = 12;
+        document.body.classList.add(selectedCategory === 'home' && !searchTerm ? 'home-page' : 'category-page');
+
+        function enableTouchDraggingForCards() {
+            const containers = document.querySelectorAll('.section-articles');
+            containers.forEach((container) => {
+                let isDown = false;
+                let startX = 0;
+                let startScrollLeft = 0;
+
+                const stopDrag = () => {
+                    isDown = false;
+                    container.style.cursor = 'grab';
+                };
+
+                container.addEventListener('pointerdown', (event) => {
+                    isDown = true;
+                    startX = event.clientX;
+                    startScrollLeft = container.scrollLeft;
+                    container.style.cursor = 'grabbing';
+                });
+
+                container.addEventListener('pointermove', (event) => {
+                    if (!isDown) return;
+                    const delta = event.clientX - startX;
+                    container.scrollLeft = startScrollLeft - delta;
+                });
+
+                container.addEventListener('pointerup', stopDrag);
+                container.addEventListener('pointerleave', stopDrag);
+                container.addEventListener('pointercancel', stopDrag);
+            });
+        }
+
+        function buildCategoryTree(categories) {
+            const entries = Object.entries(categories || {});
+            const map = new Map(entries);
+            const childMap = new Map();
+            entries.forEach(([id, value]) => {
+                const parentId = value?.parentId || null;
+                if (!childMap.has(parentId)) childMap.set(parentId, []);
+                if (parentId) childMap.get(parentId).push(id);
+            });
+            const makeItem = (id, seen = new Set()) => {
+                if (seen.has(id) || !map.has(id)) return null;
+                const value = map.get(id) || {};
+                const item = {
+                    id,
+                    name: value.name || value.nam || value.title || value.label || 'قسم',
+                    parentId: value.parentId || null,
+                    url: value.url || '',
+                    iconUrl: value.iconUrl || value.imageUrl || value.logoUrl || value.icon || value.image || value.categoryImage || '',
+                    createdAt: Number(value.createdAt || 0),
+                    children: []
+                };
+                const nextSeen = new Set(seen);
+                nextSeen.add(id);
+                const childIds = childMap.get(id) || [];
+                childIds.forEach((childId) => {
+                    const child = makeItem(childId, nextSeen);
+                    if (child) item.children.push(child);
+                });
+                return item;
+            };
+            const roots = [];
+            const rootIds = entries
+                .filter(([id, value]) => !value?.parentId || !map.has(value.parentId))
+                .map(([id]) => id);
+            rootIds.forEach((id) => {
+                const root = makeItem(id);
+                if (root) roots.push(root);
+            });
+            return roots;
+        }
+
+        function getCategoryFilters(categoryId) {
+            if (!categoryId || categoryId === 'home') return null;
+            const ids = new Set([categoryId]);
+            const queue = [categoryId];
+            while (queue.length) {
+                const currentId = queue.shift();
+                const children = allCategories.filter((category) => category.parentId === currentId);
+                children.forEach((child) => {
+                    if (!ids.has(child.id)) {
+                        ids.add(child.id);
+                        queue.push(child.id);
+                    }
+                });
+            }
+            return ids;
+        }
+
+        function loadCategories() {
+            return get(ref(db, 'categories'))
+                .then((snapshot) => {
+                    const categories = snapshot.exists() ? snapshot.val() : {};
+                    allCategories = Object.entries(categories).map(([id, value], order) => ({
+                        id,
+                        name: value?.name || value?.nam || value?.title || value?.label || 'قسم',
+                        sectionTitle: value?.sectionTitle || value?.columnTitle || value?.titleLabel || value?.name || '',
+                        url: value?.url || '',
+                        iconUrl: value?.iconUrl || value?.imageUrl || value?.logoUrl || value?.icon || value?.image || value?.categoryImage || '',
+                        parentId: value?.parentId || null,
+                        createdAt: Number(value?.createdAt || 0),
+                        order,
+                        children: []
+                    }));
+                    const bar = document.getElementById('categories-bar');
+                    syncStickyBarHeight();
+                    const roots = buildCategoryTree(categories);
+                    const homeLink = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png\';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
+                    bar.innerHTML = homeLink;
+                    const renderCategory = (category) => {
+                        const categoryHref = category.url || `./index.html?category=${encodeURIComponent(category.id)}`;
+                        const defaultIcon = 'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';
+                        const iconUrl = category.iconUrl || category.imageUrl || category.logoUrl || defaultIcon;
+                        const iconHtml = `<img src="${escapeHtml(iconUrl)}" alt="${escapeHtml(category.name)}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${defaultIcon}';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;flex-shrink:0;display:block;visibility:visible;opacity:1;background:rgba(255,255,255,0.04);">`;
+                        return `<div class="category-item">
+                            <a href="${categoryHref}" class="category-link" data-id="${category.id}">${iconHtml}<span>${escapeHtml(category.name)}</span></a>
+                        </div>`;
+                    };
+                    bar.insertAdjacentHTML('beforeend', roots.map(renderCategory).join(''));
+                })
+                .catch(() => {
+                    document.getElementById('categories-bar').innerHTML = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png\';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
+                    syncStickyBarHeight();
+                });
+        }
+
+        function syncStickyBarHeight() {
+            const categoriesBar = document.getElementById('categories-bar');
+            if (categoriesBar) document.documentElement.style.setProperty('--categories-bar-height', `${categoriesBar.offsetHeight}px`);
+        }
+
+        document.addEventListener('click', (event) => {
+            document.querySelectorAll('.category-item.open').forEach((item) => {
+                if (item.contains(event.target)) return;
+                item.classList.remove('open');
+            });
+        });
+
+        function loadArticles() {
+            Promise.all([get(ref(db, 'articles')), get(ref(db, 'featuredVideo'))])
+                .then(([snapshot, featuredSnapshot]) => {
+                    featuredVideo = featuredSnapshot.exists() ? featuredSnapshot.val() || null : null;
+                    allArticles = normalizeArticles(snapshot);
+                    renderLatestTicker(allArticles);
+                    renderFeaturedReel(allArticles);
+                    const filtered = allArticles.filter((article) => {
+                        const searchableText = `${article.title || ''} ${article.content || ''}`.toLowerCase();
+                        const matchesCategory = selectedCategory === 'home'
+                            || article.categoryId === selectedCategory;
+                        const matchesSearch = !searchTerm || searchableText.includes(searchTerm.toLowerCase());
+                        return matchesCategory && matchesSearch;
+                    }).sort((first, second) => {
+                        if (selectedCategory === 'home' && isPinnedVideo(first) !== isPinnedVideo(second)) {
+                            return isPinnedVideo(first) ? -1 : 1;
+                        }
+                        if (selectedCategory === 'home' && isPinned(first) !== isPinned(second)) {
+                            return isPinned(first) ? -1 : 1;
+                        }
+                        return sortByNewest(first, second);
+                    });
+                    displayArticles(filtered);
+                })
+                .catch(() => {
+                    renderLatestTicker([]);
+                    displayArticles([]);
+                });
+        }
+
+        const searchArea = document.getElementById('search-area');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.querySelector('.search-btn');
+        if (searchButton && searchArea && searchInput) {
+            searchButton.addEventListener('click', () => {
+                searchArea.classList.toggle('open');
+                if (searchArea.classList.contains('open')) searchInput.focus();
+            });
+            searchInput.value = searchTerm;
+            searchArea.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const query = searchInput.value.trim();
+                const params = new URLSearchParams();
+                if (selectedCategory !== 'home') params.set('category', selectedCategory);
+                if (query) params.set('q', query);
+                window.location.href = `./index.html${params.toString() ? '?' + params.toString() : ''}`;
+            });
+        }
+
+        function renderHomepageCategorySections(articles) {
+            const container = document.getElementById('home-category-sections');
+            if (!container) return;
+            if (selectedCategory !== 'home' || searchTerm) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const roots = allCategories
+                .filter((category) => !category.parentId || !allCategories.some((parent) => parent.id === category.parentId))
+                .sort((first, second) => first.name.localeCompare(second.name, 'ar'));
+
+            const sections = roots.map((category) => {
+                const ids = getCategoryFilters(category.id) || new Set([category.id]);
+                const sectionArticles = articles.filter((article) => ids.has(article.categoryId)).slice(0, 10);
+                if (!sectionArticles.length) return '';
+
+                const viewAllHref = category.url || `./index.html?category=${encodeURIComponent(category.id)}`;
+                const sectionTitle = (category.sectionTitle || category.name || 'قسم').trim();
+                const cards = sectionArticles.map((article) => {
+                    const title = article.title || 'عنوان غير متاح';
+                    const imageHtml = getArticleImageHtml(article, title);
+                    const articleHref = getArticleHref(article);
+                    return `
+                        <a href="${articleHref}" class="article-card">
+                            <div class="article-media">
+                                ${imageHtml}
+                                <div class="article-overlay">
+                                    <h3>${escapeHtml(title)}</h3>
+                                </div>
+                            </div>
+                        </a>`;
+                }).join('');
+
+                return `
+                    <section class="home-category-section">
+                        <div class="section-header">
+                            <h3 class="section-title">${escapeHtml(sectionTitle)}</h3>
+                            <a href="${viewAllHref}" class="section-view-all">عرض الكل</a>
+                        </div>
+                        <div class="section-articles">
+                            ${cards}
+                        </div>
+                    </section>`;
+            }).join('');
+
+            container.innerHTML = sections;
+            enableTouchDraggingForCards();
+        }
+
+        function displayArticles(articles) {
+            const grid = document.getElementById('articles-grid');
+            const mainStory = document.getElementById('main-story');
+            const subcategoryCards = document.getElementById('subcategory-cards');
+            const pagination = document.getElementById('pagination');
+            const homeSections = document.getElementById('home-category-sections');
+            grid.innerHTML = '';
+            subcategoryCards.innerHTML = '';
+            subcategoryCards.classList.remove('visible');
+            pagination.innerHTML = '';
+
+            if (selectedCategory === 'home' && !searchTerm) {
+                if (homeSections) homeSections.innerHTML = '';
+                renderHomepageCategorySections(articles);
+                mainStory.style.display = 'block';
+                return;
+            }
+
+            if (selectedCategory !== 'home') {
+                const childCategories = allCategories
+                    .filter((category) => category.parentId === selectedCategory)
+                    .sort((first, second) => {
+                        if (first.createdAt && second.createdAt && first.createdAt !== second.createdAt) {
+                            return first.createdAt - second.createdAt;
+                        }
+                        return first.order - second.order;
+                    });
+                if (childCategories.length) {
+                    subcategoryCards.innerHTML = childCategories.map((category) => {
+                        const targetHref = category.url || `./index.html?category=${encodeURIComponent(category.id)}`;
+                        const defaultIcon = 'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';
+                        const iconUrl = category.iconUrl || category.imageUrl || category.logoUrl || defaultIcon;
+                        return `
+                            <a class="subcategory-card" href="${targetHref}">
+                                <img src="${escapeHtml(iconUrl)}" alt="${escapeHtml(category.name)}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${defaultIcon}';">
+                                <span>${escapeHtml(category.name)}</span>
+                            </a>`;
+                    }).join('');
+                    subcategoryCards.classList.add('visible');
+                }
+            }
+
+            if (!articles || articles.length === 0) {
+                mainStory.style.display = 'none';
+                mainStory.innerHTML = '';
+                grid.innerHTML = `<p class="empty-state">${selectedCategory === 'home' ? 'لا توجد فيديوهات منشورة حاليًا.' : 'لا توجد فيديوهات في هذا القسم حاليًا.'}</p>`;
+                return;
+            }
+
+            const isHomepage = selectedCategory === 'home' && !searchTerm;
+            const hasSeparateFeaturedVideo = isHomepage && Boolean(getFeaturedVideoData());
+            const homepageFeaturedArticleCount = isHomepage && !hasSeparateFeaturedVideo ? 1 : 0;
+            const homepageFirstPageSize = articlesPerPage + homepageFeaturedArticleCount;
+            const totalPages = isHomepage
+                ? (articles.length <= homepageFirstPageSize
+                    ? 1
+                    : 1 + Math.ceil((articles.length - homepageFirstPageSize) / articlesPerPage))
+                : Math.ceil(articles.length / articlesPerPage);
+            const page = Math.min(currentPage, totalPages);
+            const pageStart = isHomepage && page > 1
+                ? homepageFirstPageSize + ((page - 2) * articlesPerPage)
+                : (isHomepage ? 0 : (page - 1) * articlesPerPage);
+            const pageSize = isHomepage && page === 1 ? homepageFirstPageSize : articlesPerPage;
+            const pageArticles = articles.slice(pageStart, pageStart + pageSize);
+            const showMainStory = isHomepage && page === 1;
+            const cards = showMainStory
+                ? (hasSeparateFeaturedVideo ? pageArticles : pageArticles.slice(1))
+                : pageArticles;
+
+            if (showMainStory) {
+                const first = pageArticles[0];
+                const separateFeaturedVideo = getFeaturedVideoData();
+                const featuredArticle = separateFeaturedVideo ? { videoUrl: separateFeaturedVideo.videoUrl } : first;
+                const mainTitle = separateFeaturedVideo ? separateFeaturedVideo.title : (first.title || 'عنوان غير متاح');
+                const mainImageHtml = getArticleImageHtml(first, mainTitle);
+                const featuredVideoHtml = separateFeaturedVideo
+                    ? getFeaturedVideoHtml(featuredArticle)
+                    : (isPinnedVideo(first) ? getFeaturedVideoHtml(first) : '');
+                const mainLink = separateFeaturedVideo ? '' : getArticleHref(first);
+
+                mainStory.style.display = 'block';
+                mainStory.innerHTML = `
+                    ${featuredVideoHtml || `<a href="${mainLink}" style="text-decoration: none; color: inherit;">${mainImageHtml}</a>`}
+                    ${mainLink ? `<a href="${mainLink}" style="text-decoration: none; color: inherit;"><h2>${mainTitle}</h2></a>` : ''}`;
+                const featuredUrl = getArticleVideoUrls(featuredArticle)[0];
+                if (featuredVideoHtml && !getYoutubeEmbedUrl(featuredUrl)) {
+                    setupFeaturedStream(document.getElementById('featured-video-player'), featuredUrl);
+                }
+            } else {
+                mainStory.style.display = 'none';
+                mainStory.innerHTML = '';
+            }
+
+            cards.forEach((article) => {
+                const title = article.title || 'عنوان غير متاح';
+                const imageHtml = getArticleImageHtml(article, title);
+                const articleHref = getArticleHref(article);
+
+                grid.innerHTML += `
+                    <a href="${articleHref}" class="article-card">
+                        <div class="article-media">
+                            ${imageHtml}
+                            <div class="article-overlay">
+                                <h3>${escapeHtml(title)}</h3>
+                            </div>
+                        </div>
+                    </a>`;
+            });
+
+            if (totalPages > 1) {
+                for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                    const params = new URLSearchParams();
+                    if (selectedCategory !== 'home') params.set('category', selectedCategory);
+                    if (searchTerm) params.set('q', searchTerm);
+                    if (pageNumber > 1) params.set('page', pageNumber);
+                    const activeClass = pageNumber === page ? ' active' : '';
+                    pagination.innerHTML += `<a href="./index.html?${params.toString()}" class="${activeClass.trim()}" aria-label="الصفحة ${pageNumber}">${pageNumber}</a>`;
+                }
+            }
+        }
+
+        loadCategories().then(loadArticles);
+        if ('ResizeObserver' in window) new ResizeObserver(syncStickyBarHeight).observe(document.getElementById('categories-bar'));
+        window.addEventListener('resize', syncStickyBarHeight);
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').then((registration) => registration.update()).catch(() => {});
+        }
+        setupInstallPrompt();
+    </script>
+</body>
+</html>
