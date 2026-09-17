@@ -222,6 +222,17 @@
         const articlesRef = ref(db, 'articles');
         let editingArticleId = null;
 
+        function saveFeaturedVideo(videoData) {
+            const safeData = {
+                enabled: Boolean(videoData && videoData.enabled),
+                title: String(videoData?.title || '').trim(),
+                url: String(videoData?.url || '').trim(),
+                imageUrl: String(videoData?.imageUrl || '').trim(),
+                videoUrl: String(videoData?.videoUrl || '').trim()
+            };
+            return update(ref(db, 'featuredVideo'), safeData);
+        }
+
         window.addCategory = addCategory;
         window.addArticle = addArticle;
         window.editCategory = editCategory;

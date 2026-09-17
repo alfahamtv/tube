@@ -266,13 +266,13 @@
             get(ref(db, 'categories')).then((snapshot) => {
                 const bar = document.getElementById('categories-bar');
                 syncStickyBarHeight();
-                const homeLink = '<a href="./" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
+                const homeLink = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
                 bar.innerHTML = homeLink;
                 if (!snapshot.exists()) return;
                 const roots = buildCategoryTree(snapshot.val());
                 const escapeAttribute = (value) => String(value || '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
                 const renderCategory = (category) => {
-                    const categoryHref = escapeAttribute(category.url || `./?category=${encodeURIComponent(category.id)}`);
+                    const categoryHref = escapeAttribute(category.url || `./index.html?category=${encodeURIComponent(category.id)}`);
                     const iconUrl = category.iconUrl || category.imageUrl || category.logoUrl || '';
                     const iconHtml = iconUrl
                         ? `<img src="${escapeAttribute(iconUrl)}" alt="${escapeAttribute(category.name)}" loading="lazy" onerror="this.style.display='none';" style="width:42px;height:42px;object-fit:cover;border-radius:12px;flex-shrink:0;">`
@@ -284,7 +284,7 @@
                 bar.insertAdjacentHTML('beforeend', roots.map(renderCategory).join(''));
                 syncStickyBarHeight();
             }).catch(() => {
-                document.getElementById('categories-bar').innerHTML = '<a href="./" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
+                document.getElementById('categories-bar').innerHTML = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
                 syncStickyBarHeight();
             });
         }

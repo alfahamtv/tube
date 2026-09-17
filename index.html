@@ -33,7 +33,8 @@
         .search-area.open { display: flex; gap: 8px; }
         .search-area input { flex: 1; min-width: 0; padding: 10px 12px; border: 0; border-radius: 8px; font-family: inherit; }
         .search-area button { padding: 9px 14px; border: 0; border-radius: 8px; cursor: pointer; color: #123456; font-weight: bold; }
-        .categories-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #000000; padding: 10px 20px 12px; display: flex; flex-wrap: wrap; gap: 12px; overflow: visible; white-space: normal; border-top: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -2px 8px rgba(0,0,0,0.26); backdrop-filter: blur(6px); }
+        .categories-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #000000; padding: 10px 20px 12px; display: flex; align-items: center; justify-content: center; gap: 12px; overflow-x: auto; overflow-y: hidden; white-space: nowrap; border-top: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -2px 8px rgba(0,0,0,0.26); backdrop-filter: blur(6px); -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .categories-bar::-webkit-scrollbar { display: none; }
         .category-item { position: relative; z-index: 1001; display: inline-flex; align-items: stretch; }
         .category-item.open { z-index: 2000; }
         .category-link { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 112px; min-height: 90px; color: #f5f5f5; text-decoration: none; font-size: 12px; font-weight: 700; transition: all 0.3s; padding: 8px 6px; border-radius: 16px; background: transparent; border: none; box-shadow: none; }
@@ -74,20 +75,24 @@
         .subcategory-card:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.18); }
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; padding: 0 20px 30px 20px; max-width: 1200px; margin: 20px auto 0; }
         .empty-state { grid-column: 1 / -1; margin: 20px 0; padding: 28px 20px; background: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: #d4d4d4; text-align: center; font-weight: 700; }
-        .article-card { position: relative; min-width: 0; background-color: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; text-decoration: none; display: flex; flex-direction: column; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.16); }
+        .article-card { position: relative; display: block; width: 100%; min-width: 0; height: auto; min-height: 0; max-width: 100%; background-color: #000000; border: 0; border-radius: 16px; overflow: hidden; text-decoration: none; transition: transform 0.2s; box-shadow: none; margin: 0; padding: 0; aspect-ratio: 16 / 9; }
         .article-card:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
-        .article-card .article-media { position: relative; width: 100%; min-width: 0; height: auto; overflow: hidden; }
-        .article-card .article-media img { width: 100%; min-width: 0; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
-        .article-card .article-overlay { position: absolute; inset: auto 0 0 0; padding: 18px 14px 12px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.68) 35%, rgba(0,0,0,0.92) 100%); z-index: 1; }
-        .article-card .article-overlay h3 { width: 100%; margin: 0; font-size: 18px; font-weight: 700; color: #ffffff; text-align: right; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; line-height: 1.5; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+        .article-card .article-media { position: relative; width: 100%; min-width: 0; height: 100%; overflow: hidden; background: #000; z-index: 0; }
+        .article-card .article-media img { position: absolute; inset: 0; width: 100%; min-width: 0; height: 100%; object-fit: cover; object-position: center; display: block; margin: 0; padding: 0; border: 0; background: #000; z-index: 0; }
+        .article-card .article-overlay { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; max-width: 100%; padding: 0 14px 10px; background: linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.22) 28%, rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.92) 100%); z-index: 2; display: block; min-height: 84px; box-sizing: border-box; margin: 0; }
+        .article-card .article-overlay h3 { position: absolute; left: 14px; right: 14px; bottom: 10px; width: auto; max-width: calc(100% - 28px); min-height: 52px; margin: 0; font-size: 18px; font-weight: 700; color: #ffffff; text-align: right; display: block; overflow: hidden; line-height: 1.5; text-shadow: 0 2px 8px rgba(0,0,0,0.8); z-index: 3; box-sizing: border-box; word-break: break-word; overflow-wrap: anywhere; background: transparent; padding: 0; border-radius: 0; box-shadow: none; }
         .section-articles .article-card,
         .section-articles .article-card .article-media,
         .section-articles .article-card .article-media img {
             background: #000 !important;
             border-radius: 12px;
+            margin: 0;
+            padding: 0;
+            border: 0;
         }
         .section-articles .article-card {
             height: 180px;
+            box-shadow: none;
         }
         .section-articles .article-card .article-media {
             position: relative;
@@ -101,18 +106,113 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
             display: block;
+            background: #000;
         }
         .section-articles .article-card .article-overlay {
             position: absolute;
-            inset: auto 0 0 0;
-            padding: 12px 10px 10px;
-            background: linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.5) 35%, rgba(0,0,0,0.85) 100%);
-            z-index: 1;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 100%;
+            padding: 0 10px 8px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.22) 28%, rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.92) 100%);
+            z-index: 2;
+            display: block;
+            min-height: 72px;
+            box-sizing: border-box;
+        }
+        .section-articles .article-card .article-overlay h3 {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 8px;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            z-index: 3;
+            display: block;
+            width: auto;
+            max-width: calc(100% - 20px);
+            box-shadow: none;
         }
         .article-info { display: none; }
-        .category-page .grid-container { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .category-page .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .category-page .grid-container { padding-top: 20px; }
+        .category-page .article-card {
+            width: 100%;
+            max-width: 100%;
+            height: 220px;
+            min-height: 220px;
+            display: block;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-shadow: none;
+            aspect-ratio: 16 / 10;
+        }
+        .category-page .article-card .article-media {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: #000;
+        }
+        .category-page .article-card .article-media img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #000;
+        }
+        .category-page .article-card .article-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 100%;
+            padding: 0 12px 10px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.22) 28%, rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.92) 100%);
+            z-index: 2;
+            display: block;
+            min-height: 80px;
+            box-sizing: border-box;
+        }
+        .category-page .article-card .article-overlay h3 {
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 10px;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            z-index: 3;
+            display: block;
+            width: auto;
+            max-width: calc(100% - 24px);
+            box-shadow: none;
+        }
+        .category-page .article-card .article-overlay h3 {
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.5;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
         .home-page .article-card { height: auto; }
         .pagination { display: flex; gap: 10px; margin: 20px auto; padding: 0 20px; max-width: 1200px; justify-content: center; align-items: center; }
         .pagination a { background-color: #111111; color: #eeeeee; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 10px 20px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.3s; }
@@ -124,23 +224,100 @@
         .section-title { color: #f5f5f5; font-size: 18px; font-weight: 800; margin: 0; text-align: right; order: 1; }
         .section-view-all { color: #ff3b3b; font-weight: 800; text-decoration: none; font-size: 13px; order: 2; }
         .section-view-all:hover { color: #ff7a7a; }
-        .section-articles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 240px); gap: 12px; overflow-x: auto; overflow-y: hidden; padding-bottom: 6px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent; justify-content: start; }
+        .section-articles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 240px); gap: 12px; overflow-x: auto; overflow-y: hidden; padding-bottom: 6px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent; justify-content: start; -webkit-overflow-scrolling: touch; touch-action: pan-x; user-select: none; cursor: grab; }
+        .section-articles:active { cursor: grabbing; }
         .section-articles::-webkit-scrollbar { height: 6px; }
         .section-articles::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 999px; }
-        .section-articles .article-card { min-height: 0; scroll-snap-align: start; width: 100%; max-width: 240px; height: 180px; border-radius: 12px; }
+        .section-articles .article-card { min-height: 0; scroll-snap-align: start; width: 220px; max-width: 220px; min-width: 220px; height: 180px; border-radius: 12px; aspect-ratio: 11 / 9; flex: 0 0 220px; }
         .section-articles .article-card .article-media { position: relative; width: 100%; height: 100%; }
         .section-articles .article-card .article-media img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
         .section-articles .article-card .article-overlay { padding: 12px 10px 10px; }
         .section-articles .article-card .article-overlay h3 { font-size: 14px; }
+        .home-page .article-card,
+        .home-page .article-card .article-media,
+        .home-page .article-card .article-media img {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: #000;
+            box-shadow: none;
+        }
+        .home-page .article-card {
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            height: auto;
+            min-height: 0;
+            aspect-ratio: 16 / 9;
+        }
+        .home-page .article-card .article-media {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .home-page .article-card .article-media img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #000;
+        }
+        .home-page .article-card .article-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 100%;
+            padding: 0 12px 10px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.22) 28%, rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.92) 100%);
+            z-index: 2;
+            display: block;
+            min-height: 80px;
+            box-sizing: border-box;
+        }
+        .home-page .article-card .article-overlay h3 {
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 10px;
+            display: block;
+            width: auto;
+            max-width: calc(100% - 24px);
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            line-height: 1.5;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: right;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            overflow: hidden;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            z-index: 3;
+        }
         @media (max-width: 768px) {
             .section-articles { grid-auto-columns: minmax(170px, 190px); }
-            .section-articles .article-card { max-width: 190px; }
-            .grid-container { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+            .section-articles .article-card { width: 190px; max-width: 190px; min-width: 190px; flex-basis: 190px; }
+            .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .article-card { height: 200px; min-height: 200px; }
+            .category-page .article-card { height: 200px; min-height: 200px; }
         }
         @media (max-width: 480px) {
             .section-articles { grid-auto-columns: minmax(150px, 170px); }
-            .section-articles .article-card { max-width: 170px; }
-            .grid-container { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+            .section-articles .article-card { width: 170px; max-width: 170px; min-width: 170px; flex-basis: 170px; }
+            .article-card { height: 180px; min-height: 180px; }
+            .category-page .article-card { height: 180px; min-height: 180px; }
+            .grid-container { grid-template-columns: 1fr; }
+            .category-page .grid-container { grid-template-columns: 1fr; }
         }
         @media (max-width: 1024px) {
             .home-category-sections { padding: 0 20px 30px; }
@@ -207,7 +384,7 @@
 </head>
 <body>
     <div class="header">
-        <a class="header-logo-link" href="./" aria-label="الرئيسية">
+        <a class="header-logo-link" href="./index.html" aria-label="الرئيسية">
             <img class="header-logo" src="https://b.top4top.io/p_3778y5jzp1.png" alt="شعار الموقع">
         </a>
         <form class="search-area" id="search-area">
@@ -366,6 +543,12 @@
         }
 
         function renderFeaturedReel(articles) {
+            if (selectedCategory !== 'home') {
+                const reel = document.getElementById('featured-reel');
+                if (reel) reel.remove();
+                return;
+            }
+
             const reel = document.getElementById('featured-reel');
             if (!reel) return;
 
@@ -610,6 +793,37 @@
         const articlesPerPage = 12;
         document.body.classList.add(selectedCategory === 'home' && !searchTerm ? 'home-page' : 'category-page');
 
+        function enableTouchDraggingForCards() {
+            const containers = document.querySelectorAll('.section-articles');
+            containers.forEach((container) => {
+                let isDown = false;
+                let startX = 0;
+                let startScrollLeft = 0;
+
+                const stopDrag = () => {
+                    isDown = false;
+                    container.style.cursor = 'grab';
+                };
+
+                container.addEventListener('pointerdown', (event) => {
+                    isDown = true;
+                    startX = event.clientX;
+                    startScrollLeft = container.scrollLeft;
+                    container.style.cursor = 'grabbing';
+                });
+
+                container.addEventListener('pointermove', (event) => {
+                    if (!isDown) return;
+                    const delta = event.clientX - startX;
+                    container.scrollLeft = startScrollLeft - delta;
+                });
+
+                container.addEventListener('pointerup', stopDrag);
+                container.addEventListener('pointerleave', stopDrag);
+                container.addEventListener('pointercancel', stopDrag);
+            });
+        }
+
         function buildCategoryTree(categories) {
             const entries = Object.entries(categories || {});
             const map = new Map(entries);
@@ -683,10 +897,10 @@
                     const bar = document.getElementById('categories-bar');
                     syncStickyBarHeight();
                     const roots = buildCategoryTree(categories);
-                    const homeLink = '<a href="./" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
+                    const homeLink = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
                     bar.innerHTML = homeLink;
                     const renderCategory = (category) => {
-                        const categoryHref = category.url || `./?category=${encodeURIComponent(category.id)}`;
+                        const categoryHref = category.url || `./index.html?category=${encodeURIComponent(category.id)}`;
                         const iconUrl = category.iconUrl || category.imageUrl || category.logoUrl || '';
                         const iconHtml = iconUrl
                             ? `<img src="${escapeHtml(iconUrl)}" alt="${escapeHtml(category.name)}" loading="lazy" onerror="this.style.display='none';" style="width:42px;height:42px;object-fit:cover;border-radius:12px;flex-shrink:0;">`
@@ -698,7 +912,7 @@
                     bar.insertAdjacentHTML('beforeend', roots.map(renderCategory).join(''));
                 })
                 .catch(() => {
-                    document.getElementById('categories-bar').innerHTML = '<a href="./" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
+                    document.getElementById('categories-bar').innerHTML = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
                     syncStickyBarHeight();
                 });
         }
@@ -760,7 +974,7 @@
                 const params = new URLSearchParams();
                 if (selectedCategory !== 'home') params.set('category', selectedCategory);
                 if (query) params.set('q', query);
-                window.location.href = `./${params.toString() ? '?' + params.toString() : ''}`;
+                window.location.href = `./index.html${params.toString() ? '?' + params.toString() : ''}`;
             });
         }
 
@@ -781,7 +995,7 @@
                 const sectionArticles = articles.filter((article) => ids.has(article.categoryId)).slice(0, 10);
                 if (!sectionArticles.length) return '';
 
-                const viewAllHref = category.url || `./?category=${encodeURIComponent(category.id)}`;
+                const viewAllHref = category.url || `./index.html?category=${encodeURIComponent(category.id)}`;
                 const sectionTitle = (category.sectionTitle || category.name || 'قسم').trim();
                 const cards = sectionArticles.map((article) => {
                     const title = article.title || 'عنوان غير متاح';
@@ -811,6 +1025,7 @@
             }).join('');
 
             container.innerHTML = sections;
+            enableTouchDraggingForCards();
         }
 
         function displayArticles(articles) {
@@ -837,7 +1052,7 @@
                     .sort((first, second) => first.name.localeCompare(second.name, 'ar'));
                 if (childCategories.length) {
                     subcategoryCards.innerHTML = childCategories.map((category) => {
-                        const targetHref = category.url || `./?category=${encodeURIComponent(category.id)}`;
+                        const targetHref = category.url || `./index.html?category=${encodeURIComponent(category.id)}`;
                         return `
                             <a class="subcategory-card" href="${targetHref}">
                                 ${category.name}
@@ -921,7 +1136,7 @@
                     if (searchTerm) params.set('q', searchTerm);
                     if (pageNumber > 1) params.set('page', pageNumber);
                     const activeClass = pageNumber === page ? ' active' : '';
-                    pagination.innerHTML += `<a href="./?${params.toString()}" class="${activeClass.trim()}" aria-label="الصفحة ${pageNumber}">${pageNumber}</a>`;
+                    pagination.innerHTML += `<a href="./index.html?${params.toString()}" class="${activeClass.trim()}" aria-label="الصفحة ${pageNumber}">${pageNumber}</a>`;
                 }
             }
         }
