@@ -71,7 +71,9 @@
         @media (prefers-reduced-motion: reduce) { .latest-ticker-track { animation: none; } }
         .subcategory-cards { display: none; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1200px; margin: 24px auto; padding: 0 20px; }
         .subcategory-cards.visible { display: grid; }
-        .subcategory-card { display: flex; align-items: center; min-height: 120px; padding: 22px 20px; background: #111111; color: #f5f5f5; border: 1px solid rgba(255,255,255,0.08); border-right: 5px solid #ff4d4d; border-radius: 10px; text-decoration: none; font-size: 18px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.2s, box-shadow 0.2s, background 0.2s; }
+        .subcategory-card { display: flex; align-items: center; gap: 14px; min-height: 120px; padding: 22px 20px; background: #111111; color: #f5f5f5; border: 1px solid rgba(255,255,255,0.08); border-right: 5px solid #ff4d4d; border-radius: 10px; text-decoration: none; font-size: 18px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.2s, box-shadow 0.2s, background 0.2s; }
+        .subcategory-card img { width: 64px; height: 64px; flex: 0 0 64px; object-fit: contain; border-radius: 12px; background: rgba(255,255,255,0.04); display: block; }
+        .subcategory-card span { min-width: 0; overflow-wrap: anywhere; }
         .subcategory-card:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.18); }
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; padding: 0 20px 30px 20px; max-width: 1200px; margin: 20px auto 0; }
         .empty-state { grid-column: 1 / -1; margin: 20px 0; padding: 28px 20px; background: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: #d4d4d4; text-align: center; font-weight: 700; }
@@ -360,7 +362,8 @@
             .article-info h3 { font-size: 16px; }
             .article-info p { font-size: 13px; }
             .subcategory-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 14px auto; padding: 0 12px; }
-            .subcategory-card { min-height: 88px; padding: 16px 12px; font-size: 14px; }
+            .subcategory-card { min-height: 88px; padding: 16px 12px; font-size: 14px; gap: 10px; }
+            .subcategory-card img { width: 44px; height: 44px; flex-basis: 44px; border-radius: 9px; }
             .pagination { gap: 6px; padding: 0 12px; }
             .pagination a { padding: 8px 13px; font-size: 14px; }
         }
@@ -387,7 +390,7 @@
 <body>
     <div class="header">
         <a class="header-logo-link" href="./index.html" aria-label="الرئيسية">
-            <img class="header-logo" src="https://b.top4top.io/p_3778y5jzp1.png" alt="شعار الموقع" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';">
+            <img class="header-logo" src="https://b.top4top.io/p_3778y5jzp1.png" alt="شعار الموقع">
         </a>
         <form class="search-area" id="search-area">
             <input id="search-input" type="search" placeholder="ابحث" aria-label="البحث">
@@ -844,6 +847,7 @@
                     parentId: value.parentId || null,
                     url: value.url || '',
                     iconUrl: value.iconUrl || value.imageUrl || value.logoUrl || '',
+                    createdAt: Number(value.createdAt || 0),
                     children: []
                 };
                 const nextSeen = new Set(seen);
@@ -887,13 +891,15 @@
             return get(ref(db, 'categories'))
                 .then((snapshot) => {
                     const categories = snapshot.exists() ? snapshot.val() : {};
-                    allCategories = Object.entries(categories).map(([id, value]) => ({
+                    allCategories = Object.entries(categories).map(([id, value], order) => ({
                         id,
                         name: value?.name || value?.nam || value?.title || value?.label || 'قسم',
                         sectionTitle: value?.sectionTitle || value?.columnTitle || value?.titleLabel || value?.name || '',
                         url: value?.url || '',
                         iconUrl: value?.iconUrl || value?.imageUrl || value?.logoUrl || '',
                         parentId: value?.parentId || null,
+                        createdAt: Number(value?.createdAt || 0),
+                        order,
                         children: []
                     }));
                     const bar = document.getElementById('categories-bar');
@@ -1050,13 +1056,21 @@
             if (selectedCategory !== 'home') {
                 const childCategories = allCategories
                     .filter((category) => category.parentId === selectedCategory)
-                    .sort((first, second) => first.name.localeCompare(second.name, 'ar'));
+                    .sort((first, second) => {
+                        if (first.createdAt && second.createdAt && first.createdAt !== second.createdAt) {
+                            return first.createdAt - second.createdAt;
+                        }
+                        return first.order - second.order;
+                    });
                 if (childCategories.length) {
                     subcategoryCards.innerHTML = childCategories.map((category) => {
                         const targetHref = category.url || `./index.html?category=${encodeURIComponent(category.id)}`;
+                        const defaultIcon = 'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';
+                        const iconUrl = category.iconUrl || category.imageUrl || category.logoUrl || defaultIcon;
                         return `
                             <a class="subcategory-card" href="${targetHref}">
-                                ${category.name}
+                                <img src="${escapeHtml(iconUrl)}" alt="${escapeHtml(category.name)}" loading="lazy" onerror="this.onerror=null;this.src='${defaultIcon}';">
+                                <span>${escapeHtml(category.name)}</span>
                             </a>`;
                     }).join('');
                     subcategoryCards.classList.add('visible');
@@ -1066,7 +1080,7 @@
             if (!articles || articles.length === 0) {
                 mainStory.style.display = 'none';
                 mainStory.innerHTML = '';
-                grid.innerHTML = `<p class="empty-state">${selectedCategory === 'home' ? 'لا توجد مواضيع منشورة حاليًا.' : 'لا توجد مواضيع في هذا القسم حاليًا.'}</p>`;
+                grid.innerHTML = `<p class="empty-state">${selectedCategory === 'home' ? 'لا توجد فيديوهات منشورة حاليًا.' : 'لا توجد فيديوهات في هذا القسم حاليًا.'}</p>`;
                 return;
             }
 
