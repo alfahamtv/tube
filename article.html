@@ -21,7 +21,7 @@
         html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
         body { background-color: #000000; margin: 0; padding: 0; }
         .header { background: #000000; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; gap: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.12); border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .header-logo { height: 45px; }
+        .header-logo { display: block; width: auto; max-width: 100%; height: 45px; object-fit: contain; }
         .header-logo-link { display: flex; align-items: center; }
         .header a { color: white; text-decoration: none; font-weight: bold; }
         .header a:hover { color: #ff4d4d; }
@@ -39,7 +39,7 @@
         .category-item { position: relative; z-index: 1001; display: inline-flex; align-items: stretch; }
         .category-item.open { z-index: 2000; }
         .category-link { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 112px; min-height: 90px; color: #f5f5f5; text-decoration: none; font-size: 12px; font-weight: 700; transition: all 0.3s; padding: 8px 6px; border-radius: 16px; background: transparent; border: none; box-shadow: none; }
-        .category-link img { width: 42px; height: 42px; object-fit: cover; border-radius: 14px; margin-bottom: 6px; background: transparent; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12)); flex-shrink: 0; }
+        .category-link img { display: block; width: 42px; height: 42px; object-fit: contain; border-radius: 14px; margin-bottom: 6px; background: rgba(255,255,255,0.04); filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12)); flex-shrink: 0; }
         .category-link span { line-height: 1.3; text-align: center; color: inherit; }
         .category-link:hover { color: #ff4d4d; background: rgba(255,255,255,0.03); border-color: transparent; transform: translateY(-1px); }
         .latest-ticker { position: sticky; top: var(--categories-bar-height, 60px); z-index: 999; display: flex; align-items: center; gap: 8px; overflow: hidden; background: #d71920; color: white; min-height: 30px; padding: 0 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
@@ -91,8 +91,9 @@
             body { padding-bottom: 92px; }
             .header { width: 100%; max-width: 100%; flex-wrap: wrap; padding: 12px 16px; }
             .header > * { min-width: 0; }
-            .header-logo { height: 40px; }
+            .header-logo { height: 38px; }
             .search-btn { margin-right: auto; }
+            .category-link img { width: 28px; height: 28px; }
             .search-area.open { order: 3; flex-basis: 100%; max-width: none; }
             .categories-bar { position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: 68px; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); gap: 4px; align-items: center; justify-content: flex-start; flex-wrap: nowrap; white-space: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; z-index: 1100; background: rgba(0,0,0,0.96); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -2px 12px rgba(0,0,0,0.25); }
             .categories-bar::-webkit-scrollbar { display: none; }
@@ -134,7 +135,7 @@
 <body>
     <div class="header">
         <a class="header-logo-link" href="index.html" aria-label="الرئيسية">
-            <img class="header-logo" src="https://b.top4top.io/p_3778y5jzp1.png" alt="شعار الموقع">
+            <img class="header-logo" src="https://b.top4top.io/p_3778y5jzp1.png" alt="شعار الموقع" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';">
         </a>
         <form class="search-area" id="search-area">
             <input id="search-input" type="search" placeholder="ابحث في المواضيع" aria-label="البحث">
@@ -266,17 +267,16 @@
             get(ref(db, 'categories')).then((snapshot) => {
                 const bar = document.getElementById('categories-bar');
                 syncStickyBarHeight();
-                const homeLink = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
+                const homeLink = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png\';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
                 bar.innerHTML = homeLink;
                 if (!snapshot.exists()) return;
                 const roots = buildCategoryTree(snapshot.val());
                 const escapeAttribute = (value) => String(value || '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
                 const renderCategory = (category) => {
                     const categoryHref = escapeAttribute(category.url || `./index.html?category=${encodeURIComponent(category.id)}`);
-                    const iconUrl = category.iconUrl || category.imageUrl || category.logoUrl || '';
-                    const iconHtml = iconUrl
-                        ? `<img src="${escapeAttribute(iconUrl)}" alt="${escapeAttribute(category.name)}" loading="lazy" onerror="this.style.display='none';" style="width:42px;height:42px;object-fit:cover;border-radius:12px;flex-shrink:0;">`
-                        : '';
+                    const defaultIcon = 'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';
+                    const iconUrl = category.iconUrl || category.imageUrl || category.logoUrl || defaultIcon;
+                    const iconHtml = `<img src="${escapeAttribute(iconUrl)}" alt="${escapeAttribute(category.name)}" loading="lazy" onerror="this.onerror=null;this.src='${defaultIcon}';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;flex-shrink:0;display:block;background:rgba(255,255,255,0.04);">`;
                     return `<div class="category-item">
                         <a href="${categoryHref}" class="category-link" data-id="${escapeAttribute(category.id)}">${iconHtml}<span>${escapeHtml(category.name)}</span></a>
                     </div>`;
@@ -284,7 +284,7 @@
                 bar.insertAdjacentHTML('beforeend', roots.map(renderCategory).join(''));
                 syncStickyBarHeight();
             }).catch(() => {
-                document.getElementById('categories-bar').innerHTML = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
+                document.getElementById('categories-bar').innerHTML = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png\';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
                 syncStickyBarHeight();
             });
         }
