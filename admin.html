@@ -10,64 +10,64 @@
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.webmanifest">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&family=Noto+Sans+Arabic:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <script>if (localStorage.getItem('site-theme') === 'dark') document.documentElement.classList.add('dark-mode');</script>
     <style>
         * { font-family: 'Cairo', 'Roboto', 'Noto Sans Arabic', 'Arial', sans-serif; box-sizing: border-box; }
         html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
-        body { background-color: #f4f4f4; margin: 0; padding: 20px; }
-        .header { background-color: #000000; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        body { background: #050505; color: #f4f4f4; margin: 0; padding: 20px; }
+        .header { background: linear-gradient(180deg, #171717 0%, #090909 100%); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.35); }
         .header h1 { margin: 0; font-size: 20px; }
         .theme-btn { background: transparent; color: white; border: 0; width: 42px; height: 42px; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
         .theme-btn svg { width: 25px; height: 25px; }
         .container { max-width: 900px; margin: 30px auto; }
-        .form-box { background-color: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 30px; }
-        .form-box h2 { margin-top: 0; }
+        .form-box { background-color: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.28); }
+        .form-box h2 { margin-top: 0; color: #ffffff; }
         .field { margin-bottom: 15px; }
-        .field label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .field input, .field textarea, .field select { width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px; }
-        .field small { display: block; color: #777; margin-top: 5px; }
+        .field label { display: block; margin-bottom: 5px; font-weight: bold; color: #f5f5f5; }
+        .field input, .field textarea, .field select { width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; background: #0d0d0d; color: #ffffff; }
+        .field input::placeholder, .field textarea::placeholder { color: #b8b8b8; }
+        .field small { display: block; color: #cfcfcf; margin-top: 5px; }
         .image-list { display: grid; gap: 10px; }
         .image-row { display: flex; gap: 8px; align-items: center; }
         .image-row input { flex: 1; }
         .video-list { display: grid; gap: 10px; }
         .video-row { display: flex; gap: 8px; align-items: center; }
         .video-row input { flex: 1; }
-        .secondary-btn, .remove-image-btn { border: none; border-radius: 5px; padding: 10px 14px; cursor: pointer; font-weight: bold; }
-        .secondary-btn { background-color: #e8eef5; color: #123456; }
-        .remove-image-btn { background-color: #fbe2e2; color: #a40000; }
-        .editor-toolbar { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; background: #f4f4f4; border: 1px solid #e0e0e0; border-bottom: 0; border-radius: 5px 5px 0 0; }
-        .editor-toolbar button { border: 1px solid #d4d4d4; background: white; border-radius: 4px; padding: 6px 10px; cursor: pointer; }
+        .secondary-btn, .remove-image-btn { border: none; border-radius: 8px; padding: 10px 14px; cursor: pointer; font-weight: bold; }
+        .secondary-btn { background: #1a1a1a; color: #ffffff; border: 1px solid rgba(255,255,255,0.08); }
+        .remove-image-btn { background: rgba(255, 255, 255, 0.04); color: #f0f0f0; border: 1px solid rgba(255,255,255,0.08); }
+        .editor-toolbar { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.08); border-bottom: 0; border-radius: 8px 8px 0 0; }
+        .editor-toolbar button { border: 1px solid rgba(255,255,255,0.08); background: #0f0f0f; color: #ffffff; border-radius: 6px; padding: 6px 10px; cursor: pointer; }
         .link-panel { display: none; flex: 1 1 100%; gap: 6px; align-items: center; padding-top: 6px; }
         .link-panel.open { display: flex; }
-        .link-panel input, .link-panel select { flex: 1; min-width: 180px; padding: 7px 9px; border: 1px solid #d4d4d4; border-radius: 4px; background: white; }
+        .link-panel input, .link-panel select { flex: 1; min-width: 180px; padding: 7px 9px; border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; background: #111111; color: #ffffff; }
         .link-panel button { padding: 7px 10px; }
-        .editor { min-height: 220px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 0 0 5px 5px; line-height: 1.8; outline: none; }
-        .editor img.editor-image-selected { outline: 3px solid #ff9900; outline-offset: 3px; }
-        .editor:focus { border-color: #123456; }
+        .editor { min-height: 220px; padding: 12px; border: 1px solid rgba(255,255,255,0.08); border-radius: 0 0 8px 8px; line-height: 1.8; outline: none; background: #0d0d0d; color: #ffffff; }
+        .editor img.editor-image-selected { outline: 3px solid rgba(255,255,255,0.45); outline-offset: 3px; }
+        .editor:focus { border-color: rgba(255,255,255,0.18); }
         .editor:empty::before { content: attr(data-placeholder); color: #999; }
-        .add-btn { background-color: #123456; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; font-size: 18px; }
-        .add-btn:hover { background-color: #ff9900; color: #333; }
-        .list-box { background-color: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-top: 30px; }
-        .item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #e0e0e0; }
+        .add-btn { background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%); color: white; border: 1px solid rgba(255,255,255,0.08); padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: 700; }
+        .add-btn:hover { background: linear-gradient(180deg, #2a2a2a 0%, #171717 100%); }
+        .list-box { background-color: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-top: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.28); }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); color: #f5f5f5; }
         .item:last-child { border-bottom: none; }
         .item-actions { display: flex; gap: 8px; flex-shrink: 0; }
-        .edit-btn { background-color: #e8eef5; color: #123456; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
-        .delete-btn { background-color: #cc0000; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
-        .msg-box { background-color: #ff9900; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-weight: bold; display: none; }
-        .success { background-color: #00cc00 !important; }
-        .error { background-color: #cc0000 !important; }
-        .warning { background-color: #ff9900 !important; }
-        .dark-mode body { background-color: #121820; color: #e8edf2; }
-        .dark-mode .form-box, .dark-mode .list-box { background-color: #1c2733; border-color: #344454; }
-        .dark-mode .form-box h2, .dark-mode .list-box h2, .dark-mode .field label, .dark-mode .item { color: #e8edf2; }
-        .dark-mode .field small { color: #b9c4cf; }
-        .dark-mode .field input, .dark-mode .field textarea, .dark-mode .field select, .dark-mode .link-panel input, .dark-mode .link-panel select { background-color: #263746; color: #fff; border-color: #496072; }
-        .dark-mode .field input::placeholder, .dark-mode .field textarea::placeholder, .dark-mode .link-panel input::placeholder { color: #b9c4cf; }
-        .dark-mode .secondary-btn, .dark-mode .edit-btn { background-color: #344b5d; color: #e8edf2; }
-        .dark-mode .editor-toolbar { background-color: #263746; border-color: #496072; }
-        .dark-mode .editor-toolbar button, .dark-mode .editor { background-color: #1c2733; color: #e8edf2; border-color: #496072; }
-        .dark-mode .editor * { color: #e8edf2 !important; }
-        .dark-mode .item { border-color: #344454; }
+        .edit-btn { background: rgba(255,255,255,0.06); color: #ffffff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+        .delete-btn { background: #171717; color: white; border: 1px solid rgba(255,255,255,0.08); padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+        .msg-box { background-color: #1a1a1a; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-weight: bold; display: none; }
+        .success { background-color: #1d1d1d !important; }
+        .error { background-color: #2f2f2f !important; }
+        .warning { background-color: #202020 !important; }
+        .dark-mode body { background-color: #000000; color: #f5f5f5; }
+        .dark-mode .form-box, .dark-mode .list-box { background-color: #111111; border-color: rgba(255,255,255,0.08); }
+        .dark-mode .form-box h2, .dark-mode .list-box h2, .dark-mode .field label, .dark-mode .item { color: #f5f5f5; }
+        .dark-mode .field small { color: #d0d0d0; }
+        .dark-mode .field input, .dark-mode .field textarea, .dark-mode .field select, .dark-mode .link-panel input, .dark-mode .link-panel select { background-color: #0d0d0d; color: #fff; border-color: rgba(255,255,255,0.12); }
+        .dark-mode .field input::placeholder, .dark-mode .field textarea::placeholder, .dark-mode .link-panel input::placeholder { color: #b8b8b8; }
+        .dark-mode .secondary-btn, .dark-mode .edit-btn { background-color: rgba(255,255,255,0.06); color: #ffffff; }
+        .dark-mode .editor-toolbar { background-color: #1a1a1a; border-color: rgba(255,255,255,0.08); }
+        .dark-mode .editor-toolbar button, .dark-mode .editor { background-color: #0d0d0d; color: #fff; border-color: rgba(255,255,255,0.08); }
+        .dark-mode .editor * { color: #ffffff !important; }
+        .dark-mode .item { border-color: rgba(255,255,255,0.08); }
         @media (max-width: 768px) {
             body { padding: 12px; }
             .container { width: 100%; max-width: 100%; margin: 16px auto; }
@@ -95,9 +95,6 @@
 <body>
     <div class="header">
         <h1>لوحة التحكم</h1>
-        <button class="theme-btn" id="theme-btn" type="button" title="التحويل إلى الوضع الداكن" aria-label="التحويل إلى الوضع الداكن">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z"></path></svg>
-        </button>
     </div>
     <div class="container">
         <div id="msg-box" class="msg-box"></div>
@@ -117,27 +114,19 @@
                 <input type="url" id="new-category-link" placeholder="رابط القسم (اختياري)">
             </div>
             <div class="field">
+                <input type="text" id="new-category-section-title" placeholder="عنوان العمود في الصفحة الرئيسية (مثل: آخر الأفلام)">
+                <small>إذا تركت الحقل فارغًا سيظهر اسم القسم.</small>
+            </div>
+            <div class="field">
                 <input type="url" id="new-category-image" placeholder="رابط صورة القسم (اختياري)">
                 <small>سيظهر هذا الرابط كأيقونة للقسم في شريط الأقسام.</small>
             </div>
-            <button class="add-btn" onclick="addCategory()">إضافة قسم</button>
+            <button class="add-btn" id="add-category-btn" type="button">إضافة قسم</button>
         </div>
 
         <div class="list-box">
             <h2>إدارة الأقسام</h2>
             <div id="categories-list"></div>
-        </div>
-
-        <!-- تثبيت فيديو مستقل -->
-        <div class="form-box" style="margin-top: 30px;">
-            <h2>تثبيت فيديو في الواجهة الرئيسية</h2>
-            <div class="field">
-                <input type="url" id="featured-video-url" placeholder="YouTube أو m3u8 أو mpd أو flv أو ts">
-            </div>
-            <div class="field">
-                <label><input type="checkbox" id="featured-video-enabled"> تثبيت الفيديو في الواجهة الرئيسية</label>
-            </div>
-            <button class="add-btn" id="featured-video-save-btn" type="button">حفظ الفيديو المثبت</button>
         </div>
 
         <!-- إضافة موضوع -->
@@ -160,10 +149,6 @@
                 <small>عند إدخال الرابط، يؤدي النقر على بطاقة الفيديو إلى فتحه في نفس الصفحة.</small>
             </div>
             <div class="field">
-                <label><input type="checkbox" id="article-pinned"> تثبيت الموضوع في الصفحة الرئيسية</label>
-                <small>الفيديو المثبت يظهر أولًا في الكرت الرئيسي للصفحة الرئيسية.</small>
-            </div>
-            <div class="field">
                 <label>روابط الفيديو</label>
                 <div id="video-list" class="video-list">
                     <div class="video-row">
@@ -172,8 +157,6 @@
                     </div>
                 </div>
                 <button type="button" class="secondary-btn" id="add-video-btn" style="margin-top: 10px;">+ إضافة فيديو آخر</button>
-                <label style="display: block; margin-top: 10px;"><input type="checkbox" id="article-video-pinned"> تثبيت الفيديو في الواجهة الرئيسية</label>
-                <small>سيظهر أول رابط فيديو كمشغل مباشر في الكرت الرئيسي.</small>
             </div>
             <div class="field">
                 <label>نص المقالة</label>
@@ -207,7 +190,7 @@
                 <div id="article-editor" class="editor" contenteditable="true" data-placeholder="اكتب نص الموضوع هنا..."></div>
                 <textarea id="article-content" hidden></textarea>
             </div>
-            <button class="add-btn" id="article-submit-btn" onclick="addArticle()">إضافة موضوع</button>
+            <button class="add-btn" id="article-submit-btn" type="button">إضافة موضوع</button>
             <button class="secondary-btn" id="cancel-edit-btn" type="button" style="display: none; width: 100%; margin-top: 10px;">إلغاء التعديل</button>
         </div>
 
@@ -235,7 +218,22 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const categoriesRef = ref(db, 'categories');
+        const articlesRef = ref(db, 'articles');
         let editingArticleId = null;
+
+        window.addCategory = addCategory;
+        window.addArticle = addArticle;
+        window.editCategory = editCategory;
+        window.saveCategory = saveCategory;
+        window.cancelCategoryEdit = cancelCategoryEdit;
+        window.deleteCategory = deleteCategory;
+        window.resetArticleForm = resetArticleForm;
+        window.saveFeaturedVideo = saveFeaturedVideo;
+
+        document.getElementById('add-category-btn').addEventListener('click', addCategory);
+        document.getElementById('article-submit-btn').addEventListener('click', addArticle);
+        document.getElementById('cancel-edit-btn').addEventListener('click', resetArticleForm);
 
         function showMessage(message, type) {
             const msgBox = document.getElementById('msg-box');
@@ -248,50 +246,12 @@
             setTimeout(function() { msgBox.style.display = 'none'; }, 5000);
         }
 
-        function setupThemeToggle() {
-            const button = document.getElementById('theme-btn');
-            if (!button) return;
-            const updateThemeButton = () => {
-                const dark = document.documentElement.classList.contains('dark-mode');
-                button.title = dark ? 'التحويل إلى الوضع الفاتح' : 'التحويل إلى الوضع الداكن';
-                button.setAttribute('aria-label', dark ? 'التحويل إلى الوضع الفاتح' : 'التحويل إلى الوضع الداكن');
-                button.innerHTML = dark
-                    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg>'
-                    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z"></path></svg>';
-            };
-            button.addEventListener('click', () => {
-                const dark = document.documentElement.classList.toggle('dark-mode');
-                localStorage.setItem('site-theme', dark ? 'dark' : 'light');
-                updateThemeButton();
-            });
-            updateThemeButton();
-        }
-
-        function saveFeaturedVideo() {
-            const url = document.getElementById('featured-video-url').value.trim();
-            const enabled = document.getElementById('featured-video-enabled').checked;
-            if (enabled && !url) {
-                showMessage('⚠️ أدخل رابط الفيديو قبل التثبيت.', 'warning');
-                return;
-            }
-            update(ref(db, 'featuredVideo'), { url, enabled })
-                .then(() => showMessage(enabled ? '✅ تم تثبيت الفيديو في الواجهة الرئيسية.' : '✅ تم حفظ الفيديو وإلغاء تثبيته.', 'success'))
-                .catch((error) => showMessage('❌ تعذر حفظ الفيديو: ' + error.message, 'error'));
-        }
-
-        function loadFeaturedVideo() {
-            onValue(ref(db, 'featuredVideo'), (snapshot) => {
-                const video = snapshot.exists() ? snapshot.val() || {} : {};
-                document.getElementById('featured-video-url').value = video.url || '';
-                document.getElementById('featured-video-enabled').checked = video.enabled === true || video.enabled === 'true';
-            }, { onlyOnce: true });
-        }
-
         // إضافة قسم
         function addCategory() {
             const name = document.getElementById('new-category').value.trim();
             const parentId = document.getElementById('new-category-parent').value || null;
             const categoryUrl = document.getElementById('new-category-link').value.trim();
+            const categorySectionTitle = document.getElementById('new-category-section-title').value.trim();
             const categoryImage = document.getElementById('new-category-image').value.trim();
             if (!name) {
                 showMessage('⚠️ تحذير: أدخل اسم القسم أولاً', 'warning');
@@ -305,109 +265,109 @@
                 showMessage('⚠️ رابط صورة القسم يجب أن يبدأ بـ http:// أو https://', 'warning');
                 return;
             }
-            push(ref(db, 'categories'), {
+            push(categoriesRef, {
                 name: name,
                 parentId: parentId,
                 url: categoryUrl || '',
+                sectionTitle: categorySectionTitle || name,
                 iconUrl: categoryImage || '',
-                imageUrl: categoryImage || ''
+                imageUrl: categoryImage || '',
+                logoUrl: categoryImage || ''
             })
                 .then(() => {
                     showMessage('✅ تم إضافة القسم بنجاح!', 'success');
                     document.getElementById('new-category').value = '';
                     document.getElementById('new-category-parent').selectedIndex = 0;
                     document.getElementById('new-category-link').value = '';
+                    document.getElementById('new-category-section-title').value = '';
                     document.getElementById('new-category-image').value = '';
+                    loadCategories();
                 })
                 .catch((error) => {
                     showMessage('❌ خطأ: ' + error.message, 'error');
                 });
         }
 
-        // تحميل الأقسام (باستخدام onValue حتى تظهر فوراً)
         function loadCategories() {
-            onValue(ref(db, 'categories'), (snapshot) => {
-                const select = document.getElementById('article-category');
-                const parentSelect = document.getElementById('new-category-parent');
-                const list = document.getElementById('categories-list');
-                const items = [];
+            get(categoriesRef)
+                .then((snapshot) => {
+                    const select = document.getElementById('article-category');
+                    const parentSelect = document.getElementById('new-category-parent');
+                    const list = document.getElementById('categories-list');
+                    const categories = snapshot.exists() ? snapshot.val() || {} : {};
+                    const items = Object.entries(categories).map(([id, value]) => ({
+                        id,
+                        name: value?.name || value?.nam || value?.title || value?.label || 'قسم',
+                        sectionTitle: value?.sectionTitle || value?.columnTitle || value?.titleLabel || value?.name || '',
+                        parentId: value?.parentId || null,
+                        url: value?.url || '',
+                        iconUrl: value?.iconUrl || value?.imageUrl || value?.logoUrl || '',
+                        imageUrl: value?.iconUrl || value?.imageUrl || value?.logoUrl || ''
+                    }));
 
-                snapshot.forEach((child) => {
-                    const cat = child.val() || {};
-                    items.push({
-                        id: child.key,
-                        name: cat.name || cat.nam || cat.title || cat.label || 'قسم',
-                        parentId: cat.parentId || null,
-                        url: cat.url || '',
-                        iconUrl: cat.iconUrl || cat.imageUrl || cat.logoUrl || '',
-                        imageUrl: cat.iconUrl || cat.imageUrl || cat.logoUrl || ''
+                    select.innerHTML = '<option value="">اختر القسم</option>';
+                    parentSelect.innerHTML = '<option value="">قسم رئيسي</option>';
+                    list.innerHTML = '';
+
+                    items.forEach((cat) => {
+                        const prefix = cat.parentId ? '↳ ' : '';
+                        select.innerHTML += `<option value="${cat.id}">${prefix}${cat.name}</option>`;
+                        parentSelect.innerHTML += `<option value="${cat.id}">${prefix}${cat.name}</option>`;
                     });
-                });
 
-                const allCategories = items;
+                    if (!items.length) {
+                        list.innerHTML = '<p>لا توجد أقسام حاليًا.</p>';
+                        return;
+                    }
 
-                select.innerHTML = '<option value="">اختر القسم</option>';
-                parentSelect.innerHTML = '<option value="">قسم رئيسي</option>';
-                list.innerHTML = '';
-
-                allCategories.forEach((cat) => {
-                    const prefix = cat.parentId ? '↳ ' : '';
-                    select.innerHTML += `<option value="${cat.id}">${prefix}${cat.name}</option>`;
-                    parentSelect.innerHTML += `<option value="${cat.id}">${prefix}${cat.name}</option>`;
-                });
-
-                const categoryIds = new Set(items.map((item) => item.id));
-                const rootCategories = items.filter(item => !item.parentId || !categoryIds.has(item.parentId));
-                const renderCategoryTree = (category, depth = 0) => {
-                    const children = items.filter(item => item.parentId === category.id);
-                    let childHtml = '';
-                    if (children.length) {
-                        childHtml = children.map(child => `
-                            <div class="item" data-category-id="${child.id}" style="margin-right: ${depth + 1}0px;">
+                    const categoryIds = new Set(items.map((item) => item.id));
+                    const rootCategories = items.filter((item) => !item.parentId || !categoryIds.has(item.parentId));
+                    const renderCategoryTree = (category, depth = 0) => {
+                        const children = items.filter((item) => item.parentId === category.id);
+                        let childHtml = '';
+                        if (children.length) {
+                            childHtml = children.map((child) => `
+                                <div class="item" data-category-id="${child.id}" style="margin-right: ${depth + 1}0px;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        ${child.iconUrl ? `<img src="${child.iconUrl}" alt="${child.name}" style="width:28px; height:28px; object-fit:cover; border-radius:8px;">` : ''}
+                                        <div>
+                                            <strong class="category-name">${child.name}</strong>
+                                            ${child.url ? `<div style="font-size:12px;color:#666;margin-top:4px;">رابط: ${child.url}</div>` : ''}
+                                        </div>
+                                    </div>
+                                    <div class="item-actions">
+                                        <button class="edit-btn" onclick="editCategory('${child.id}')">تعديل</button>
+                                        <button class="delete-btn" onclick="deleteCategory('${child.id}')">حذف</button>
+                                    </div>
+                                </div>
+                                ${renderCategoryTree(child, depth + 1)}
+                            `).join('');
+                        }
+                        return `
+                            <div class="item" data-category-id="${category.id}" style="margin-right: ${depth * 10}px;">
                                 <div style="display:flex; align-items:center; gap:10px;">
-                                    ${child.iconUrl ? `<img src="${child.iconUrl}" alt="${child.name}" style="width:28px; height:28px; object-fit:cover; border-radius:8px;">` : ''}
+                                    ${category.iconUrl ? `<img src="${category.iconUrl}" alt="${category.name}" style="width:28px; height:28px; object-fit:cover; border-radius:8px;">` : ''}
                                     <div>
-                                        <strong class="category-name">${child.name}</strong>
-                                        ${child.url ? `<div style="font-size:12px;color:#666;margin-top:4px;">رابط: ${child.url}</div>` : ''}
+                                        <strong class="category-name">${category.name}</strong>
+                                        ${category.url ? `<div style="font-size:12px;color:#666;margin-top:4px;">رابط: ${category.url}</div>` : ''}
                                     </div>
                                 </div>
                                 <div class="item-actions">
-                                    <button class="edit-btn" onclick="editCategory('${child.id}')">تعديل</button>
-                                    <button class="delete-btn" onclick="deleteCategory('${child.id}')">حذف</button>
+                                    <button class="edit-btn" onclick="editCategory('${category.id}')">تعديل</button>
+                                    <button class="delete-btn" onclick="deleteCategory('${category.id}')">حذف</button>
                                 </div>
                             </div>
-                            ${renderCategoryTree(child, depth + 1)}
-                        `).join('');
-                    }
-                    return `
-                        <div class="item" data-category-id="${category.id}" style="margin-right: ${depth * 10}px;">
-                            <div style="display:flex; align-items:center; gap:10px;">
-                                ${category.iconUrl ? `<img src="${category.iconUrl}" alt="${category.name}" style="width:28px; height:28px; object-fit:cover; border-radius:8px;">` : ''}
-                                <div>
-                                    <strong class="category-name">${category.name}</strong>
-                                    ${category.url ? `<div style="font-size:12px;color:#666;margin-top:4px;">رابط: ${category.url}</div>` : ''}
-                                </div>
-                            </div>
-                            <div class="item-actions">
-                                <button class="edit-btn" onclick="editCategory('${category.id}')">تعديل</button>
-                                <button class="delete-btn" onclick="deleteCategory('${category.id}')">حذف</button>
-                            </div>
-                        </div>
-                        ${childHtml}`;
-                };
+                            ${childHtml}`;
+                    };
 
-                rootCategories.forEach((cat) => {
-                    list.innerHTML += renderCategoryTree(cat);
+                    rootCategories.forEach((cat) => {
+                        list.innerHTML += renderCategoryTree(cat);
+                    });
+                })
+                .catch((error) => {
+                    document.getElementById('categories-list').innerHTML = '<p>لا توجد أقسام حاليًا.</p>';
+                    showMessage('❌ تعذر تحميل الأقسام: ' + error.message, 'error');
                 });
-
-                if (!items.length) {
-                    list.innerHTML = '<p>لا توجد أقسام حاليًا.</p>';
-                }
-
-                if (!snapshot.exists()) {
-                    list.innerHTML = '<p>لا توجد أقسام حاليًا.</p>';
-                }
-            });
         }
 
         // إضافة موضوع
@@ -416,11 +376,9 @@
             const categoryId = document.getElementById('article-category').value;
             const image = document.getElementById('article-image').value.trim();
             const articleLink = document.getElementById('article-link').value.trim();
-            const pinned = document.getElementById('article-pinned').checked;
             const videos = Array.from(document.querySelectorAll('.article-video'))
                 .map((input) => input.value.trim())
                 .filter(Boolean);
-            const videoPinned = document.getElementById('article-video-pinned').checked && videos.length > 0;
             const editor = document.getElementById('article-editor');
             const content = editor.innerHTML.trim();
             const hasText = editor.textContent.trim().length > 0;
@@ -437,8 +395,6 @@
                 categoryId: categoryId,
                 imageUrl: image,
                 url: articleLink,
-                pinned: pinned,
-                videoPinned: videoPinned,
                 videoUrl: videos[0] || '',
                 videoUrls: videos,
                 content: content,
@@ -446,12 +402,13 @@
             };
             const saveOperation = editingArticleId
                 ? update(ref(db, 'articles/' + editingArticleId), articleData)
-                : push(ref(db, 'articles'), articleData);
+                : push(articlesRef, articleData);
 
             saveOperation
                 .then(() => {
                     showMessage(editingArticleId ? '✅ تم تعديل الموضوع بنجاح!' : '✅ تم إضافة الموضوع بنجاح!', 'success');
                     resetArticleForm();
+                    loadArticles();
                 })
                 .catch((error) => {
                     showMessage('❌ خطأ: ' + error.message, 'error');
@@ -466,8 +423,6 @@
             document.getElementById('article-title').value = '';
             document.getElementById('article-image').value = '';
             document.getElementById('article-link').value = '';
-            document.getElementById('article-pinned').checked = false;
-            document.getElementById('article-video-pinned').checked = false;
             document.getElementById('video-list').innerHTML = createVideoRow();
             document.getElementById('article-editor').innerHTML = '';
             document.getElementById('article-category').selectedIndex = 0;
@@ -482,6 +437,7 @@
                     }
                     const category = snapshot.val() || {};
                     const currentName = category.name || category.nam || category.title || category.label || '';
+                    const currentSectionTitle = category.sectionTitle || category.columnTitle || category.titleLabel || currentName;
                     const currentUrl = category.url || '';
                     const currentImage = category.iconUrl || category.imageUrl || category.logoUrl || '';
                     const row = document.querySelector(`[data-category-id="${id}"]`);
@@ -489,6 +445,7 @@
                     row.innerHTML = `
                         <div style="display:flex; flex-direction:column; gap:6px; min-width:260px;">
                             <input class="category-edit-input" value="${currentName.replace(/&/g, '&').replace(/"/g, '"')}" type="text" placeholder="اسم القسم">
+                            <input class="category-edit-title" value="${currentSectionTitle.replace(/&/g, '&').replace(/"/g, '"')}" type="text" placeholder="عنوان العمود في الصفحة الرئيسية">
                             <input class="category-edit-url" value="${currentUrl.replace(/&/g, '&').replace(/"/g, '"')}" type="url" placeholder="رابط القسم (اختياري)">
                             <input class="category-edit-image" value="${currentImage.replace(/&/g, '&').replace(/"/g, '"')}" type="url" placeholder="رابط صورة القسم (اختياري)">
                         </div>
@@ -505,9 +462,11 @@
         function saveCategory(id) {
             const row = document.querySelector(`[data-category-id="${id}"]`);
             const input = row ? row.querySelector('.category-edit-input') : null;
+            const titleInput = row ? row.querySelector('.category-edit-title') : null;
             const urlInput = row ? row.querySelector('.category-edit-url') : null;
             const imageInput = row ? row.querySelector('.category-edit-image') : null;
             const name = input ? input.value.trim() : '';
+            const sectionTitle = titleInput ? titleInput.value.trim() : '';
             const url = urlInput ? urlInput.value.trim() : '';
             const imageUrl = imageInput ? imageInput.value.trim() : '';
             if (!name) {
@@ -524,11 +483,16 @@
             }
             update(ref(db, 'categories/' + id), {
                 name: name,
+                sectionTitle: sectionTitle || name,
                 url: url || '',
                 iconUrl: imageUrl || '',
-                imageUrl: imageUrl || ''
+                imageUrl: imageUrl || '',
+                logoUrl: imageUrl || ''
             })
-                .then(() => showMessage('✅ تم تعديل القسم بنجاح!', 'success'))
+                .then(() => {
+                    showMessage('✅ تم تعديل القسم بنجاح!', 'success');
+                    loadCategories();
+                })
                 .catch((error) => showMessage('❌ تعذر تعديل القسم: ' + error.message, 'error'));
         }
 
@@ -553,7 +517,10 @@
         function deleteCategory(id) {
             if (!confirm('هل تريد حذف هذا القسم؟ سيتم حذف القسم فقط، بينما تبقى المقالات المرتبطة دون حذف.')) return;
             remove(ref(db, 'categories/' + id))
-                .then(() => showMessage('✅ تم حذف القسم بنجاح!', 'success'))
+                .then(() => {
+                    showMessage('✅ تم حذف القسم بنجاح!', 'success');
+                    loadCategories();
+                })
                 .catch((error) => showMessage('❌ خطأ: ' + error.message, 'error'));
         }
 
@@ -752,64 +719,73 @@
             });
         });
 
-        // تحميل المواضيع (باستخدام onValue حتى تظهر فوراً)
         function loadArticles() {
-            onValue(ref(db, 'articles'), (snapshot) => {
-                const list = document.getElementById('articles-list');
-                list.innerHTML = '';
-                const articles = [];
-                snapshot.forEach((child) => {
-                    articles.push({ id: child.key, article: child.val() || {} });
+            get(articlesRef)
+                .then((snapshot) => {
+                    const list = document.getElementById('articles-list');
+                    list.innerHTML = '';
+                    const articles = [];
+                    if (snapshot.exists()) {
+                        snapshot.forEach((child) => {
+                            articles.push({ id: child.key, article: child.val() || {} });
+                        });
+                    }
+                    articles.sort((first, second) => Number(second.article.createdAt || 0) - Number(first.article.createdAt || 0));
+                    articles.forEach(({ id, article }) => {
+                        const preview = document.createElement('div');
+                        preview.innerHTML = article.content || '';
+                        const text = (preview.textContent || '').replace(/\s+/g, ' ').trim();
+                        list.innerHTML += `
+                            <div class="item">
+                                <div>
+                                    <strong>${article.title || 'موضوع بدون عنوان'}</strong><br>
+                                    <small>${text ? text.substring(0, 50) + (text.length > 50 ? '...' : '') : 'لا يوجد نص'}</small>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="edit-btn" onclick="editArticle('${id}')">تعديل</button>
+                                    <button class="delete-btn" onclick="deleteArticle('${id}')">حذف</button>
+                                </div>
+                            </div>`;
+                    });
+                    if (!articles.length) list.innerHTML = '<p>لا توجد مواضيع حاليًا.</p>';
+                })
+                .catch((error) => {
+                    document.getElementById('articles-list').innerHTML = '<p>لا توجد مواضيع حاليًا.</p>';
+                    showMessage('❌ تعذر تحميل الفيديوهات: ' + error.message, 'error');
                 });
-                articles.sort((first, second) => Number(second.article.createdAt || 0) - Number(first.article.createdAt || 0));
-                articles.forEach(({ id, article }) => {
-                    const preview = document.createElement('div');
-                    preview.innerHTML = article.content || '';
-                    list.innerHTML += `
-                        <div class="item">
-                            <div>
-                                <strong>${article.title}</strong><br>
-                                <small>${preview.textContent.substring(0, 50)}...</small>
-                            </div>
-                            <div class="item-actions">
-                                <button class="edit-btn" onclick="editArticle('${id}')">تعديل</button>
-                                <button class="delete-btn" onclick="deleteArticle('${id}')">حذف</button>
-                            </div>
-                        </div>`;
-                });
-                if (!snapshot.exists()) list.innerHTML = '<p>لا توجد مواضيع حاليًا.</p>';
-            });
         }
 
         function editArticle(id) {
-            onValue(ref(db, 'articles/' + id), (snapshot, error) => {
-                if (error || !snapshot.exists()) {
-                    showMessage('❌ تعذر تحميل الموضوع للتعديل.', 'error');
-                    return;
-                }
-                const article = snapshot.val();
-                editingArticleId = id;
-                document.getElementById('article-form-title').textContent = 'تعديل الفيديو';
-                document.getElementById('article-submit-btn').textContent = 'حفظ التعديلات';
-                document.getElementById('cancel-edit-btn').style.display = 'block';
-                document.getElementById('article-title').value = article.title || '';
-                document.getElementById('article-category').value = article.categoryId || '';
-                document.getElementById('article-image').value = article.imageUrl || '';
-                document.getElementById('article-link').value = article.url || article.link || '';
-                document.getElementById('article-pinned').checked = article.pinned === true || article.pinned === 'true';
-                const videos = Array.isArray(article.videoUrls) && article.videoUrls.length
-                    ? article.videoUrls
-                    : (article.videoUrl ? [article.videoUrl] : []);
-                document.getElementById('video-list').innerHTML = videos.length
-                    ? videos.map((video) => createVideoRow(video)).join('')
-                    : createVideoRow();
-                document.getElementById('article-video-pinned').checked = article.videoPinned === true || article.videoPinned === 'true';
-                document.getElementById('article-editor').innerHTML = article.content || '';
-                const articleForm = document.getElementById('article-form-title')?.closest('.form-box');
-                if (articleForm) {
-                    articleForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, { onlyOnce: true });
+            get(ref(db, 'articles/' + id))
+                .then((snapshot) => {
+                    if (!snapshot.exists()) {
+                        showMessage('❌ تعذر تحميل الموضوع للتعديل.', 'error');
+                        return;
+                    }
+                    const article = snapshot.val();
+                    editingArticleId = id;
+                    document.getElementById('article-form-title').textContent = 'تعديل الفيديو';
+                    document.getElementById('article-submit-btn').textContent = 'حفظ التعديلات';
+                    document.getElementById('cancel-edit-btn').style.display = 'block';
+                    document.getElementById('article-title').value = article.title || '';
+                    document.getElementById('article-category').value = article.categoryId || '';
+                    document.getElementById('article-image').value = article.imageUrl || '';
+                    document.getElementById('article-link').value = article.url || article.link || '';
+                    const videos = Array.isArray(article.videoUrls) && article.videoUrls.length
+                        ? article.videoUrls
+                        : (article.videoUrl ? [article.videoUrl] : []);
+                    document.getElementById('video-list').innerHTML = videos.length
+                        ? videos.map((video) => createVideoRow(video)).join('')
+                        : createVideoRow();
+                    document.getElementById('article-editor').innerHTML = article.content || '';
+                    const articleForm = document.getElementById('article-form-title')?.closest('.form-box');
+                    if (articleForm) {
+                        articleForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                })
+                .catch((error) => {
+                    showMessage('❌ تعذر تحميل الموضوع للتعديل: ' + error.message, 'error');
+                });
         }
 
         // حذف موضوع (تم تصحيح المسار)
@@ -818,17 +794,30 @@
             remove(ref(db, 'articles/' + id))
                 .then(() => {
                     showMessage('✅ تم حذف الموضوع بنجاح!', 'success');
+                    loadArticles();
                 })
                 .catch((error) => {
                     showMessage('❌ خطأ: ' + error.message, 'error');
                 });
         }
 
+        function setupThemeToggle() {
+            const toggleButton = document.getElementById('theme-btn');
+            if (!toggleButton) return;
+            const root = document.body;
+            const saved = localStorage.getItem('admin-theme');
+            if (saved === 'dark') {
+                root.classList.add('dark-mode');
+            }
+            toggleButton.addEventListener('click', () => {
+                root.classList.toggle('dark-mode');
+                localStorage.setItem('admin-theme', root.classList.contains('dark-mode') ? 'dark' : 'light');
+            });
+        }
+
         loadCategories();
         loadArticles();
-        loadFeaturedVideo();
         setupThemeToggle();
-        document.getElementById('featured-video-save-btn').addEventListener('click', saveFeaturedVideo);
         document.getElementById('cancel-edit-btn').addEventListener('click', resetArticleForm);
 
         // ربط الدوال بنطاق النافذة العامة لتعمل مع أحداث onclick في HTML
@@ -840,7 +829,6 @@
         window.saveCategory = saveCategory;
         window.cancelCategoryEdit = cancelCategoryEdit;
         window.deleteCategory = deleteCategory;
-        window.saveFeaturedVideo = saveFeaturedVideo;
     </script>
 </body>
 </html>

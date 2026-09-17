@@ -16,7 +16,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.webmanifest">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&family=Noto+Sans+Arabic:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <script>if (localStorage.getItem('site-theme') === 'dark') document.documentElement.classList.add('dark-mode');</script>
     <style>
         * { font-family: 'Cairo', 'Roboto', 'Noto Sans Arabic', 'Arial', sans-serif; box-sizing: border-box; }
         html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
@@ -25,88 +24,61 @@
         .header-logo { height: 45px; }
         .header-logo-link { display: flex; align-items: center; }
         .header a { color: white; text-decoration: none; font-weight: bold; }
+        .header a:hover { color: #ff4d4d; }
         .search-btn { background: transparent; border: 0; padding: 0; width: 42px; height: 42px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: white; }
         .search-btn svg { width: 30px; height: 30px; }
-        .theme-btn { background: transparent; border: 0; padding: 0; width: 42px; height: 42px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: white; }
-        .theme-btn svg { width: 25px; height: 25px; }
         .header-actions { display: flex; align-items: center; gap: 4px; margin-right: auto; }
         .header-actions .search-btn { margin-right: 0; }
-        .install-btn { display: none; background: #ff9900; color: #123456; border: 0; border-radius: 8px; padding: 8px 12px; font: inherit; font-weight: 700; cursor: pointer; }
+        .install-btn { display: none; background: #ff9900; color: #111; border: 0; border-radius: 8px; padding: 8px 12px; font: inherit; font-weight: 700; cursor: pointer; }
         .install-btn.visible { display: block; }
         .search-area { display: none; flex: 1; max-width: 420px; }
         .search-area.open { display: flex; gap: 8px; }
-        .search-area input { flex: 1; min-width: 0; padding: 10px 12px; border: 0; border-radius: 8px; font-family: inherit; }
-        .search-area button { padding: 9px 14px; border: 0; border-radius: 8px; cursor: pointer; color: #123456; font-weight: bold; }
+        .search-area input { flex: 1; min-width: 0; padding: 10px 12px; border: 0; border-radius: 8px; font-family: inherit; background: #111; color: #fff; }
+        .search-area button { padding: 9px 14px; border: 0; border-radius: 8px; cursor: pointer; color: #111; font-weight: bold; background: #ff9900; }
         .categories-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #000000; padding: 10px 20px 12px; display: flex; flex-wrap: wrap; gap: 12px; overflow: visible; white-space: normal; border-top: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -2px 8px rgba(0,0,0,0.26); backdrop-filter: blur(6px); }
-        .category-link { display: inline-flex; align-items: center; color: #123456; text-decoration: none; font-size: 15px; font-weight: 700; transition: color 0.3s; padding: 8px 12px; border-radius: 8px; }
-        .category-link:hover { color: #ff9900; background: #f7f9fb; }
-        .category-item { position: relative; z-index: 1001; display: inline-flex; align-items: center; }
+        .category-item { position: relative; z-index: 1001; display: inline-flex; align-items: stretch; }
         .category-item.open { z-index: 2000; }
-        .category-toggle { flex: 0 0 28px; width: 28px; height: 28px; margin-right: 2px; border: 0; background: transparent; color: #123456; cursor: pointer; padding: 0; font: inherit; font-size: 25px; font-weight: 900; line-height: 22px; text-align: center; transition: transform 0.2s, color 0.2s; }
-        .category-toggle:hover, .category-item.open > .category-toggle { background: transparent; color: #ff9900; }
-        .category-item.open > .category-toggle { transform: rotate(180deg); }
-        .sub-menu { position: absolute; top: calc(100% + 4px); right: 0; min-width: 190px; max-width: 78vw; background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.16); display: none; z-index: 4000; padding: 8px 0; }
-        .category-item.open .sub-menu { display: block; }
-        .sub-menu .category-item { display: flex; width: 100%; }
-        .sub-menu .category-item > .sub-menu { top: 0; right: 100%; }
-        @media (hover: hover) and (pointer: fine) { .category-item:hover .sub-menu { display: block; } }
-        @media (hover: none), (pointer: coarse) {
-            .category-item.open > .sub-menu { display: block; }
-        }
-        .sub-menu a { display: block; width: 100%; padding: 10px 12px; color: #123456; text-decoration: none; font-weight: 700; white-space: normal; word-break: break-word; }
-        .sub-menu a:hover { background: #f4f4f4; }
-        .latest-ticker { position: sticky; top: var(--categories-bar-height, 60px); z-index: 999; display: flex; align-items: center; gap: 12px; overflow: hidden; background: #123456; color: white; min-height: 42px; padding: 0 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
-        .latest-ticker-label { flex: 0 0 auto; background: #ff9900; color: #123456; padding: 5px 12px; border-radius: 6px; font-size: 13px; font-weight: 700; }
+        .category-link { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 112px; min-height: 90px; color: #f5f5f5; text-decoration: none; font-size: 12px; font-weight: 700; transition: all 0.3s; padding: 8px 6px; border-radius: 16px; background: transparent; border: none; box-shadow: none; }
+        .category-link img { width: 42px; height: 42px; object-fit: cover; border-radius: 14px; margin-bottom: 6px; background: transparent; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12)); flex-shrink: 0; }
+        .category-link span { line-height: 1.3; text-align: center; color: inherit; }
+        .category-link:hover { color: #ff4d4d; background: rgba(255,255,255,0.03); border-color: transparent; transform: translateY(-1px); }
+        .latest-ticker { position: sticky; top: var(--categories-bar-height, 60px); z-index: 999; display: flex; align-items: center; gap: 8px; overflow: hidden; background: #d71920; color: white; min-height: 30px; padding: 0 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+        .latest-ticker-label { display: none; }
         .latest-ticker-window { flex: 1; overflow: hidden; direction: ltr; }
-        .latest-ticker-track { display: inline-flex; gap: 42px; min-width: max-content; direction: rtl; animation: latestTickerMove 90s linear infinite; }
+        .latest-ticker-track { display: inline-flex; gap: 28px; min-width: max-content; direction: rtl; animation: latestTickerMove 90s linear infinite; }
         .latest-ticker:hover .latest-ticker-track, .latest-ticker:focus-within .latest-ticker-track { animation-play-state: paused; }
-        .latest-ticker-link { color: white; text-decoration: none; font-size: 14px; font-weight: 700; white-space: nowrap; }
+        .latest-ticker-link { color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 700; white-space: nowrap; }
         .latest-ticker-link::before { content: '•'; color: #ff9900; margin-left: 8px; }
         @keyframes latestTickerMove { from { transform: translateX(-50%); } to { transform: translateX(0); } }
         @media (prefers-reduced-motion: reduce) { .latest-ticker-track { animation: none; } }
-        .container { max-width: 820px; margin: 20px auto; background: #0d0d0d; padding: 30px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 8px 20px rgba(0,0,0,0.24); }
-        h1 { color: #123456; margin-top: 0; font-size: 30px; line-height: 1.4; }
+        .container { max-width: 820px; margin: 20px auto; background: #111111; padding: 30px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 8px 20px rgba(0,0,0,0.24); }
+        h1 { color: #f5f5f5; margin-top: 0; font-size: 30px; line-height: 1.4; }
         .main-img { width: 100%; height: auto; border-radius: 12px; margin-bottom: 20px; display: block; box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
-        .content { font-size: 18px; color: #333; line-height: 1.8; white-space: pre-wrap; margin-bottom: 25px; }
+        .content { font-size: 18px; color: #f0f0f0; line-height: 1.8; white-space: pre-wrap; margin-bottom: 25px; }
         .content p { margin: 0 0 14px; }
         .content img { max-width: 100%; height: auto; border-radius: 8px; }
-        .content a { color: #0b63a3; text-decoration: underline; }
-        .content a:hover { color: #ff9900; }
-        .share-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 20px 0 25px; padding-top: 18px; border-top: 1px solid #e5e5e5; }
-        .share-label { color: #123456; font-weight: 700; margin-left: 4px; }
+        .content a { color: #ffb347; text-decoration: underline; }
+        .content a:hover { color: #ff4d4d; }
+        .share-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 20px 0 25px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.12); }
+        .share-label { color: #ffffff; font-weight: 700; margin-left: 4px; }
         .share-button { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border-radius: 50%; color: white; text-decoration: none; border: 0; cursor: pointer; }
         .share-button svg { width: 21px; height: 21px; }
-        .share-trigger { background: #123456; }
+        .share-trigger { background: #ff9900; color: #111; }
         .share-options { display: none; flex-wrap: wrap; gap: 8px; align-items: center; }
         .share-options.open { display: flex; }
         .share-whatsapp { background: #20a85a; }
         .share-facebook { background: #1877f2; }
         .share-telegram { background: #229ed9; }
         .share-x { background: #111; }
-        .share-copy { background: #123456; }
-        .share-status { color: #168044; font-size: 13px; font-weight: 700; }
+        .share-copy { background: #ff9900; color: #111; }
+        .share-status { color: #8fe99d; font-size: 13px; font-weight: 700; }
         .notification-share { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; }
-        .notification-button { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; background: #ff9900; color: #123456; border: 0; border-radius: 50%; cursor: pointer; }
+        .notification-button { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; background: #ff9900; color: #111; border: 0; border-radius: 50%; cursor: pointer; }
         .notification-button svg { width: 22px; height: 22px; }
         .notification-button.enabled { background: #168044; color: white; }
-        .notification-text { color: #123456; font-size: 11px; font-weight: 700; white-space: nowrap; }
+        .notification-text { color: #f5f5f5; font-size: 11px; font-weight: 700; white-space: nowrap; }
         .notification-prompt { flex-basis: 100%; display: flex; align-items: center; gap: 10px; margin-top: 6px; }
-        .notification-description { margin: 0; color: #666; font-size: 14px; line-height: 1.7; text-align: right; }
-        .dark-mode body { background-color: #121820; color: #e8edf2; }
-        .dark-mode .categories-bar, .dark-mode .container, .dark-mode .extra-images img { background-color: #1c2733; color: #e8edf2; border-color: #344454; }
-        .dark-mode .category-link, .dark-mode h1, .dark-mode .share-label, .dark-mode .notification-text { color: #e8edf2; }
-        .dark-mode .category-toggle { color: #d69a25; }
-        .dark-mode .category-link:hover { background: #263746; }
-        .dark-mode .sub-menu { background: #1c2733; border-color: #344454; }
-        .dark-mode .sub-menu a { color: #e8edf2; }
-        .dark-mode .sub-menu a:hover { background: #263746; }
-        .dark-mode .content { color: #e8edf2; }
-        .dark-mode .content p, .dark-mode .content li, .dark-mode .content div, .dark-mode .content span, .dark-mode .content strong, .dark-mode .content em { color: #e8edf2 !important; }
-        .dark-mode .content a { color: #76b9e8; }
-        .dark-mode .latest-ticker { background: #d69a25; }
-        .dark-mode .latest-ticker-label { background: #123456; color: #ffffff; }
-        .dark-mode .latest-ticker-link { color: #000000; }
-        .dark-mode .latest-ticker-link::before { color: #000000; }
+        .notification-description { margin: 0; color: #d4d4d4; font-size: 14px; line-height: 1.7; text-align: right; }
         
         /* تعديل ارتفاع وحجم الحاوية ليتناسب مع الفيديو بالكامل دون قص */
         .video-container { width: 100%; height: 350px; margin-bottom: 20px; border-radius: 8px; overflow: hidden; background: #000; }
@@ -116,18 +88,23 @@
         .extra-images { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 25px; padding-bottom: 10px; }
         .extra-images img { width: 120px; height: 90px; object-fit: cover; border-radius: 5px; border: 1px solid #ddd; }
         @media (max-width: 768px) {
+            body { padding-bottom: 92px; }
             .header { width: 100%; max-width: 100%; flex-wrap: wrap; padding: 12px 16px; }
             .header > * { min-width: 0; }
             .header-logo { height: 40px; }
             .search-btn { margin-right: auto; }
             .search-area.open { order: 3; flex-basis: 100%; max-width: none; }
-            .categories-bar { position: sticky; top: 0; min-height: 42px; padding: 4px 12px; gap: 4px 8px; flex-wrap: nowrap; white-space: nowrap; overflow-x: auto; overflow-y: visible; -webkit-overflow-scrolling: touch; scrollbar-width: thin; z-index: 1100; }
+            .categories-bar { position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: 68px; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); gap: 4px; align-items: center; justify-content: flex-start; flex-wrap: nowrap; white-space: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; z-index: 1100; background: rgba(0,0,0,0.96); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -2px 12px rgba(0,0,0,0.25); }
+            .categories-bar::-webkit-scrollbar { display: none; }
             .category-item { flex: 0 0 auto; z-index: 1200; }
-            .category-link { font-size: 14px; padding: 6px 9px; white-space: nowrap; }
+            .category-link { width: auto; min-width: 62px; min-height: 48px; font-size: 11px; padding: 5px 6px 4px; white-space: nowrap; border-radius: 10px; }
+            .category-link img { width: 24px; height: 24px; margin-bottom: 3px; }
+            .category-link span { font-size: 10px; line-height: 1.1; }
+            .category-toggle { width: 16px; height: 16px; font-size: 16px; }
             .sub-menu { position: fixed; top: var(--category-menu-top, 48px); right: 10px; left: 10px; min-width: 0; max-height: 60vh; overflow-y: auto; z-index: 5000; }
-            .latest-ticker { width: 100%; max-width: 100%; padding: 0 12px; gap: 8px; }
+            .latest-ticker { width: 100%; max-width: 100%; padding: 0 12px; gap: 8px; min-height: 26px; }
             .latest-ticker-label { padding: 5px 8px; font-size: 12px; }
-            .latest-ticker-link { font-size: 13px; }
+            .latest-ticker-link { font-size: 12px; }
             .container { width: calc(100% - 24px); max-width: calc(100% - 24px); margin: 14px auto; padding: 18px 14px; border-radius: 10px; }
             .container > * { max-width: 100%; }
             h1 { font-size: 24px; }
@@ -164,9 +141,6 @@
             <button type="submit">بحث</button>
         </form>
         <div class="header-actions">
-        <button class="theme-btn" id="theme-btn" type="button" title="الوضع الداكن" aria-label="تفعيل الوضع الداكن">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z"></path></svg>
-        </button>
         <button class="search-btn" title="بحث" aria-label="فتح البحث">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -178,7 +152,6 @@
     </div>
     <div class="categories-bar" id="categories-bar"></div>
     <div class="latest-ticker" id="latest-ticker" aria-label="آخر المواضيع" hidden>
-        <span class="latest-ticker-label">آخر المواضيع</span>
         <div class="latest-ticker-window"><div class="latest-ticker-track" id="latest-ticker-track"></div></div>
     </div>
 
@@ -224,25 +197,6 @@
                 installButton.classList.remove('visible');
             });
             window.addEventListener('appinstalled', () => installButton.classList.remove('visible'));
-        }
-
-        function setupThemeToggle() {
-            const button = document.getElementById('theme-btn');
-            if (!button) return;
-            const updateThemeButton = () => {
-                const dark = document.documentElement.classList.contains('dark-mode');
-                button.title = dark ? 'التحويل إلى الوضع الفاتح' : 'التحويل إلى الوضع الداكن';
-                button.setAttribute('aria-label', dark ? 'التحويل إلى الوضع الفاتح' : 'التحويل إلى الوضع الداكن');
-                button.innerHTML = dark
-                    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg>'
-                    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z"></path></svg>';
-            };
-            button.addEventListener('click', () => {
-                const dark = document.documentElement.classList.toggle('dark-mode');
-                localStorage.setItem('site-theme', dark ? 'dark' : 'light');
-                updateThemeButton();
-            });
-            updateThemeButton();
         }
 
         function escapeHtml(value) {
@@ -312,46 +266,25 @@
             get(ref(db, 'categories')).then((snapshot) => {
                 const bar = document.getElementById('categories-bar');
                 syncStickyBarHeight();
-                bar.innerHTML = '<a href="./" class="category-link" data-id="home">الرئيسية</a>';
+                const homeLink = '<a href="./" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
+                bar.innerHTML = homeLink;
                 if (!snapshot.exists()) return;
                 const roots = buildCategoryTree(snapshot.val());
                 const escapeAttribute = (value) => String(value || '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
                 const renderCategory = (category) => {
-                    const children = category.children || [];
-                    const submenu = children.length
-                        ? `<div class="sub-menu">${children.map(renderCategory).join('')}</div>`
-                        : '';
                     const categoryHref = escapeAttribute(category.url || `./?category=${encodeURIComponent(category.id)}`);
+                    const iconUrl = category.iconUrl || category.imageUrl || category.logoUrl || '';
+                    const iconHtml = iconUrl
+                        ? `<img src="${escapeAttribute(iconUrl)}" alt="${escapeAttribute(category.name)}" loading="lazy" onerror="this.style.display='none';" style="width:42px;height:42px;object-fit:cover;border-radius:12px;flex-shrink:0;">`
+                        : '';
                     return `<div class="category-item">
-                        <a href="${categoryHref}" class="category-link${children.length ? ' category-parent-link' : ''}" data-id="${escapeAttribute(category.id)}">${escapeHtml(category.name)}</a>
-                        ${children.length ? `<button type="button" class="category-toggle" title="فتح الأقسام الفرعية" aria-label="فتح الأقسام الفرعية لقسم ${escapeAttribute(category.name)}" aria-expanded="false">⌄</button>` : ''}
-                        ${submenu}
+                        <a href="${categoryHref}" class="category-link" data-id="${escapeAttribute(category.id)}">${iconHtml}<span>${escapeHtml(category.name)}</span></a>
                     </div>`;
                 };
                 bar.insertAdjacentHTML('beforeend', roots.map(renderCategory).join(''));
                 syncStickyBarHeight();
-                const toggleCategoryItem = (item) => {
-                    const submenu = item.querySelector(':scope > .sub-menu');
-                    const toggle = item.querySelector(':scope > .category-toggle');
-                    if (!submenu) return;
-                    if (window.innerWidth <= 768) {
-                        const barBottom = bar.getBoundingClientRect().bottom;
-                        document.documentElement.style.setProperty('--category-menu-top', `${Math.max(4, barBottom + 4)}px`);
-                    }
-                    const isOpen = item.classList.toggle('open');
-                    if (toggle) toggle.setAttribute('aria-expanded', String(isOpen));
-                };
-                const toggleButtons = bar.querySelectorAll('.category-item > .category-toggle');
-                toggleButtons.forEach((toggle) => {
-                    toggle.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        const parentItem = toggle.closest('.category-item');
-                        toggleCategoryItem(parentItem);
-                    });
-                });
             }).catch(() => {
-                document.getElementById('categories-bar').innerHTML = '<a href="index.html" class="category-link">الرئيسية</a>';
+                document.getElementById('categories-bar').innerHTML = '<a href="./" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
                 syncStickyBarHeight();
             });
         }
@@ -365,8 +298,6 @@
             document.querySelectorAll('.category-item.open').forEach((item) => {
                 if (item.contains(event.target)) return;
                 item.classList.remove('open');
-                const toggle = item.querySelector(':scope > .category-toggle');
-                if (toggle) toggle.setAttribute('aria-expanded', 'false');
             });
         });
 

@@ -11,7 +11,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.webmanifest">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&family=Noto+Sans+Arabic:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <script>if (localStorage.getItem('site-theme') === 'dark') document.documentElement.classList.add('dark-mode');</script>
     <script>
         if (window.location.pathname.endsWith('/index.html')) {
             window.history.replaceState({}, document.title, window.location.pathname.slice(0, -'index.html'.length) + window.location.search + window.location.hash);
@@ -26,8 +25,6 @@
         .header-logo-link { display: flex; align-items: center; }
         .search-btn { background: transparent; border: 0; padding: 0; width: 42px; height: 42px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: white; }
         .search-btn svg { width: 30px; height: 30px; }
-        .theme-btn { background: transparent; border: 0; padding: 0; width: 42px; height: 42px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: white; }
-        .theme-btn svg { width: 25px; height: 25px; }
         .header-actions { display: flex; align-items: center; gap: 4px; margin-right: auto; }
         .header-actions .search-btn { margin-right: 0; }
         .install-btn { display: none; background: #ff9900; color: #123456; border: 0; border-radius: 8px; padding: 8px 12px; font: inherit; font-weight: 700; cursor: pointer; }
@@ -43,40 +40,31 @@
         .category-link img { width: 42px; height: 42px; object-fit: cover; border-radius: 14px; margin-bottom: 6px; background: transparent; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12)); flex-shrink: 0; }
         .category-link span { line-height: 1.3; text-align: center; color: inherit; }
         .category-link:hover { color: #ff4d4d; background: rgba(255,255,255,0.03); border-color: transparent; transform: translateY(-1px); }
-        .category-toggle { flex: 0 0 20px; width: 20px; height: 100%; margin-right: 2px; border: none; background: transparent; color: #123456; cursor: pointer; padding: 0; border-radius: 0; font: inherit; font-size: 18px; font-weight: 900; line-height: 1; transition: transform 0.2s, color 0.2s; }
-        .category-toggle:hover, .category-item.open > .category-toggle { color: #ff9900; }
-        .category-item.open > .category-toggle { transform: rotate(180deg); }
         .main-story { margin: 28px 20px 20px; text-align: center; cursor: pointer; background: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
         .main-story img { width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover; display: block; }
         .main-story .featured-video { width: 100%; height: min(56vw, 520px); min-height: 280px; display: block; border: 0; border-radius: 0; background: #000; }
         .main-story h2 { background-color: #111111; color: #f5f5f5; margin: 0; padding: 16px; font-size: 24px; line-height: 1.5; }
-        .featured-reel { margin: 0 20px 22px; }
-        .featured-reel-track { display: flex; gap: 16px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; padding: 4px 2px 10px; scrollbar-width: none; }
-        .featured-reel-track::-webkit-scrollbar { display: none; }
-        .featured-slide { position: relative; min-width: 220px; width: 220px; height: 150px; border-radius: 14px; overflow: hidden; flex: 0 0 220px; background: #111; scroll-snap-align: start; box-shadow: 0 8px 18px rgba(0,0,0,0.22); }
-        .featured-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .featured-slide .featured-caption { position: absolute; inset: auto 0 0 0; padding: 12px 12px 10px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.9) 100%); color: #fff; font-weight: 700; font-size: 14px; line-height: 1.4; text-align: right; }
+        .featured-reel { margin: 8px 0 18px; position: relative; }
+        .featured-reel-window { position: relative; overflow: hidden; width: 100%; }
+        .featured-reel-track { display: flex; transition: transform 0.7s ease; will-change: transform; }
+        .featured-slide { position: relative; flex: 0 0 100%; width: 100%; height: clamp(220px, 42vw, 430px); background: #111; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.18); text-decoration: none; }
+        .featured-slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity 0.3s ease; background: #000; }
+        .featured-slide img.loaded { opacity: 1; }
+        .featured-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.85) 100%); }
+        .featured-slide .featured-caption { position: absolute; inset: auto 0 0 0; padding: 18px 18px 16px; color: #fff; font-weight: 800; font-size: clamp(17px, 2vw, 28px); line-height: 1.5; text-align: right; z-index: 1; }
+        .featured-reel-controls { display: flex; justify-content: center; align-items: center; gap: 10px; padding: 10px 12px 0; }
+        .featured-reel-nav { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; background: rgba(17,17,17,0.8); color: #fff; cursor: pointer; font-size: 18px; }
+        .featured-reel-dots { display: flex; justify-content: center; gap: 7px; margin-top: 6px; }
+        .featured-reel-dot { width: 10px; height: 10px; background: rgba(255,255,255,0.38); border-radius: 50%; display: inline-block; }
+        .featured-reel-dot.active { background: #ff3b3b; }
         .category-item { position: relative; z-index: 1001; display: inline-flex; align-items: center; }
         .category-item.open { z-index: 2000; }
-        .category-toggle { flex: 0 0 28px; width: 28px; height: 28px; margin-right: 2px; border: 0; background: transparent; color: #123456; cursor: pointer; padding: 0; font: inherit; font-size: 25px; font-weight: 900; line-height: 22px; text-align: center; transition: transform 0.2s, color 0.2s; }
-        .category-toggle:hover, .category-item.open > .category-toggle { background: transparent; color: #ff9900; }
-        .category-item.open > .category-toggle { transform: rotate(180deg); }
-        .sub-menu { position: absolute; top: calc(100% + 4px); right: 0; min-width: 190px; max-width: 78vw; background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.16); display: none; z-index: 4000; padding: 8px 0; }
-        .category-item.open .sub-menu { display: block; }
-        .sub-menu .category-item { display: flex; width: 100%; }
-        .sub-menu .category-item > .sub-menu { top: 0; right: 100%; }
-        @media (hover: hover) and (pointer: fine) { .category-item:hover .sub-menu { display: block; } }
-        @media (hover: none), (pointer: coarse) {
-            .category-item.open > .sub-menu { display: block; }
-        }
-        .sub-menu a { display: block; width: 100%; padding: 10px 12px; color: #123456; text-decoration: none; font-weight: 700; white-space: normal; word-break: break-word; }
-        .sub-menu a:hover { background: #f4f4f4; }
-        .latest-ticker { position: sticky; top: 59px; z-index: 999; display: flex; align-items: center; gap: 12px; overflow: hidden; background: linear-gradient(90deg, #340a11 0%, #5a0d17 35%, #7b0d17 65%, #a11424 100%); color: white; min-height: 42px; padding: 0 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-        .latest-ticker-label { flex: 0 0 auto; background: linear-gradient(135deg, #37070f, #8a0f1d); color: #ffffff; padding: 5px 12px; border-radius: 6px; font-size: 13px; font-weight: 700; }
+        .latest-ticker { position: sticky; top: 59px; z-index: 999; display: flex; align-items: center; gap: 8px; overflow: hidden; background: #d71920; color: white; min-height: 30px; padding: 0 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .latest-ticker-label { display: none; }
         .latest-ticker-window { flex: 1; overflow: hidden; direction: ltr; }
-        .latest-ticker-track { display: inline-flex; gap: 42px; min-width: max-content; direction: rtl; animation: latestTickerMove 90s linear infinite; }
+        .latest-ticker-track { display: inline-flex; gap: 28px; min-width: max-content; direction: rtl; animation: latestTickerMove 90s linear infinite; }
         .latest-ticker:hover .latest-ticker-track, .latest-ticker:focus-within .latest-ticker-track { animation-play-state: paused; }
-        .latest-ticker-link { color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 700; white-space: nowrap; }
+        .latest-ticker-link { color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 700; white-space: nowrap; }
         .latest-ticker-link::before { content: '•'; color: #ff9900; margin-left: 8px; }
         @keyframes latestTickerMove { from { transform: translateX(-50%); } to { transform: translateX(0); } }
         @media (prefers-reduced-motion: reduce) { .latest-ticker-track { animation: none; } }
@@ -84,52 +72,105 @@
         .subcategory-cards.visible { display: grid; }
         .subcategory-card { display: flex; align-items: center; min-height: 120px; padding: 22px 20px; background: #111111; color: #f5f5f5; border: 1px solid rgba(255,255,255,0.08); border-right: 5px solid #ff4d4d; border-radius: 10px; text-decoration: none; font-size: 18px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.2s, box-shadow 0.2s, background 0.2s; }
         .subcategory-card:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.18); }
-        .grid-container { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding: 0 20px 30px 20px; max-width: 1200px; margin: 20px auto 0; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; padding: 0 20px 30px 20px; max-width: 1200px; margin: 20px auto 0; }
         .empty-state { grid-column: 1 / -1; margin: 20px 0; padding: 28px 20px; background: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: #d4d4d4; text-align: center; font-weight: 700; }
-        .article-card { position: relative; min-width: 0; background-color: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; text-decoration: none; display: flex; flex-direction: column; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.16); }
+        .article-card { position: relative; min-width: 0; background-color: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; text-decoration: none; display: flex; flex-direction: column; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.16); }
         .article-card:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
         .article-card .article-media { position: relative; width: 100%; min-width: 0; height: auto; overflow: hidden; }
         .article-card .article-media img { width: 100%; min-width: 0; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
         .article-card .article-overlay { position: absolute; inset: auto 0 0 0; padding: 18px 14px 12px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.68) 35%, rgba(0,0,0,0.92) 100%); z-index: 1; }
         .article-card .article-overlay h3 { width: 100%; margin: 0; font-size: 18px; font-weight: 700; color: #ffffff; text-align: right; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; line-height: 1.5; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+        .section-articles .article-card,
+        .section-articles .article-card .article-media,
+        .section-articles .article-card .article-media img {
+            background: #000 !important;
+            border-radius: 12px;
+        }
+        .section-articles .article-card {
+            height: 180px;
+        }
+        .section-articles .article-card .article-media {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .section-articles .article-card .article-media img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .section-articles .article-card .article-overlay {
+            position: absolute;
+            inset: auto 0 0 0;
+            padding: 12px 10px 10px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.5) 35%, rgba(0,0,0,0.85) 100%);
+            z-index: 1;
+        }
         .article-info { display: none; }
-        .category-page .grid-container { grid-template-columns: 1fr; }
+        .category-page .grid-container { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .category-page .grid-container { padding-top: 20px; }
         .home-page .article-card { height: auto; }
         .pagination { display: flex; gap: 10px; margin: 20px auto; padding: 0 20px; max-width: 1200px; justify-content: center; align-items: center; }
         .pagination a { background-color: #111111; color: #eeeeee; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 10px 20px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.3s; }
         .pagination a:hover { background-color: #d71920; color: #ffffff; border-color: #d71920; }
         .pagination a.active { background-color: #d71920; color: #ffffff; border-color: #d71920; }
-        .dark-mode body { background-color: #000000; color: #e8edf2; }
-        .dark-mode .categories-bar, .dark-mode .article-card, .dark-mode .subcategory-card, .dark-mode .empty-state, .dark-mode .main-story, .dark-mode .main-story h2, .dark-mode .footer { background-color: #1c2733; color: #e8edf2; border-color: #344454; }
-        .dark-mode .category-link, .dark-mode .article-info h3, .dark-mode .subcategory-card { color: #e8edf2; }
-        .dark-mode .category-toggle { color: #d69a25; }
-        .dark-mode .category-link:hover, .dark-mode .subcategory-card:hover { background: #263746; }
-        .dark-mode .sub-menu { background: #1c2733; border-color: #344454; }
-        .dark-mode .sub-menu a { color: #e8edf2; }
-        .dark-mode .sub-menu a:hover { background: #263746; }
-        .dark-mode .article-info p { color: #b9c4cf; }
-        .dark-mode .empty-state, .dark-mode .pagination a { color: #e8edf2; }
-        .dark-mode .pagination a { background-color: #263746; border-color: #496072; }
-        .dark-mode .pagination a.active { background-color: #ff9900; color: #123456; border-color: #ff9900; }
-        .dark-mode .search-area input { background: #263746; color: #fff; }
-        .dark-mode .latest-ticker { background: linear-gradient(90deg, #25070d 0%, #520c13 30%, #7f0d16 65%, #a10f1f 100%); }
-        .dark-mode .latest-ticker-label { background: linear-gradient(135deg, #37070f, #8a0f1d); color: #ffffff; }
-        .dark-mode .latest-ticker-link { color: #000000; }
-        .dark-mode .latest-ticker-link::before { color: #000000; }
+        .home-category-sections { display: flex; flex-direction: column; gap: 18px; padding: 0 20px 30px; max-width: 1200px; margin: 0 auto; }
+        .home-category-section { background: #111111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; box-shadow: 0 8px 18px rgba(0,0,0,0.18); width: 100%; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+        .section-title { color: #f5f5f5; font-size: 18px; font-weight: 800; margin: 0; text-align: right; order: 1; }
+        .section-view-all { color: #ff3b3b; font-weight: 800; text-decoration: none; font-size: 13px; order: 2; }
+        .section-view-all:hover { color: #ff7a7a; }
+        .section-articles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 240px); gap: 12px; overflow-x: auto; overflow-y: hidden; padding-bottom: 6px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent; justify-content: start; }
+        .section-articles::-webkit-scrollbar { height: 6px; }
+        .section-articles::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 999px; }
+        .section-articles .article-card { min-height: 0; scroll-snap-align: start; width: 100%; max-width: 240px; height: 180px; border-radius: 12px; }
+        .section-articles .article-card .article-media { position: relative; width: 100%; height: 100%; }
+        .section-articles .article-card .article-media img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
+        .section-articles .article-card .article-overlay { padding: 12px 10px 10px; }
+        .section-articles .article-card .article-overlay h3 { font-size: 14px; }
         @media (max-width: 768px) {
+            .section-articles { grid-auto-columns: minmax(170px, 190px); }
+            .section-articles .article-card { max-width: 190px; }
+            .grid-container { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+        }
+        @media (max-width: 480px) {
+            .section-articles { grid-auto-columns: minmax(150px, 170px); }
+            .section-articles .article-card { max-width: 170px; }
+            .grid-container { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+        }
+        @media (max-width: 1024px) {
+            .home-category-sections { padding: 0 20px 30px; }
+        }
+        @media (max-width: 768px) {
+            .home-category-sections { padding: 0 12px 24px; }
+            .section-header { align-items: flex-start; }
+            .section-title { font-size: 16px; }
+        }
+        @media (max-width: 480px) {
+            .home-category-section { padding: 12px; }
+        }
+        @media (max-width: 768px) {
+            body { padding-bottom: 92px; }
             .header { width: 100%; max-width: 100%; flex-wrap: wrap; padding: 12px 16px; }
             .header > * { min-width: 0; }
             .header-logo { height: 40px; }
             .search-btn { margin-right: auto; }
             .search-area.open { order: 3; flex-basis: 100%; max-width: none; }
-            .categories-bar { position: sticky; top: 0; min-height: 42px; padding: 4px 12px; gap: 4px 8px; flex-wrap: nowrap; white-space: nowrap; overflow-x: auto; overflow-y: visible; -webkit-overflow-scrolling: touch; scrollbar-width: thin; z-index: 1100; }
+            .categories-bar { position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: 68px; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); gap: 4px; align-items: center; justify-content: flex-start; flex-wrap: nowrap; white-space: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; z-index: 1100; background: rgba(0,0,0,0.96); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -2px 12px rgba(0,0,0,0.25); }
+            .categories-bar::-webkit-scrollbar { display: none; }
             .category-item { flex: 0 0 auto; z-index: 1200; }
-            .category-link { font-size: 14px; padding: 6px 9px; white-space: nowrap; }
+            .category-link { width: auto; min-width: 62px; min-height: 48px; font-size: 11px; padding: 5px 6px 4px; white-space: nowrap; border-radius: 10px; }
+            .category-link img { width: 24px; height: 24px; margin-bottom: 3px; }
+            .category-link span { font-size: 10px; line-height: 1.1; }
+            .category-toggle { width: 16px; height: 16px; font-size: 16px; }
             .sub-menu { position: fixed; top: var(--category-menu-top, 48px); right: 10px; left: 10px; min-width: 0; max-height: 60vh; overflow-y: auto; z-index: 5000; }
-            .latest-ticker { width: 100%; max-width: 100%; padding: 0 12px; gap: 8px; }
+            .latest-ticker { width: 100%; max-width: 100%; padding: 0 12px; gap: 8px; min-height: 26px; }
             .latest-ticker-label { padding: 5px 8px; font-size: 12px; }
-            .latest-ticker-link { font-size: 13px; }
+            .latest-ticker-link { font-size: 12px; }
             .main-story { width: calc(100% - 24px); max-width: 100%; margin: 18px 12px 16px; }
             .main-story .featured-video { min-height: 210px; height: 56vw; }
             .main-story h2 { font-size: 20px; padding: 13px 12px; }
@@ -190,6 +231,7 @@
     <div class="main-story" id="main-story" style="display: none;"></div>
     <div class="featured-reel" id="featured-reel" aria-label="آخر المواضيع"></div>
     <div class="subcategory-cards" id="subcategory-cards"></div>
+    <div class="home-category-sections" id="home-category-sections"></div>
     <div class="grid-container" id="articles-grid"></div>
     <div class="pagination" id="pagination"></div>
 
@@ -233,25 +275,6 @@
                 installButton.classList.remove('visible');
             });
             window.addEventListener('appinstalled', () => installButton.classList.remove('visible'));
-        }
-
-        function setupThemeToggle() {
-            const button = document.getElementById('theme-btn');
-            if (!button) return;
-            const updateThemeButton = () => {
-                const dark = document.documentElement.classList.contains('dark-mode');
-                button.title = dark ? 'التحويل إلى الوضع الفاتح' : 'التحويل إلى الوضع الداكن';
-                button.setAttribute('aria-label', dark ? 'التحويل إلى الوضع الفاتح' : 'التحويل إلى الوضع الداكن');
-                button.innerHTML = dark
-                    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg>'
-                    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z"></path></svg>';
-            };
-            button.addEventListener('click', () => {
-                const dark = document.documentElement.classList.toggle('dark-mode');
-                localStorage.setItem('site-theme', dark ? 'dark' : 'light');
-                updateThemeButton();
-            });
-            updateThemeButton();
         }
 
         function normalizeArticles(snapshot) {
@@ -345,64 +368,127 @@
         function renderFeaturedReel(articles) {
             const reel = document.getElementById('featured-reel');
             if (!reel) return;
-            const deck = shuffleArray((articles || []).slice(0, 10));
+
+            const maxPerCategory = 2;
+            const maxTotal = 10;
+            const categoryPool = shuffleArray(allCategories.filter((category) => {
+                const ids = getCategoryFilters(category.id) || new Set([category.id]);
+                return articles.some((article) => ids.has(article.categoryId));
+            }));
+
+            let deck = [];
+            for (const category of categoryPool) {
+                const ids = getCategoryFilters(category.id) || new Set([category.id]);
+                const categoryArticles = shuffleArray(articles.filter((article) => ids.has(article.categoryId)));
+                if (!categoryArticles.length) continue;
+                deck.push(...categoryArticles.slice(0, maxPerCategory));
+                if (deck.length >= maxTotal) break;
+            }
+
             if (!deck.length) {
+                deck = shuffleArray((articles || []).slice(0, maxTotal));
+            }
+
+            const finalDeck = shuffleArray(deck).slice(0, maxTotal);
+            if (!finalDeck.length) {
                 reel.innerHTML = '';
                 return;
             }
-            const repeatedDeck = [...deck, ...deck];
+
             reel.innerHTML = `
-                <div class="featured-reel-track" id="featured-reel-track" dir="rtl">
-                    ${repeatedDeck.map((article) => `
-                        <a href="${escapeHtml(getArticleHref(article))}" class="featured-slide" aria-label="${escapeHtml(article.title || 'فيديو')}">
-                            <img src="${escapeHtml(getArticleImage(article))}" alt="${escapeHtml(article.title || 'فيديو')}" onerror="this.onerror=null;this.src='${fallbackImage}';">
-                            <div class="featured-caption">${escapeHtml(article.title || 'فيديو')}</div>
-                        </a>
-                    `).join('')}
+                <div class="featured-reel-window">
+                    <div class="featured-reel-track" id="featured-reel-track" dir="rtl">
+                        ${finalDeck.map((article) => `
+                            <a href="${escapeHtml(getArticleHref(article))}" class="featured-slide" aria-label="${escapeHtml(article.title || 'موضوع مميز')}">
+                                <img class="featured-slide-image" src="${escapeHtml(getArticleImage(article))}" alt="${escapeHtml(article.title || 'موضوع مميز')}" loading="eager" decoding="async" onerror="this.onerror=null;this.src='${fallbackImage}';this.classList.add('loaded');">
+                                <div class="featured-caption">${escapeHtml(article.title || 'موضوع مميز')}</div>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="featured-reel-controls">
+                    <button class="featured-reel-nav" type="button" data-dir="prev" aria-label="السابق">‹</button>
+                    <div class="featured-reel-dots">
+                        ${finalDeck.map((_, index) => `<span class="featured-reel-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></span>`).join('')}
+                    </div>
+                    <button class="featured-reel-nav" type="button" data-dir="next" aria-label="التالي">›</button>
                 </div>
             `;
 
             const track = document.getElementById('featured-reel-track');
-            if (!track) return;
+            const dots = Array.from(document.querySelectorAll('.featured-reel-dot'));
+            const navButtons = Array.from(document.querySelectorAll('.featured-reel-nav'));
+            if (!track || !dots.length) return;
 
-            const step = () => {
-                if (!track.scrollWidth || !track.clientWidth) return;
-                const maxScroll = track.scrollWidth - track.clientWidth;
-                if (track.scrollLeft >= maxScroll - 4) {
-                    track.scrollTo({ left: 0, behavior: 'auto' });
+            const slideImages = Array.from(track.querySelectorAll('.featured-slide-image'));
+            slideImages.forEach((image) => {
+                const activate = () => { image.classList.add('loaded'); };
+                if (image.complete) {
+                    activate();
+                } else {
+                    image.addEventListener('load', activate, { once: true });
                 }
-                const itemWidth = track.querySelector('.featured-slide')?.getBoundingClientRect().width || 220;
-                track.scrollBy({ left: itemWidth + 16, behavior: 'smooth' });
-            };
+            });
 
-            track.scrollLeft = 0;
-            let intervalId = setInterval(step, 3200);
-            let isDragging = false;
-            let startX = 0;
-            let startScrollLeft = 0;
+            let activeIndex = 0;
+            let autoTimer = null;
+            let startX = null;
+            let startY = null;
+
+            function updateSlide(index) {
+                activeIndex = (index + finalDeck.length) % finalDeck.length;
+                const slideWidth = track.querySelector('.featured-slide')?.getBoundingClientRect().width || track.clientWidth || 1;
+                track.style.transform = `translateX(${activeIndex * slideWidth}px)`;
+                dots.forEach((dot, dotIndex) => {
+                    dot.classList.toggle('active', dotIndex === activeIndex);
+                });
+            }
+
+            function restartAuto() {
+                clearInterval(autoTimer);
+                autoTimer = setInterval(() => updateSlide(activeIndex + 1), 5000);
+            }
+
+            navButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    updateSlide(button.dataset.dir === 'next' ? activeIndex + 1 : activeIndex - 1);
+                    restartAuto();
+                });
+            });
+
+            dots.forEach((dot) => {
+                dot.addEventListener('click', () => {
+                    updateSlide(Number(dot.dataset.index));
+                    restartAuto();
+                });
+            });
 
             track.addEventListener('pointerdown', (event) => {
-                isDragging = true;
                 startX = event.clientX;
-                startScrollLeft = track.scrollLeft;
-                track.setPointerCapture(event.pointerId);
-                clearInterval(intervalId);
+                startY = event.clientY;
+                clearInterval(autoTimer);
             });
 
-            track.addEventListener('pointermove', (event) => {
-                if (!isDragging) return;
-                const delta = event.clientX - startX;
-                track.scrollLeft = startScrollLeft - delta;
+            track.addEventListener('pointerup', (event) => {
+                if (startX === null) return;
+                const deltaX = event.clientX - startX;
+                const deltaY = event.clientY - startY;
+                if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                    updateSlide(deltaX < 0 ? activeIndex + 1 : activeIndex - 1);
+                }
+                startX = null;
+                startY = null;
+                restartAuto();
             });
 
-            const stopDragging = () => {
-                isDragging = false;
-                intervalId = setInterval(step, 3200);
-            };
+            track.addEventListener('pointercancel', () => {
+                startX = null;
+                startY = null;
+                restartAuto();
+            });
 
-            track.addEventListener('pointerup', stopDragging);
-            track.addEventListener('pointerleave', stopDragging);
-            track.addEventListener('pointercancel', stopDragging);
+            updateSlide(0);
+            restartAuto();
         }
         function getArticleVideoUrls(article) {
             return Array.isArray(article.videoUrls) && article.videoUrls.length
@@ -588,6 +674,7 @@
                     allCategories = Object.entries(categories).map(([id, value]) => ({
                         id,
                         name: value?.name || value?.nam || value?.title || value?.label || 'قسم',
+                        sectionTitle: value?.sectionTitle || value?.columnTitle || value?.titleLabel || value?.name || '',
                         url: value?.url || '',
                         iconUrl: value?.iconUrl || value?.imageUrl || value?.logoUrl || '',
                         parentId: value?.parentId || null,
@@ -596,49 +683,22 @@
                     const bar = document.getElementById('categories-bar');
                     syncStickyBarHeight();
                     const roots = buildCategoryTree(categories);
-                    const homeLink = '<a href="./" class="category-link" data-id="home"><img src="https://c.top4top.io/p_3909b9cn40.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
+                    const homeLink = '<a href="./" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
                     bar.innerHTML = homeLink;
                     const renderCategory = (category) => {
-                        const children = category.children || [];
                         const categoryHref = category.url || `./?category=${encodeURIComponent(category.id)}`;
-                        const iconUrl = category.iconUrl || category.imageUrl || '';
+                        const iconUrl = category.iconUrl || category.imageUrl || category.logoUrl || '';
                         const iconHtml = iconUrl
                             ? `<img src="${escapeHtml(iconUrl)}" alt="${escapeHtml(category.name)}" loading="lazy" onerror="this.style.display='none';" style="width:42px;height:42px;object-fit:cover;border-radius:12px;flex-shrink:0;">`
-                            : `<img src="https://f.top4top.io/p_3909f09fm1.png" alt="${escapeHtml(category.name)}" loading="lazy" onerror="this.style.display='none';" style="width:42px;height:42px;object-fit:cover;border-radius:12px;flex-shrink:0;">`;
-                        const submenu = children.length
-                            ? `<div class="sub-menu">${children.map(renderCategory).join('')}</div>`
                             : '';
-                        return `<div class="category-item${children.length ? ' has-children' : ''}">
-                            <a href="${categoryHref}" class="category-link${children.length ? ' category-parent-link' : ''}" data-id="${category.id}">${iconHtml}<span>${escapeHtml(category.name)}</span></a>
-                            ${children.length ? `<button type="button" class="category-toggle" title="فتح الأقسام الفرعية" aria-label="فتح الأقسام الفرعية لقسم ${escapeHtml(category.name)}" aria-expanded="false">⌄</button>` : ''}
-                            ${submenu}
+                        return `<div class="category-item">
+                            <a href="${categoryHref}" class="category-link" data-id="${category.id}">${iconHtml}<span>${escapeHtml(category.name)}</span></a>
                         </div>`;
                     };
                     bar.insertAdjacentHTML('beforeend', roots.map(renderCategory).join(''));
-                    const toggleCategoryItem = (item) => {
-                        const submenu = item.querySelector(':scope > .sub-menu');
-                        const toggle = item.querySelector(':scope > .category-toggle');
-                        if (!submenu) return;
-                        if (window.innerWidth <= 768) {
-                            const barBottom = bar.getBoundingClientRect().bottom;
-                            document.documentElement.style.setProperty('--category-menu-top', `${Math.max(4, barBottom + 4)}px`);
-                        }
-                        const isOpen = item.classList.toggle('open');
-                        if (toggle) toggle.setAttribute('aria-expanded', String(isOpen));
-                    };
-
-                    const toggleButtons = bar.querySelectorAll('.category-item > .category-toggle');
-                    toggleButtons.forEach((toggle) => {
-                        toggle.addEventListener('click', (event) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            const parentItem = toggle.closest('.category-item');
-                            toggleCategoryItem(parentItem);
-                        });
-                    });
                 })
                 .catch(() => {
-                    document.getElementById('categories-bar').innerHTML = '<a href="./" class="category-link" data-id="home"><img src="https://c.top4top.io/p_3909b9cn40.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
+                    document.getElementById('categories-bar').innerHTML = '<a href="./" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:cover;border-radius:12px;background:transparent;"><span>الرئيسية</span></a>';
                     syncStickyBarHeight();
                 });
         }
@@ -652,8 +712,6 @@
             document.querySelectorAll('.category-item.open').forEach((item) => {
                 if (item.contains(event.target)) return;
                 item.classList.remove('open');
-                const toggle = item.querySelector(':scope > .category-toggle');
-                if (toggle) toggle.setAttribute('aria-expanded', 'false');
             });
         });
 
@@ -706,15 +764,72 @@
             });
         }
 
+        function renderHomepageCategorySections(articles) {
+            const container = document.getElementById('home-category-sections');
+            if (!container) return;
+            if (selectedCategory !== 'home' || searchTerm) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const roots = allCategories
+                .filter((category) => !category.parentId || !allCategories.some((parent) => parent.id === category.parentId))
+                .sort((first, second) => first.name.localeCompare(second.name, 'ar'));
+
+            const sections = roots.map((category) => {
+                const ids = getCategoryFilters(category.id) || new Set([category.id]);
+                const sectionArticles = articles.filter((article) => ids.has(article.categoryId)).slice(0, 10);
+                if (!sectionArticles.length) return '';
+
+                const viewAllHref = category.url || `./?category=${encodeURIComponent(category.id)}`;
+                const sectionTitle = (category.sectionTitle || category.name || 'قسم').trim();
+                const cards = sectionArticles.map((article) => {
+                    const title = article.title || 'عنوان غير متاح';
+                    const imageHtml = getArticleImageHtml(article, title);
+                    const articleHref = getArticleHref(article);
+                    return `
+                        <a href="${articleHref}" class="article-card">
+                            <div class="article-media">
+                                ${imageHtml}
+                                <div class="article-overlay">
+                                    <h3>${escapeHtml(title)}</h3>
+                                </div>
+                            </div>
+                        </a>`;
+                }).join('');
+
+                return `
+                    <section class="home-category-section">
+                        <div class="section-header">
+                            <h3 class="section-title">${escapeHtml(sectionTitle)}</h3>
+                            <a href="${viewAllHref}" class="section-view-all">عرض الكل</a>
+                        </div>
+                        <div class="section-articles">
+                            ${cards}
+                        </div>
+                    </section>`;
+            }).join('');
+
+            container.innerHTML = sections;
+        }
+
         function displayArticles(articles) {
             const grid = document.getElementById('articles-grid');
             const mainStory = document.getElementById('main-story');
             const subcategoryCards = document.getElementById('subcategory-cards');
             const pagination = document.getElementById('pagination');
+            const homeSections = document.getElementById('home-category-sections');
             grid.innerHTML = '';
             subcategoryCards.innerHTML = '';
             subcategoryCards.classList.remove('visible');
             pagination.innerHTML = '';
+
+            if (selectedCategory === 'home' && !searchTerm) {
+                if (homeSections) homeSections.innerHTML = '';
+                renderHomepageCategorySections(articles);
+                mainStory.style.display = 'block';
+                return;
+            }
 
             if (selectedCategory !== 'home') {
                 const childCategories = allCategories
@@ -816,7 +931,6 @@
         window.addEventListener('resize', syncStickyBarHeight);
         if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
         setupInstallPrompt();
-        setupThemeToggle();
     </script>
 </body>
 </html>
