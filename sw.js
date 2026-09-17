@@ -1,5 +1,5 @@
-const CACHE_NAME = 'alfaham-tube-shell-v5';
-const APP_SHELL = ['./', './index.html', './article.html', './admin.html', './manifest.webmanifest'];
+const CACHE_NAME = 'alfaham-tube-shell-v6';
+const APP_SHELL = ['./', './index.html', './article.html', './admin.html', './manifest.webmanifest', './assets/site-logo.png', './assets/home-icon.png'];
 
 self.addEventListener('install', (event) => {
     event.waitUntil(

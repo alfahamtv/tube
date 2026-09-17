@@ -226,11 +226,11 @@
         .section-title { color: #f5f5f5; font-size: 18px; font-weight: 800; margin: 0; text-align: right; order: 1; }
         .section-view-all { color: #ff3b3b; font-weight: 800; text-decoration: none; font-size: 13px; order: 2; }
         .section-view-all:hover { color: #ff7a7a; }
-        .section-articles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 240px); gap: 12px; overflow-x: auto; overflow-y: hidden; padding-bottom: 6px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent; justify-content: start; -webkit-overflow-scrolling: touch; touch-action: pan-x; user-select: none; cursor: grab; }
+        .section-articles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 300px); gap: 14px; overflow-x: auto; overflow-y: hidden; padding-bottom: 6px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent; justify-content: start; -webkit-overflow-scrolling: touch; touch-action: pan-x; user-select: none; cursor: grab; }
         .section-articles:active { cursor: grabbing; }
         .section-articles::-webkit-scrollbar { height: 6px; }
         .section-articles::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 999px; }
-        .section-articles .article-card { min-height: 0; scroll-snap-align: start; width: 220px; max-width: 220px; min-width: 220px; height: 180px; border-radius: 12px; aspect-ratio: 11 / 9; flex: 0 0 220px; }
+        .section-articles .article-card { min-height: 0; scroll-snap-align: start; width: 280px; max-width: 280px; min-width: 280px; height: 200px; border-radius: 12px; aspect-ratio: 7 / 5; flex: 0 0 280px; }
         .section-articles .article-card .article-media { position: relative; width: 100%; height: 100%; }
         .section-articles .article-card .article-media img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
         .section-articles .article-card .article-overlay { padding: 12px 10px 10px; }
@@ -308,16 +308,16 @@
         }
         @media (max-width: 768px) {
             .header-logo { width: 132px; height: 38px; }
-            .section-articles { grid-auto-columns: minmax(170px, 190px); }
-            .section-articles .article-card { width: 190px; max-width: 190px; min-width: 190px; flex-basis: 190px; }
+            .section-articles { grid-auto-columns: minmax(220px, 240px); }
+            .section-articles .article-card { width: 220px; max-width: 220px; min-width: 220px; height: 170px; flex-basis: 220px; }
             .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .article-card { height: 200px; min-height: 200px; }
             .category-page .article-card { height: 200px; min-height: 200px; }
             .category-link img { width: 28px; height: 28px; }
         }
         @media (max-width: 480px) {
-            .section-articles { grid-auto-columns: minmax(150px, 170px); }
-            .section-articles .article-card { width: 170px; max-width: 170px; min-width: 170px; flex-basis: 170px; }
+            .section-articles { grid-auto-columns: minmax(190px, 210px); }
+            .section-articles .article-card { width: 190px; max-width: 190px; min-width: 190px; height: 155px; flex-basis: 190px; }
             .article-card { height: 180px; min-height: 180px; }
             .category-page .article-card { height: 180px; min-height: 180px; }
             .grid-container { grid-template-columns: 1fr; }
@@ -390,7 +390,7 @@
 <body>
     <div class="header">
         <a class="header-logo-link" href="./index.html" aria-label="الرئيسية">
-            <img class="header-logo" src="https://b.top4top.io/p_3778y5jzp1.png?v=5" alt="شعار الموقع" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';">
+            <img class="header-logo" src="./assets/site-logo.png" alt="شعار الموقع">
         </a>
         <form class="search-area" id="search-area">
             <input id="search-input" type="search" placeholder="ابحث" aria-label="البحث">
@@ -905,7 +905,7 @@
                     const bar = document.getElementById('categories-bar');
                     syncStickyBarHeight();
                     const roots = buildCategoryTree(categories);
-                    const homeLink = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png?v=5" alt="الرئيسية" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png\';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
+                    const homeLink = '<a href="./index.html" class="category-link" data-id="home"><img src="./assets/home-icon.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
                     bar.innerHTML = homeLink;
                     const renderCategory = (category) => {
                         const categoryHref = category.url || `./index.html?category=${encodeURIComponent(category.id)}`;
@@ -919,7 +919,7 @@
                     bar.insertAdjacentHTML('beforeend', roots.map(renderCategory).join(''));
                 })
                 .catch(() => {
-                    document.getElementById('categories-bar').innerHTML = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png?v=5" alt="الرئيسية" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png\';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
+                    document.getElementById('categories-bar').innerHTML = '<a href="./index.html" class="category-link" data-id="home"><img src="./assets/home-icon.png" alt="الرئيسية" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
                     syncStickyBarHeight();
                 });
         }
