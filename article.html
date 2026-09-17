@@ -135,7 +135,7 @@
 <body>
     <div class="header">
         <a class="header-logo-link" href="index.html" aria-label="الرئيسية">
-            <img class="header-logo" src="https://b.top4top.io/p_3778y5jzp1.png" alt="شعار الموقع" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';">
+            <img class="header-logo" src="https://b.top4top.io/p_3778y5jzp1.png?v=5" alt="شعار الموقع" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png';">
         </a>
         <form class="search-area" id="search-area">
             <input id="search-input" type="search" placeholder="ابحث في المواضيع" aria-label="البحث">
@@ -268,7 +268,7 @@
             get(ref(db, 'categories')).then((snapshot) => {
                 const bar = document.getElementById('categories-bar');
                 syncStickyBarHeight();
-                const homeLink = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png\';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
+                const homeLink = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png?v=5" alt="الرئيسية" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png\';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
                 bar.innerHTML = homeLink;
                 if (!snapshot.exists()) return;
                 const roots = buildCategoryTree(snapshot.val());
@@ -285,7 +285,7 @@
                 bar.insertAdjacentHTML('beforeend', roots.map(renderCategory).join(''));
                 syncStickyBarHeight();
             }).catch(() => {
-                document.getElementById('categories-bar').innerHTML = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png" alt="الرئيسية" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png\';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
+                document.getElementById('categories-bar').innerHTML = '<a href="./index.html" class="category-link" data-id="home"><img src="https://b.top4top.io/p_39119oxwe9.png?v=5" alt="الرئيسية" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/h-80/img/refs/heads/main/Alfaham%20tube%201.png\';" style="width:42px;height:42px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.04);display:block;"><span>الرئيسية</span></a>';
                 syncStickyBarHeight();
             });
         }
