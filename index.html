@@ -730,30 +730,33 @@
                 loadExternalPlayer('https://cdn.jsdelivr.net/npm/hls.js@1.5.20/dist/hls.min.js', 'Hls')
                     .then((Hls) => {
                         if (!Hls || !Hls.isSupported()) throw new Error('HLS غير مدعوم');
-                        const player = new Hls();
+                        const player = new Hls({ enableWorker: true, lowLatencyMode: true, startLevel: -1, capLevelToPlayerSize: true });
                         player.loadSource(url);
                         player.attachMedia(video);
+                        player.startLoad(-1);
                     })
                     .catch(() => { video.poster = fallbackImage; });
             } else if (isDashUrl(url)) {
                 loadExternalPlayer('https://cdn.dashjs.org/latest/dash.all.min.js', 'dashjs')
                     .then((dashjs) => {
                         if (!dashjs || !dashjs.MediaPlayer) throw new Error('DASH غير مدعوم');
-                        dashjs.MediaPlayer().create().initialize(video, url, false);
+                        dashjs.MediaPlayer().create().initialize(video, url, true);
                     })
                     .catch(() => { video.poster = fallbackImage; });
             } else if (isFlvUrl(url)) {
                 loadMpegtsLibrary()
                     .then((mpegts) => {
                         if (!mpegts || !mpegts.isSupported()) throw new Error('FLV غير مدعوم');
-                        const player = mpegts.createPlayer({ type: 'flv', url });
+                        const player = mpegts.createPlayer({ type: 'flv', url }, { enableWorker: true, lazyLoad: false, autoCleanupSourceBuffer: true });
                         player.attachMediaElement(video);
                         player.load();
                         player.play().catch(() => {});
                     })
                     .catch(() => { video.poster = fallbackImage; });
             } else {
+                video.preload = 'auto';
                 video.src = url;
+                video.load();
                 video.addEventListener('error', () => {
                     if (video.dataset.streamFallback) return;
                     video.dataset.streamFallback = 'true';
@@ -776,7 +779,7 @@
             if (youtubeUrl) {
                 return `<iframe class="featured-video" src="${youtubeUrl}&autoplay=1&mute=1" title="الفيديو المثبت" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="origin" allowfullscreen></iframe>`;
             }
-            return `<video id="featured-video-player" class="featured-video" controls autoplay muted playsinline></video>`;
+            return `<video id="featured-video-player" class="featured-video" controls autoplay muted playsinline preload="auto"></video>`;
         }
 
         function getFeaturedVideoData() {

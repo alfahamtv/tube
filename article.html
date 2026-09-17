@@ -405,10 +405,11 @@
             }
             loadHlsLibrary().then((Hls) => {
                 if (!Hls || !Hls.isSupported()) throw new Error('HLS غير مدعوم في هذا المتصفح');
-                const player = new Hls();
+                const player = new Hls({ enableWorker: true, lowLatencyMode: true, startLevel: -1, capLevelToPlayerSize: true });
                 video._streamPlayer = player;
                 player.loadSource(url);
                 player.attachMedia(video);
+                player.startLoad(-1);
                 video.addEventListener('error', () => showVideoError(video, 'تعذر تشغيل بث HLS. تحقق من الرابط والسماح بـ CORS.'));
             }).catch(() => {
                 showVideoError(video, 'تعذر تشغيل رابط m3u8 في هذا المتصفح. تحقق من الرابط والسماح بـ CORS.');
@@ -420,7 +421,7 @@
                 if (!dashjs || !dashjs.MediaPlayer) throw new Error('DASH غير مدعوم');
                 const player = dashjs.MediaPlayer().create();
                 video._streamPlayer = player;
-                player.initialize(video, url, false);
+                player.initialize(video, url, true);
                 player.on(dashjs.MediaPlayer.events.ERROR, () => {
                     showVideoError(video, 'تعذر تشغيل بث DASH. تحقق من الرابط والسماح بـ CORS.');
                 });
@@ -432,7 +433,7 @@
         function setupFlvVideo(video, url) {
             loadMpegtsLibrary().then((mpegts) => {
                 if (!mpegts || !mpegts.isSupported()) throw new Error('FLV غير مدعوم');
-                const player = mpegts.createPlayer({ type: 'flv', url });
+                const player = mpegts.createPlayer({ type: 'flv', url }, { enableWorker: true, lazyLoad: false, autoCleanupSourceBuffer: true });
                 video._streamPlayer = player;
                 player.attachMediaElement(video);
                 player.load();
@@ -448,8 +449,10 @@
             if (isHlsUrl(url)) return setupHlsVideo(video, url);
             if (isDashUrl(url)) return setupDashVideo(video, url);
             if (isFlvUrl(url)) return setupFlvVideo(video, url);
+            video.preload = 'auto';
             video.src = url;
             video.load();
+            video.play().catch(() => {});
             video.addEventListener('error', () => showVideoError(video, 'تعذر تشغيل رابط الفيديو. تحقق من الرابط والسماح بـ CORS.'), { once: true });
         }
 
@@ -592,9 +595,9 @@
                     videoUrls.forEach((videoUrl, index) => {
                         const processedUrl = getEmbedUrl(videoUrl);
                         if (processedUrl.includes('youtube.com/embed')) {
-                            videoHtml += `<div class="video-container"><iframe src="${processedUrl}" title="فيديو الموضوع" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="origin" allowfullscreen></iframe></div>`;
+                            videoHtml += `<div class="video-container"><iframe src="${processedUrl}" title="فيديو الموضوع" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="origin" allowfullscreen></iframe></div>`;
                         } else {
-                            videoHtml += `<div class="video-container"><video id="article-video-${index}" controls playsinline preload="metadata"></video></div>`;
+                            videoHtml += `<div class="video-container"><video id="article-video-${index}" controls playsinline autoplay muted preload="auto"></video></div>`;
                         }
                     });
                     const contentText = String(content).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
