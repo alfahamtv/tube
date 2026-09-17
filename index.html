@@ -846,7 +846,7 @@
                     name: value.name || value.nam || value.title || value.label || 'قسم',
                     parentId: value.parentId || null,
                     url: value.url || '',
-                    iconUrl: value.iconUrl || value.imageUrl || value.logoUrl || '',
+                    iconUrl: value.iconUrl || value.imageUrl || value.logoUrl || value.icon || value.image || value.categoryImage || '',
                     createdAt: Number(value.createdAt || 0),
                     children: []
                 };
@@ -896,7 +896,7 @@
                         name: value?.name || value?.nam || value?.title || value?.label || 'قسم',
                         sectionTitle: value?.sectionTitle || value?.columnTitle || value?.titleLabel || value?.name || '',
                         url: value?.url || '',
-                        iconUrl: value?.iconUrl || value?.imageUrl || value?.logoUrl || '',
+                        iconUrl: value?.iconUrl || value?.imageUrl || value?.logoUrl || value?.icon || value?.image || value?.categoryImage || '',
                         parentId: value?.parentId || null,
                         createdAt: Number(value?.createdAt || 0),
                         order,
